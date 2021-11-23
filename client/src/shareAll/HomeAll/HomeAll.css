@@ -1,0 +1,30 @@
+.home {
+  width: 100vw;
+  height: 100vh;
+  background: blue;
+  clip-path: polygon(100% 0, -8% 100%, 100% 100%);
+}
+.information-lookup-box {
+  height: 70%;
+  width: 35%;
+  background: white;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid gray;
+
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.information-lookup-box-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.information-lookup-box-title{
+    text-align: center;
+    color: gray;
+    line-height: 1;
+}

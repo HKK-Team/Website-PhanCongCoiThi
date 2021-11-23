@@ -1,0 +1,67 @@
+.AdminLogin_box{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    background-image:  url("https://images.unsplash.com/photo-1545336115-dd90faa78b91?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80") ;
+    background-repeat: no-repeat ;
+    background-position: center;
+    background-size: cover;
+}
+.AdminLogin_box form{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%,-50%);
+    width: 350px;
+
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 10px;
+
+    box-shadow: rgba(0, 0, 0, 0.16) 10px 10px 10px 10px;
+}
+.AdminLogin_box form input{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    background: transparent;
+}
+.AdminLogin_box form button{
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+
+    display: inline-block;
+    transition: all 0.5s ease;
+    
+}
+.AdminLogin_box form button:hover{
+    background-color: red;
+}
+.AdminLogin_box form input:hover{
+    border-color: black;
+    color: black;
+}
+.AdminLogin_box form h1{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.AdminLogin_box h2{
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    line-height: 1.2;
+}
