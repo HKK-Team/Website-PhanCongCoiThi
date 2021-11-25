@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Link } from "react-router-dom";
+
 export default function headerTable(props) {
   const Input = styled("input")({
     display: "none",
@@ -33,6 +34,7 @@ export default function headerTable(props) {
             id="contained-button-file"
             multiple
             type="file"
+            onChange={props.onChange}
           />
           <Tooltip title="Thêm dữ liệu bằng file Excel" arrow>
             <Button
@@ -40,7 +42,8 @@ export default function headerTable(props) {
               component="span"
               color="success"
               size="small"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 10 }}    
+              onClick={props.onClick}
             >
               Import Excel
             </Button>
@@ -52,6 +55,8 @@ export default function headerTable(props) {
             color="success"
             size="small"
             style={{ marginRight: 10 }}
+            href={props.form}
+            download
           >
             lấy biểu mẫu{" "}
           </Button>
@@ -126,16 +131,19 @@ export function HeaderTableArrangeExamSchedule(props) {
             Lưu lịch thi
           </Button>
         </Tooltip>
-        <Tooltip
-          title="Tự động sắp xếp lịch thi một các nhanh gọn"
-          arrow
-        >
-          <Button variant="contained" size="small" style={{ marginRight: 10 }}  color="success">
-            Sắp xếp tự động 
+        <Tooltip title="Tự động sắp xếp lịch thi một các nhanh gọn" arrow>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ marginRight: 10 }}
+            color="success"
+          >
+            Sắp xếp tự động
           </Button>
         </Tooltip>
         <p className="header-table-ps">
-          P/s: Dữ liệu sẽ mất khi bạn rời khỏi trang. Hãy kiểm tra thật kỹ tất cả thông tin và lưu lại 
+          P/s: Dữ liệu sẽ mất khi bạn rời khỏi trang. Hãy kiểm tra thật kỹ tất
+          cả thông tin và lưu lại
         </p>
       </div>
     </div>

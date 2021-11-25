@@ -10,8 +10,8 @@ function Pages() {
     <Switch>
       <Route exact path="/" component={HomeAll} />
       <Route exact path="/login" component={LoginAll} />
-      <PagesLecturers />
-      {/* <NavBarAdmin /> */}
+      {/* <PagesLecturers /> */}
+      <NavBarAdmin />
     </Switch>
   );
 }

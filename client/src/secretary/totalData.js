@@ -1,7 +1,22 @@
+import { useContext } from "react";
+import { GlobalState } from "./../globalState";
 import MostPopularProducts from "./components/MostPopularProducts/MostPopularProducts";
 import SellingProducts from "./components/SellingProducts/SellingProducts";
-import WidgetLg from './components/WidgetLg/WidgetLg'
-// khởi tạo dữ liêu hoạt động của người dùng dạng biểu đồ 
+import WidgetLg from "./components/WidgetLg/WidgetLg";
+
+export var getdata = {};
+export default function GetData() {
+  const state = useContext(GlobalState);
+  const [getLecturersApi] = state.getLecturersApi.getLecturers;
+  const [getSubjectApi] = state.getSubjectsApi.getSubjects;
+  getdata = {
+    getLecturersApi: [...getLecturersApi],
+    getSubjectApi: [...getSubjectApi]
+  };
+  return getdata;
+}
+
+// khởi tạo dữ liêu hoạt động của người dùng dạng biểu đồ
 export const userData = [
   {
     name: "Jan",
@@ -52,11 +67,11 @@ export const userData = [
     "Active User": 3000,
   },
 ];
-// khởi tạo dữ liêu doanh thu hàng tháng của dạng biểu đồ 
+// khởi tạo dữ liêu doanh thu hàng tháng của dạng biểu đồ
 export const monthlyRevenueData = [
   {
     name: "Jan",
-    "Doanh Thu": 4000 ,
+    "Doanh Thu": 4000,
   },
   {
     name: "Feb",
@@ -103,7 +118,7 @@ export const monthlyRevenueData = [
     "Doanh Thu": 3000,
   },
 ];
-// khởi tạo dữ liêu doanh thu các quý của dạng biểu đồ 
+// khởi tạo dữ liêu doanh thu các quý của dạng biểu đồ
 export const quarterlyRevenueData = [
   {
     name: "Quý 1",
@@ -122,7 +137,7 @@ export const quarterlyRevenueData = [
     Sales: 50000,
   },
 ];
-// khởi tạo dữ liêu doanh thu các năm của dạng biểu đồ 
+// khởi tạo dữ liêu doanh thu các năm của dạng biểu đồ
 export const annualRevenueData = [
   {
     name: "2017",
@@ -134,7 +149,7 @@ export const annualRevenueData = [
   },
   {
     name: "2019",
-    Sales:350000,
+    Sales: 350000,
   },
   {
     name: "2020",
@@ -144,9 +159,8 @@ export const annualRevenueData = [
     name: "2021",
     Sales: 450000,
   },
-
 ];
-// khởi tạo dữ liêu sản phẩm dạng biểu đồ 
+// khởi tạo dữ liêu sản phẩm dạng biểu đồ
 export const productData = [
   {
     name: "Jan",
@@ -161,7 +175,6 @@ export const productData = [
     Sales: 5000,
   },
 ];
-
 
 // khởi tạo dữ liêu bảng người dùng
 export const userRows = [
@@ -201,7 +214,7 @@ export const bestSellingItemData = [
     Sales: 50000,
   },
 ];
-// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 1 dạng biểu đồ 
+// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 1 dạng biểu đồ
 export const itemTypeRevenueData_Precious1 = [
   {
     name: "Hunter Nam",
@@ -228,7 +241,7 @@ export const itemTypeRevenueData_Precious1 = [
     Sales: 500000,
   },
 ];
-// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 2 dạng biểu đồ 
+// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 2 dạng biểu đồ
 export const itemTypeRevenueData_Precious2 = [
   {
     name: "Hunter Nam",
@@ -255,7 +268,7 @@ export const itemTypeRevenueData_Precious2 = [
     Sales: 500000,
   },
 ];
-// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 3 dạng biểu đồ 
+// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 3 dạng biểu đồ
 export const itemTypeRevenueData_Precious3 = [
   {
     name: "Hunter Nam",
@@ -282,7 +295,7 @@ export const itemTypeRevenueData_Precious3 = [
     Sales: 500000,
   },
 ];
-// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 4 dạng biểu đồ 
+// khởi tạo dữ liệu doanh thu các loại mặt hàng quý 4 dạng biểu đồ
 export const itemTypeRevenueData_Precious4 = [
   {
     name: "Hunter Nam",
@@ -346,13 +359,13 @@ export const billRows = [
 export const sellingProductsData = [];
 for (let i = 0; i < 5; i++) {
   sellingProductsData.push(
-  <SellingProducts
-    image="https://product.hstatic.net/1000230642/product/03900cam__2__5ed808cd7e35480dbb0340cf7e57c71a_1024x1024.jpg"
-    codeproduct="DSMH03900CAM44"
-    totalquality={200}
-    price={990000}
-  />
-);
+    <SellingProducts
+      image="https://product.hstatic.net/1000230642/product/03900cam__2__5ed808cd7e35480dbb0340cf7e57c71a_1024x1024.jpg"
+      codeproduct="DSMH03900CAM44"
+      totalquality={200}
+      price={990000}
+    />
+  );
 }
 
 // dữ liêu sản phẩm yêu thích nhất
@@ -360,13 +373,13 @@ export const mostPopularProductsData = [];
 for (let i = 0; i < 5; i++) {
   mostPopularProductsData.push(
     <MostPopularProducts
-    image="https://product.hstatic.net/1000230642/product/03900cam__2__5ed808cd7e35480dbb0340cf7e57c71a_1024x1024.jpg"
-    codeproduct="DSMH03900CAM44"
-    totallike={2000}
-    totalquality={200}
-    price={990000}
-  />
-);
+      image="https://product.hstatic.net/1000230642/product/03900cam__2__5ed808cd7e35480dbb0340cf7e57c71a_1024x1024.jpg"
+      codeproduct="DSMH03900CAM44"
+      totallike={2000}
+      totalquality={200}
+      price={990000}
+    />
+  );
 }
 
 // dữ liêu giao dịch gần nhất
@@ -374,10 +387,10 @@ export const mostRecentTransactionDate = [];
 for (let i = 0; i < 5; i++) {
   mostRecentTransactionDate.push(
     <WidgetLg
-    fullname="Đoàn Minh Khánh"
-    date ="20-09-2001"
-    totalprice={20000}
-    codebill= "121231231212"
-  />
-);
+      fullname="Đoàn Minh Khánh"
+      date="20-09-2001"
+      totalprice={20000}
+      codebill="121231231212"
+    />
+  );
 }

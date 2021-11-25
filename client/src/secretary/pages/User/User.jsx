@@ -1,10 +1,43 @@
 import { MailOutline, PermIdentity, Publish } from "@material-ui/icons";
 import { Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useParams } from "react-router-dom";
+import { GlobalState } from "../../../globalState";
+import { useForm } from "react-hook-form";
 import "./User.css";
+import axios from "axios";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 // chỉnh sửa thông tin khách hàng
 export default function User() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data) => {
+    await toastPromise(
+      axios.put("http://localhost:5000/import/editGiangVien", {
+        ...data,
+        params,
+      }),
+      () => {
+        setTimeout(() => {
+          window.location.href = "/lecturers";
+        }, 1000);
+        return "Cập Nhật Thành Công";
+      }
+    );
+  };
+
+  const params = useParams();
+
+  const state = useContext(GlobalState);
+
+  const [lecturers] = state.getLecturersApi.getLecturers;
+
+  const [data] = lecturers.filter((item) => item._id === params.lecturersId);
+
   return (
     <div className="user">
       <div className="userTitleContainer">
@@ -22,8 +55,8 @@ export default function User() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">Minh Khánh</span>
-              <span className="userShowUserTitle">Software Engineer</span>
+              <span className="userShowUsername">{data?.hoTen}</span>
+              <span className="userShowUserTitle">{data?.maKhoa}</span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -34,42 +67,63 @@ export default function User() {
                 <PermIdentity className="userShowIcon" />
               </Tooltip>
               <Tooltip title="Mã viên chức" arrow>
-                <span className="userShowInfoTitle">123456</span>
+                <span className="userShowInfoTitle">{data?.maVienChuc}</span>
               </Tooltip>
             </div>
             <div className="userShowInfo">
               <MailOutline className="userShowIcon" />
-              <span className="userShowInfoTitle">KhanhDoan693@gmail.com</span>
+              <span className="userShowInfoTitle">{data?.email}</span>
             </div>
           </div>
         </div>
         <div className="userUpdate">
           <span className="userUpdateTitle">Chỉnh sửa</span>
-          <form className="userUpdateForm">
+          <form className="userUpdateForm" onSubmit={handleSubmit(onSubmit)}>
             <div className="userUpdateLeft">
               <div className="userUpdateItem">
                 <label>Họ và Tên</label>
                 <input
                   type="text"
-                  placeholder="Đoàn Minh Khánh"
+                  placeholder={data?.hoTen}
                   className="userUpdateInput"
+                  {...register("hoTen", { required: true, maxLength: 80 })}
                 />
+                <p style={{ fontSize: 12, color: "red" }}>
+                  {errors.hoTen?.type === "required" && "Vui lòng nhập họ tên"}
+                </p>
               </div>
               <div className="userUpdateItem">
                 <label>Email</label>
                 <input
                   type="text"
-                  placeholder="KhanhDoan693@gmail.com"
+                  placeholder={data?.email}
                   className="userUpdateInput"
+                  {...register("Email", {
+                    required: true,
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: "Email không hợp lệ",
+                    },
+                  })}
                 />
+                <p style={{ fontSize: 12, color: "red" }}>
+                  {(errors.Email?.type === "required" &&
+                    "Vui lòng nhập email") ||
+                    errors.Email?.message}
+                </p>
               </div>
               <div className="userUpdateItem">
                 <label>Mã viên chức</label>
                 <input
                   type="text"
-                  placeholder="123456"
+                  placeholder={data?.maVienChuc}
                   className="userUpdateInput"
+                  {...register("maVienChuc", { required: true, maxLength: 80 })}
                 />
+                <p style={{ fontSize: 12, color: "red" }}>
+                  {errors.maVienChuc?.type === "required" &&
+                    "Vui lòng điền mã viên chức"}
+                </p>
               </div>
             </div>
             <div className="userUpdateRight">

@@ -46,7 +46,7 @@ export function toastPromise(promise, successCallback) {
     },
     error: {
       render(data) {
-        return JSON.stringify(data.data.response.data.msg);
+        return JSON.stringify(data?.data?.response?.data?.msg);
       },
     },
   });

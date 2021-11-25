@@ -5,8 +5,10 @@ import { useCallback, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import { Link } from "react-router-dom";
 import { Alert } from "@mui/material";
+import GetData from './../../totalData.js';
 
 export default function ArrangeExamSchedule() {
+  GetData();
   const [data, setData] = useState(billRows);
   const [editRowsModel, setEditRowsModel] = useState({});
   const handleEditRowsModelChange = useCallback((model) => {

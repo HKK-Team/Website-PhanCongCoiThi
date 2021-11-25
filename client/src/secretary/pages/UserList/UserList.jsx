@@ -1,19 +1,81 @@
 import "./UserList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { userRows } from "../../totalData";
+import { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import HeaderTable from "./../../components/headerTable/headerTable";
 import { Tooltip } from "@mui/material";
 
+import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
+import * as XLSX from "xlsx";
+import axios from "axios";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import GetData from "../../totalData";
+
 // Bảng Giảng Viên
 export default function UserList() {
-  const [data, setData] = useState(userRows);
+  GetData();
+  const [data] = useState(getdata.getLecturersApi);
+  const [giangvien, setgiangvien] = useState([]);
 
-  // xóa user khỏi bảng
+  // read excel import from giangvien
+  const readExcelGiangVien = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+    promise.then((d) => {
+      d.shift();
+      setgiangvien(d);
+      ImportGiangVien();
+    });
+  };
+
+  const ImportGiangVien = async () => {
+    await toastPromise(
+      axios.post("http://localhost:5000/import/giangvien", {
+        ...giangvien,
+      }),
+      () => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        return "Bạn đã nhập dữ liệu giảng viên thành công";
+      }
+    );
+  };
+
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    if (window.confirm("Bạn thực sự muốn xóa không?")) {
+      toastPromise(
+        axios.delete(`http://localhost:5000/import/deleteGiangVien/${id}`),
+        () => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          return "Xóa thành công !";
+        }
+      );
+    }
   };
   // khởi tạo dữ liệu bảng
   const columns = [
@@ -21,18 +83,6 @@ export default function UserList() {
       field: "hoTen",
       headerName: "Họ Và Tên",
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="userListUser">
-            <img
-              className="userListImg"
-              src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
-              alt=""
-            />
-            {params.row.lastname} {params.row.firstname}
-          </div>
-        );
-      },
     },
     { field: "email", headerName: "Email", width: 250 },
     {
@@ -47,7 +97,7 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/lecturers/" + params.row.id}>
+            <Link to={"/lecturers/" + params.id}>
               <Tooltip title="Chỉnh sửa giảng viên" arrow>
                 <button className="userListEdit">Chỉnh sửa</button>
               </Tooltip>
@@ -55,7 +105,7 @@ export default function UserList() {
             <Tooltip title="Xóa giảng viên" arrow>
               <DeleteOutline
                 className="userListDelete"
-                onClick={() => handleDelete(params.row.id)}
+                onClick={() => handleDelete(params.id)}
               />
             </Tooltip>
           </>
@@ -70,13 +120,16 @@ export default function UserList() {
         title="Bảng Giảng Viên"
         name="Thêm giảng viên"
         urlNew="/newlecturers"
+        form={formGV}
+        onChange={(e) => readExcelGiangVien(e.target.files[0])}
       />
       <DataGrid
+        getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
-        checkboxSelection
+        pageSize={10}
+        // checkboxSelection
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

@@ -1,67 +1,107 @@
 import "./ProductList.css";
-import {  DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { productRows } from "../../totalData";
+import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import HeaderTable from "../../components/headerTable/headerTable";
-
+import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import axios from "axios";
+import * as XLSX from "xlsx";
 export default function ProductList() {
-  const [data, setData] = useState(productRows);
+  GetData();
+  const [data] = useState(getdata.getSubjectApi);
+  const [monthi, setMonthi] = useState([]);
+  console.log(getdata);
+  const readExcelMonThi = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
 
-//Xóa sản phẩm
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+        console.log(ws);
+        const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+    promise.then((d) => {
+      d.shift();
+      setMonthi(d);
+      ImportMonThi();
+    });
   };
-// khởi tạo dữ liệu sản phẩm dạng cột
+
+  const ImportMonThi = async () => {
+    await toastPromise(
+      axios.post("http://localhost:5000/import/monthi", {
+        ...monthi,
+      }),
+      () => {
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
+        return "Bạn đã nhập dữ liệu môn thi thành công";
+      }
+    );
+  };
+  console.log(monthi);
+
   const columns = [
-    { field: "maHocPhan", headerName: "Mã học phần", width: 170 },
-    { field: "tenHocPhan", headerName: "Tên Học Phần", width: 165 },
+    { field: "maHp", headerName: "Mã học phần", width: 170 },
+    { field: "tenHp", headerName: "Tên Học Phần", width: 400 },
     {
-      field: "nhomKiemTra",
+      field: "nhomKT",
       headerName: "Nhóm kiểm tra",
       width: 200,
     },
-    { field: "toKiem", headerName: "Tổ kiểm", width: 170 },
+    { field: "toKiem", headerName: "Tổ kiểm", width: 130 },
     {
-      field: "soLuongSinhVien",
-      headerName: "Số lượng",
+      field: "soLuong",
+      headerName: "Số lượng SV",
       width: 150,
     },
     {
       field: "doViToChuc",
-      headerName: "Đơn vị tổ chức kiểm tra" ,
-      width: 180,
+      headerName: "Đơn vị tổ chức kiểm tra",
+      width: 250,
     },
     {
-      field: "soLuongSinhVien",
-      headerName: "Số lượng SV",
-      width: 170,
-    },
-    {
-      field: "chuongTrinhBoMon",
+      field: "chuongTrinh",
       headerName: "Chương trình/Bộ môn",
-      width: 240,
+      width: 300,
     },
     {
-      field: "hinhThucKiemTra",
+      field: "hinhThucKT",
       headerName: "Hình thức kiểm tra",
-      width: 240,
+      width: 200,
     },
     {
       field: "GVGD",
       headerName: "GVGD",
-      width: 200,
+      width: 150,
     },
     {
       field: "maGV",
       headerName: "MGV",
-      width: 140,
+      width: 120,
     },
     {
-      field: "heDaoTao",
+      field: "heDT",
       headerName: "Hệ đào tạo",
-      width: 140,
+      width: 150,
     },
     {
       field: "action",
@@ -75,7 +115,7 @@ export default function ProductList() {
             </Link>
             <DeleteOutline
               className="productListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              // onClick={() => handleDelete(params.row.id)}
             />
           </>
         );
@@ -85,20 +125,26 @@ export default function ProductList() {
 
   return (
     <div className="productList">
-       <HeaderTable title="Bảng Môn Học" name="Thêm môn học" urlNew="/newSubjects"/>
+      <HeaderTable
+        title="Bảng Môn Học"
+        name="Thêm môn học"
+        urlNew="/newSubjects"
+        form={formMH}
+        onChange={(e) => readExcelMonThi(e.target.files[0])}
+      />
       <DataGrid
+        getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
-        checkboxSelection
-
+        pageSize={10}
+        // checkboxSelection
         localeText={{
-          toolbarDensity: 'Size',
-          toolbarDensityLabel: 'Size',
-          toolbarDensityCompact: 'Small',
-          toolbarDensityStandard: 'Medium',
-          toolbarDensityComfortable: 'Large',
+          toolbarDensity: "Size",
+          toolbarDensityLabel: "Size",
+          toolbarDensityCompact: "Small",
+          toolbarDensityStandard: "Medium",
+          toolbarDensityComfortable: "Large",
         }}
         components={{
           Toolbar: GridToolbar,

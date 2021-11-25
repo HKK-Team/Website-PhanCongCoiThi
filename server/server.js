@@ -2,8 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const cors = require('cors')
+const cookieParser = require('cookie-parser');
 const app = express();
-
+app.use(express.json());
+app.use(cookieParser())
+app.use(cors())
 // connect to mongodb
 const URI = process.env.MONGODB_URL;
 mongoose.connect(
@@ -18,7 +22,7 @@ mongoose.connect(
   }
 );
 // Routes
-// app.use("/sendMail", require("./src/user/routers/mailSeriveRoutes"));
+app.use("/import",require('./src/secretarys/routes/Routes'));
 
 // load token for server
 if (process.env.NODE_ENV === "production") {
@@ -29,7 +33,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
-// set up socket io
+
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
 });
