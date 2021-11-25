@@ -8,3 +8,39 @@
     padding: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+.information-lookup-box{
+    background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%);
+    border-radius: 5px 5px 5px 5px;
+}
+.Log-In{
+    background-color: rgba(9, 6, 165, 0.897);
+    border-radius: 5px 5px 5px 5px;
+}
+.btn{
+    font-style: italic;
+    margin-left: 32%;
+    background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%);
+    border-radius: 5px 5px 5px 5px;
+}
+.well{
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+}
+.Logged{    
+    width: 300px;
+    height: 70x;
+    /* background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%);
+    border-radius: 7px 7px 7px 7px; */
+}
+.email{
+    font-style: italic;
+    text-align: center;
+}
+.Login-Secretary{
+    height: 30px;
+    background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%);
+    border-radius: 5px 5px 5px 5px;
+    font-size: 16px;
+    font-style: italic;
+}

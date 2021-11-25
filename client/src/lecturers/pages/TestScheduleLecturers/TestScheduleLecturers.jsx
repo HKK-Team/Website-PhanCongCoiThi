@@ -3,7 +3,7 @@ import { userRows } from "../../../secretary/totalData";
 import { useState } from "react";
 
 export default function TestScheduleLecturers() {
-  const [data, setData] = useState(userRows);
+  const [data] = useState(userRows);
 
   // khởi tạo dữ liệu bảng
   const columns = [
