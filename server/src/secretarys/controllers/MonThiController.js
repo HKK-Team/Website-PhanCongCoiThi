@@ -1,7 +1,7 @@
 const monThi = require("../model/MonThiModal");
 const MonThiCtrl = {
   check: async (req, res) => {
-    if (req.body === {}) {
+    if (req.body === false) {
       res.status(400).json({
         message: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
       });
@@ -44,6 +44,91 @@ const MonThiCtrl = {
     try {
       const MonThi = await monThi.find();
       res.json(MonThi);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  editMonThi: async (req, res) => {
+    try {
+      const {
+        maHp,
+        tenHp,
+        nhomKT,
+        hinhThucKT,
+        GVGD,
+        maGV,
+        heDT,
+        chuongTrinh,
+        doViToChuc,
+        toKiem,
+        soLuong,
+        maKhoa,
+      } = req.body;
+      await monThi.findOneAndUpdate(
+        { _id: req.body.param.subjectsId },
+        {
+          maHp,
+          tenHp,
+          nhomKT,
+          hinhThucKT,
+          GVGD,
+          maGV,
+          heDT,
+          chuongTrinh,
+          doViToChuc,
+          toKiem,
+          soLuong,
+          maKhoa,
+        }
+      );
+      res.json({ msg: "Cập nhật thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  createMonThi: async (req, res) => {
+    try {
+      const {
+        maHp,
+        tenHp,
+        nhomKT,
+        hinhThucKT,
+        GVGD,
+        maGV,
+        heDT,
+        chuongTrinh,
+        doViToChuc,
+        toKiem,
+        soLuong,
+        maKhoa,
+      } = req.body;
+      const newMonThi = new monThi({
+        maHp: maHp,
+        tenHp: tenHp,
+        nhomKT: nhomKT,
+        hinhThucKT: hinhThucKT,
+        GVGD: GVGD,
+        maGV: maGV,
+        heDT: heDT,
+        chuongTrinh: chuongTrinh,
+        doViToChuc: doViToChuc,
+        toKiem: toKiem,
+        soLuong: soLuong,
+        maKhoa: "",
+      });
+      await newMonThi.save();
+      res.json({ msg: "Thêm thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  deleteMonThi: async (req, res) => {
+    try {
+      await monThi.findByIdAndDelete(req.params.id);
+      res.json({ msg: "Xóa thành công" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

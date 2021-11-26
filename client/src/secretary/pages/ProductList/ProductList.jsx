@@ -49,16 +49,31 @@ export default function ProductList() {
       axios.post("http://localhost:5000/import/monthi", {
         ...monthi,
       }),
-      () => {
+      (data) => {
         // setTimeout(() => {
         //   window.location.reload();
         // }, 1000);
-        return "Bạn đã nhập dữ liệu môn thi thành công";
+        return (
+          JSON.stringify(data?.data?.response?.data?.msg) ||
+          "Bạn đã nhập dữ liệu môn thi thành công"
+        );
       }
     );
   };
   console.log(monthi);
-
+  const handleDelete = (id) => {
+    if (window.confirm("Bạn thực sự muốn xóa không?")) {
+      toastPromise(
+        axios.delete(`http://localhost:5000/import/deleteMonThi/${id}`),
+        () => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          return "Xóa thành công !";
+        }
+      );
+    }
+  };
   const columns = [
     { field: "maHp", headerName: "Mã học phần", width: 170 },
     { field: "tenHp", headerName: "Tên Học Phần", width: 400 },
@@ -110,12 +125,12 @@ export default function ProductList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/subjects/" + params.row.id}>
+            <Link to={"/subjects/" + params.id}>
               <button className="productListEdit">Chỉnh sửa</button>
             </Link>
             <DeleteOutline
               className="productListDelete"
-              // onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.id)}
             />
           </>
         );

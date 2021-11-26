@@ -10,7 +10,7 @@ const monThiSchema = new Schema({
     heDT : String,
     chuongTrinh : String,
     doViToChuc : String,
-    toKiem : Number,
+    toKiem : String,
     soLuong : Number,
     maKhoa : String
 })

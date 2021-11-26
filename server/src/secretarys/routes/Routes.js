@@ -10,4 +10,7 @@ router.route("/deleteGiangVien/:id").delete(GiangVienCtrl.deleteGiangVien);
 
 router.route("/monthi").post(MonThiCtrl.check);
 router.route("/getMonthi").get(MonThiCtrl.getMonThi);
+router.route("/editMonthi").put(MonThiCtrl.editMonThi);
+router.route("/createMonthi").post(MonThiCtrl.createMonThi);
+router.route("/deleteMonthi/:id").delete(MonThiCtrl.deleteMonThi);
 module.exports = router;

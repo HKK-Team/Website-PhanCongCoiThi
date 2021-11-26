@@ -55,11 +55,14 @@ export default function UserList() {
       axios.post("http://localhost:5000/import/giangvien", {
         ...giangvien,
       }),
-      () => {
+      (data) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
-        return "Bạn đã nhập dữ liệu giảng viên thành công";
+        return (
+          JSON.stringify(data?.data?.response?.data?.msg) ||
+          "Bạn đã nhập dữ liệu giảng viên thành công"
+        );
       }
     );
   };

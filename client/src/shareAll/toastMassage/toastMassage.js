@@ -40,12 +40,14 @@ export function toastPromise(promise, successCallback) {
   toast.promise(promise, {
     pending: "Please wait...",
     success: {
-      render() {
-        return successCallback();
+      render(data) {
+        console.log(data);
+        return successCallback(data);
       },
     },
     error: {
       render(data) {
+        console.log(data);
         return JSON.stringify(data?.data?.response?.data?.msg);
       },
     },
