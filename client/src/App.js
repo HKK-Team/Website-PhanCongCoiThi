@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter as Router} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Pages from "./pages/pages";
-// import { DataProvider } from "./GlobalState";
+import { DataProvider } from "./globalState";
+
 function App() {
   return (
     <React.Fragment>
@@ -17,11 +18,11 @@ function App() {
         draggable
         pauseOnHover
       />
-      {/* <DataProvider> */}
+      <DataProvider>
       <Router>
           <Pages></Pages>
       </Router>
-      {/* </DataProvider> */}
+      </DataProvider>
     </React.Fragment>
   );
 }

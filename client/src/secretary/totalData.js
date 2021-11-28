@@ -1,7 +1,23 @@
 import MostPopularProducts from "./components/MostPopularProducts/MostPopularProducts";
 import SellingProducts from "./components/SellingProducts/SellingProducts";
 import WidgetLg from './components/WidgetLg/WidgetLg'
-// khởi tạo dữ liêu hoạt động của người dùng dạng biểu đồ 
+import { useContext } from "react";
+import { GlobalState } from "../globalState";
+
+
+export var getdata ={}; // khởi tạo array object chứa các mảng dữ liệu
+export default function GetData(){
+  const state = useContext(GlobalState);
+  const [schedule] = state.ScheduleApi.schedule;
+  const [rgSubjects] = state.RegistSubjectsAPI.rgSubjects;
+  
+  getdata ={
+    schedule : [...schedule],
+    rgSubjects: [...rgSubjects]
+  }   
+  return getdata;
+} 
+
 export const userData = [
   {
     name: "Jan",

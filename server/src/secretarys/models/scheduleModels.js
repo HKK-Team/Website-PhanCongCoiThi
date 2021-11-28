@@ -18,7 +18,7 @@ const scheduleSchema = new mongoose.Schema({
     soPhutKiemTra: Number,
     tenHocKi: String,
     tenHocPhan: String,
-    toKiem: Number,
+    toKiem: String,
     maHocPhan: String,
     ngayKiemTra: { type: Date, default: Date.now }
 })

@@ -22,6 +22,7 @@ mongoose.connect(
 );
 // Routes
 app.use("/api", require("./src/secretarys/routers/scheduleRouter"));
+app.use("/api", require("./src/secretarys/routers/registSubjectsRouter"));
 
 
 // app.use("/sendMail", require("./src/user/routers/mailSeriveRoutes"));
