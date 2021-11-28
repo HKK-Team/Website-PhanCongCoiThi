@@ -45,9 +45,11 @@ export default function LoginAll() {
     e.preventDefault();
     if(reg.test(lecturer.email)===true)
     {
-      await axios.post("http://localhost:5001/login/lecturer",{...lecturer});
-      localStorage.setItem("lecturerLogin", true);
+      await axios.post("http://localhost:5000/lecturer/login",{...lecturer});
+      localStorage.setItem("LecturerLogin", true);
+      localStorage.setItem("email",lecturer.email);
       alert("Bạn đã đăng nhập Google thành công!");
+      window.location.href = "/profileLecturers";
     }
     else{
       alert("Email của bạn không tồn tại trong cơ sở dữ liệu. Xin vui lòng đăng nhập lại!")
@@ -82,9 +84,10 @@ export default function LoginAll() {
   const loginSubmit = async (e) => {
     e.preventDefault();
     try{
-      await axios.post("http://localhost:5001/login/secretary", { ...secretary });
+      await axios.post("http://localhost:5000/secretary/login", { ...secretary });
       localStorage.setItem("SecretaryLogin", true);
       alert("Bạn đã đăng nhập thành công!");
+      window.location.href = "/profileLecturers"
     }catch(err){
       alert("Sai tên tài khoản hoặc mật khẩu. Xin vui lòng đăng nhập lại!");
     }
@@ -156,7 +159,7 @@ export default function LoginAll() {
                     <Button onClick={renderProps.onClick} disabled={renderProps.disabled}><EmailIcon style={{ paddingRight: 10 }} />
                     <span > Đăng nhập bằng Email</span></Button>
                   )}
-                  isSignedIn={false}
+                  isSignedIn={true}
                 />
               </div>
             </div>

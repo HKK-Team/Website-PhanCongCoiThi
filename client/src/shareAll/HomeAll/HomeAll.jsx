@@ -1,11 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment} from "react";
 import logo from "./../../../src/images/tdmu-elearning-banner.png";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import "./HomeAll.css";
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import { Link } from "react-router-dom";
+// import { GlobalState } from "../../GlobalState";
+// import ProfileLecturers from "../../lecturers/pages/ProfileLecturers/ProfileLecturers";
 export default function HomeAll() {
+  // const state = useContext(GlobalState);
+  // const [isLogged] = state.lecturerApi.isLogin;
+  // console.log(isLogged);
   return (
     <Fragment>
       <div className="topbar">
