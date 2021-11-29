@@ -13,7 +13,6 @@ export default function ProductList() {
   GetData();
   const [data] = useState(getdata.getSubjectApi);
   const [monthi, setMonthi] = useState([]);
-  console.log(getdata);
   const readExcelMonThi = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -106,7 +105,7 @@ export default function ProductList() {
     {
       field: "GVGD",
       headerName: "GVGD",
-      width: 150,
+      width: 200,
     },
     {
       field: "maGV",
@@ -152,7 +151,7 @@ export default function ProductList() {
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        pageSize={10}
+        // pageSize={10}
         // checkboxSelection
         localeText={{
           toolbarDensity: "Size",

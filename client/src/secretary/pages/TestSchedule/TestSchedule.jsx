@@ -1,4 +1,13 @@
+
+import { useEffect } from "react";
+
 export default function TestSchedule() {
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+    return () => {
+      document.body.style.overflow = 'hidden';
+    };
+  }, []);
   return (
     <div className="product">
       <div className="productTitleContainer">

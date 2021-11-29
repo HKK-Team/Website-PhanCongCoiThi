@@ -131,7 +131,7 @@ export default function UserList() {
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        pageSize={10}
+        // pageSize={10}
         // checkboxSelection
         localeText={{
           toolbarDensity: "Size",

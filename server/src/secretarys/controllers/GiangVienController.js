@@ -1,9 +1,9 @@
-const danhSachGiangVien = require("../model/GiangVienModal");
+const danhSachGiangVien = require("../models/GiangVienModal");
 const GiangVienCtrl = {
   check: async (req, res) => {
-    if (req.body === {}) {
+    if (Object.keys(req.body).length===0) {
       res.status(400).json({
-        message: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
+        msg: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
       });
     } else {
       try {

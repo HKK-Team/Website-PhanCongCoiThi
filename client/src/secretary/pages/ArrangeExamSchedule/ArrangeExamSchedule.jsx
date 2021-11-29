@@ -1,107 +1,296 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { billRows } from "../../totalData";
-import { useCallback, useState } from "react";
+import { billRows, getdata } from "../../totalData";
+import { useCallback, useEffect, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import { Link } from "react-router-dom";
 import { Alert } from "@mui/material";
-import GetData from './../../totalData.js';
+import GetData from "./../../totalData.js";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
+import { Prompt } from "react-router";
+let today = new Date();
+let date =
+  today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+let d = {
+  ngayKiemTra: date,
+  gioBatDau: "08:00",
+  maPhong: "",
+  soPhutKiemTra: 60,
+};
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+  return array;
+}
 
 export default function ArrangeExamSchedule() {
   GetData();
-  const [data, setData] = useState(billRows);
-  const [editRowsModel, setEditRowsModel] = useState({});
-  const handleEditRowsModelChange = useCallback((model) => {
-    setEditRowsModel(model);
-  }, []);
+  let a = [...getdata.getSubjectApi];
+  let b = [...getdata.getLecturersApi];
+  const [c, setC] = useState([]);
+  const [checkOut, setCheckOut] = useState(false);
 
-  // xóa hóa đơn khỏi bảng
+  function handleAutoMatic(e) {
+    shuffle(a);
+    shuffle(b);
+    if (c.length === a.length) {
+      setC([]);
+      for (let key = 0; key < a.length; key++) {
+        setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+      }
+    } else {
+      for (let key = 0; key < a.length; key++) {
+        setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+      }
+    }
+    setCheckOut(true);
+  }
+  // const [data, setData] = useState([]);
+  let data = [];
+  c.forEach((item) => {
+    let dsGiangVien = {
+      hoTen1: item[1]?.hoTen,
+      maVienChuc1: item[1]?.maVienChuc,
+      email1: item[1]?.email,
+      maKhoa1: item[1]?.maKhoa,
+      hoTen2: item[2]?.hoTen,
+      maVienChuc2: item[2]?.maVienChuc,
+      email2: item[2]?.email,
+      maKhoa2: item[2]?.maKhoa,
+    };
+    // setData((prev) => [...prev,{...item[0],...dsGiangVien,...item[3]}]);
+    data.push({ ...item[0], ...dsGiangVien, ...item[3] });
+  });
+  const handleEditRowsModelChange = useCallback(
+    (model) => {
+      let object = Object.values(model);
+      let objectKey = Object.keys(model);
+      data.forEach((item) => {
+        if (item._id === objectKey[0]) {
+          item.GVGD = object[0].GVGD.value;
+          item.chuongTrinh = object[0].chuongTrinh.value;
+          item.doViToChuc = object[0].doViToChuc.value;
+          item.gioBatDau = object[0].gioBatDau.value;
+          item.heDT = object[0].heDT.value;
+          item.hinhThucKT = object[0].hinhThucKT.value;
+          item.hoTen1 = object[0].hoTen1.value;
+          item.hoTen2 = object[0].hoTen2.value;
+          item.maGV = object[0].maGV.value;
+          item.maHp = object[0].maHp.value;
+          item.maPhong = object[0].maPhong.value;
+          item.maVienChuc1 = object[0].maVienChuc1.value;
+          item.maVienChuc2 = object[0].maVienChuc2.value;
+          item.ngayKiemTra = object[0].ngayKiemTra.value;
+          item.nhomKT = object[0].nhomKT.value;
+          item.soLuong = object[0].soLuong.value;
+          item.soPhutKiemTra = object[0].soPhutKiemTra.value;
+          item.tenHp = object[0].tenHp.value;
+          item.toKiem = object[0].toKiem.value;
+        }
+      });
+    },
+    [data]
+  );
+
+  // ngăn chặn rời đi khi chưa lưu
+  useEffect(() => {
+    if (checkOut) {
+      window.onbeforeunload = () => true;
+    } else {
+      window.onbeforeunload = undefined;
+    }
+  }, [checkOut]);
+
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
+      const index = data.findIndex((x) => x._id === id);
+      let ob = [...data];
+      ob.splice(`${index}`, 1);
+      data = ob;
+      console.log(data);
+    }
   };
   // khởi tạo dữ liệu bảng
   const columns = [
-    { field: "ngayKiemTra", headerName: "Ngày kiểm tra", width: 200 },
-    { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 200 },
-    { field: "maPhong", headerName: "Teamcode/Phòng", width: 200 },
-    { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 200 },
     {
-      field: "giangVien[0].hoTen",
+      editable: true,
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
+      width: 150,
+      type: "date",
+    },
+    {
+      editable: true,
+      field: "gioBatDau",
+      headerName: "Giờ bắt đầu",
+      width: 150,
+    },
+    {
+      editable: true,
+      field: "maPhong",
+      headerName: "Teamcode/Phòng",
+      width: 160,
+    },
+    {
+      editable: true,
+      field: "soPhutKiemTra",
+      headerName: "Số phút kiểm tra",
+      width: 180,
+      type: "number",
+    },
+    {
+      editable: true,
+      field: "hoTen1",
       headerName: "Cán bộ coi kiểm tra 01(CB01)",
       width: 230,
-      renderCell: (params) => {
-        return params.hoTen;
-      },
     },
     {
-      field: "giangVien[0].maVienChuc",
+      editable: true,
+      field: "maVienChuc1",
       headerName: "Mã viên chức CB01",
       width: 200,
-      renderCell: (params) => {
-        return params.maVienChuc;
-      },
     },
     {
-      field: "giangVien[1].hoTen",
+      editable: true,
+      field: "hoTen2",
       headerName: "Cán bộ coi kiểm tra 02(CB02)",
       width: 230,
-      renderCell: (params) => {
-        return params.hoTen;
-      },
     },
     {
-      field: "giangVien[1].maVienChuc",
+      editable: true,
+      field: "maVienChuc2",
       headerName: "Mã viên chức CB02",
       width: 200,
-      renderCell: (params) => {
-        return params.maVienChuc;
-      },
     },
-    { field: "maHocPhan", headerName: "Mã học phần", width: 200 },
-    { field: "tenHocPhan", headerName: "Tên học phần", width: 200 },
-    { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 200 },
     {
-      field: "chuongTrinhBoMon",
-      headerName: "Chương trình/Bộ môn",
+      editable: true,
+      field: "maHp",
+      headerName: "Mã học phần",
+      width: 170,
+    },
+    {
+      editable: true,
+      field: "tenHp",
+      headerName: "Tên học phần",
+      width: 400,
+    },
+    {
+      editable: true,
+      field: "nhomKT",
+      headerName: "Nhóm kiểm tra",
       width: 200,
     },
-    { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 200 },
-    { field: "GVGD", headerName: "GVGD", width: 200 },
-    { field: "maGV", headerName: "MGV", width: 200 },
-    { field: "heDaoTao", headerName: "Hệ đào tạo", width: 200 },
     {
+      editable: true,
+      field: "toKiem",
+      headerName: "Tổ kiểm",
+      width: 130,
+    },
+    {
+      editable: true,
+      field: "soLuong",
+      headerName: "Số lượng SV",
+      width: 130,
+    },
+    {
+      editable: true,
+      field: "doViToChuc",
+      headerName: "Đơn vị tổ chức",
+      width: 200,
+    },
+    {
+      editable: true,
+      field: "chuongTrinh",
+      headerName: "Chương trình/Bộ môn",
+      width: 400,
+    },
+    {
+      editable: true,
+      field: "hinhThucKT",
+      headerName: "Hình thức kiểm tra",
+      width: 200,
+    },
+    {
+      editable: true,
+      field: "GVGD",
+      headerName: "GVGD",
+      width: 200,
+    },
+    {
+      editable: true,
+      field: "maGV",
+      headerName: "MGV",
+      width: 140,
+    },
+    {
+      editable: true,
+      field: "heDT",
+      headerName: "Hệ đào tạo",
+      width: 140,
+    },
+    {
+      editable: true,
       field: "action",
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/ArrangeExamSchedule/" + params.row.id}>
-              <button className="userListEdit">Chỉnh sửa</button>
-            </Link>
             <DeleteOutline
               className="userListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             />
           </>
         );
       },
     },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      const backgroundColor =
+        theme.palette.mode === "dark" ? "#376331" : "rgb(217 243 190)";
+      return {
+        root: {
+          "& .MuiDataGrid-cell--editable": {
+            backgroundColor,
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="userList">
-      <HeaderTableArrangeExamSchedule title="Bảng Sắp Xếp Lịch Thi" />
+      <HeaderTableArrangeExamSchedule
+        title="Bảng Sắp Xếp Lịch Thi"
+        onClick={handleAutoMatic}
+        data={data}
+      />
+      <Prompt
+        when={checkOut}
+        message="Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn thoát không?"
+      />
       <DataGrid
-        pagination
+        className={classes.root}
+        getRowId={(row) => row?._id}
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        editRowsModel={editRowsModel}
+        // editRowsModel={editRowsModel}
         editMode="row"
         onEditRowsModelChange={handleEditRowsModelChange}
-        pageSize={10}
-        checkboxSelection
+        // pageSize={10}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",
@@ -113,9 +302,6 @@ export default function ArrangeExamSchedule() {
           Toolbar: GridToolbar,
         }}
       />
-      <Alert severity="info" style={{ marginTop: 8 }}>
-        <code>editRowsModel: {JSON.stringify(editRowsModel)}</code>
-      </Alert>
     </div>
   );
 }

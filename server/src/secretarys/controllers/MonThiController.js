@@ -1,9 +1,9 @@
-const monThi = require("../model/MonThiModal");
+const monThi = require("../models/MonThiModal");
 const MonThiCtrl = {
   check: async (req, res) => {
-    if (req.body === false) {
+    if (Object.keys(req.body).length===0) {
       res.status(400).json({
-        message: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
+        msg: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
       });
     } else {
       try {

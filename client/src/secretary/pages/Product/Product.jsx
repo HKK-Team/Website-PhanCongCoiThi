@@ -8,6 +8,12 @@ import "./Product.css";
 
 // chỉnh sửa sản phẩm
 export default function Product() {
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+    return () => {
+      document.body.style.overflow = 'hidden';
+    };
+  }, []);
   const {
     register,
     handleSubmit,
