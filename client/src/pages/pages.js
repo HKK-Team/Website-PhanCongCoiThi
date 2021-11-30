@@ -6,7 +6,7 @@ import PagesLecturers from "../lecturers/pages/pagesLectures";
 import NavBarAdmin from "../secretary/navBarAdmin";
 // import NavBarAdmin from "../secretary/navBarAdmin";
 import React, { useContext } from "react";
-import { GlobalState } from "../GlobalState";
+import { GlobalState } from "../globalState";
 import NotFound from "../utils/not_found/NotFound";
 
 function Pages() {

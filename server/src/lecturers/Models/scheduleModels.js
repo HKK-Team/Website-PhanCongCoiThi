@@ -8,7 +8,7 @@ const scheduleSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    gioBatDau: { type: Date, default: Date.now },
+    gioBatDau: String,
     heDaoTao: String,
     hinhThucKiemTra: String,
     maGV: String,
@@ -20,7 +20,8 @@ const scheduleSchema = new mongoose.Schema({
     tenHocPhan: String,
     toKiem: String,
     maHocPhan: String,
-    ngayKiemTra: { type: Date, default: Date.now }
+    ngayKiemTra: String,
+    __v:Number
 })
 
 module.exports = mongoose.model('Schedules', scheduleSchema)

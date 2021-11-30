@@ -3,7 +3,7 @@ import { userRows } from "../../../secretary/totalData";
 import { getdata } from "../../../secretary/totalData";
 import GetData from "../../../secretary/totalData";
 import { useState, useContext } from "react";
-import { GlobalState } from "../../../GlobalState";
+import { GlobalState } from "../../../globalState";
 
 export default function EssaySubject() {
   GetData();
@@ -11,7 +11,7 @@ export default function EssaySubject() {
   
   const state = useContext(GlobalState);
   // const [isLogged] = state.lecturerApi.isLogin;
-  console.log(state.lecturerApi);
+  //console.log(state.lecturerApi);
   // khởi tạo dữ liệu bảng
   // console.log(getdata.rgSubjects[0].dsDangKi.length)
   const columns = [
@@ -46,7 +46,6 @@ export default function EssaySubject() {
       headerName: "Hình thức kiểm tra",
       width: 150,
       renderCell: (params) => {
-        console.log(params)
         return params?.row?.dsDangKi?.hinhThucKT;
       },
     },

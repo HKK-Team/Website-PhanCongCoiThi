@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -23,8 +22,8 @@ mongoose.connect(
   }
 );
 // Routes
-app.use("/api", require("./src/secretarys/routers/scheduleRouter"));
-app.use("/api", require("./src/secretarys/routers/registSubjectsRouter"));
+app.use("/api", require("./src/lecturers/Routers/scheduleRouter"));
+app.use("/api", require("./src/lecturers/Routers/registSubjectsRouter"));
 
 
 // app.use("/sendMail", require("./src/user/routers/mailSeriveRoutes"));

@@ -6,7 +6,7 @@ function RegistSubjectsAPI() {
 
     useEffect(() => {
         const getdata = async() => {
-            const res = await axios.get('http://localhost:5001/api/rgsubjects')
+            const res = await axios.get('http://localhost:5000/api/rgsubjects')
             setrgSubjects(res.data)
         }
         getdata()

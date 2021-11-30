@@ -16,61 +16,20 @@ export default function TestScheduleLecturers() {
       headerName: "Tổ kiểm tra",
       width: 150,
     },
-    { field: "maHocPhan", headerName: "Nhóm học", width: 150 },
+    { field: "nhomKiemTra", headerName: "Nhóm học", width: 150 },
     { field: "soLuongSinhVien", headerName: "Số lượng sinh viên", width: 250 },
-    { field: "ngayKiemTra", headerName: "Ngày kiểm tra", width: 200 },
+    {
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
+      width: 200,
+      renderCell: (params) => {
+        return params?.row?.ngayKiemTra
+      },
+    },
     { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 180 },
     { field: "maPhong", headerName: "Phòng", width: 150 },
     { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 250 },
     { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 250 },
-    {
-      field: "canBo1",
-      headerName: "Cán bộ coi kiểm tra 01(CB01)",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[0]?.hoTen;
-      },
-    },
-    {
-      field: "maVienChuc1",
-      headerName: "Mã viên chức CB01",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[0]?.maVienChuc;
-      },
-    },
-    {
-      field: "canBo2",
-      headerName: "Cán bộ coi kiểm tra 02(CB02)",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[1]?.hoTen;
-      },
-    },
-    {
-      field: "maVienChuc2",
-      headerName: "Mã viên chức CB02",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[1]?.maVienChuc;
-      },
-    },
-    {
-      field: "canBo3",
-      headerName: "Cán bộ coi kiểm tra 03(CB03)",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[2]?.hoTen;
-      },
-    },
-    {
-      field: "maVienChuc3",
-      headerName: "Mã viên chức CB03",
-      width: 250,
-      renderCell: (params) => {
-        return params?.row?.giangVien[2]?.maVienChuc;
-      },
-    },
     {
       field: "chuongTrinhBoMon",
       headerName: "Chương trình/Bộ môn",
@@ -88,7 +47,7 @@ export default function TestScheduleLecturers() {
         getRowId={(row) => row._id}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={getdata.schedule.length}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

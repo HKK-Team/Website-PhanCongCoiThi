@@ -1,4 +1,4 @@
-const Danhsachdangkis = require("../models/registSubjectModel");
+const Danhsachdangkis = require("../Models/registSubjectModel");
 
 const rgSubjectsCrtl = {
   getdata: async (req, res) => {

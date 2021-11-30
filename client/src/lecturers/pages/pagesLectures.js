@@ -9,6 +9,7 @@ import EssaySubject from "./EssaySubject/EssaySubject";
 import React from "react";
 import NotFound from "../../utils/not_found/NotFound";
 function PagesLecturers() {
+
   const [isLogged] = localStorage.getItem('LecturerLogin');
   return (
     <Router>
@@ -22,7 +23,7 @@ function PagesLecturers() {
           <Route
             exact
             path="/testScheduleLecturers"
-            component={TestScheduleLecturers}
+            component={isLogged ?TestScheduleLecturers : NotFound}
           />
         </Switch>
       </div>
