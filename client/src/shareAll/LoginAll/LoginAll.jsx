@@ -87,7 +87,7 @@ export default function LoginAll() {
       await axios.post("http://localhost:5000/secretary/login", { ...secretary });
       localStorage.setItem("SecretaryLogin", true);
       alert("Bạn đã đăng nhập thành công!");
-      window.location.href = "/profileLecturers"
+      window.location.href = "/arrangeExamSchedule";
     }catch(err){
       alert("Sai tên tài khoản hoặc mật khẩu. Xin vui lòng đăng nhập lại!");
     }
