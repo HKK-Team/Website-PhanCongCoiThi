@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { DataProvider } from "./GlobalState";
 import Pages from "./pages/pages";
-// import { DataProvider } from "./GlobalState";
+import {DataProvider} from "./GlobalState";
 function App() {
   return (
     <React.Fragment>

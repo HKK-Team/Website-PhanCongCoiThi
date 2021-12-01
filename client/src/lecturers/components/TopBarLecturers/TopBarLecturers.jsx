@@ -15,6 +15,10 @@ export default function TopBarLecturers() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const logout = () =>{
+    window.localStorage.removeItem("LecturerLogin");
+    window.localStorage.removeItem("email");
+  }
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -50,7 +54,7 @@ export default function TopBarLecturers() {
               <MenuItem><Link to="/accountLecturers" style={{ color: "black" }}>
                   My Account
                 </Link></MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem><a href="/login" onClick={logout}>Logout</a></MenuItem>
             </Menu>
           </div>
           <div className="topbarIconContainer">
@@ -64,7 +68,7 @@ export default function TopBarLecturers() {
             />
           </div>
           <div className="topbarIconContainer">
-            <LogoutIcon />
+            <a href="/login" onClick={logout}><LogoutIcon/></a>
           </div>
         </div>
       </div>

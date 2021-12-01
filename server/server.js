@@ -3,11 +3,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require('cors')
-const cookieParser = require('cookie-parser');
 const app = express();
-app.use(express.json());
-app.use(cookieParser())
+const cookieParser = require("cookie-parser");
 app.use(cors())
+app.use(express.json())
+app.use(cookieParser());
 // connect to mongodb
 const URI = process.env.MONGODB_URL;
 mongoose.connect(
@@ -24,6 +24,8 @@ mongoose.connect(
 // Routes
 app.use("/import",require('./src/secretarys/routes/Routes'));
 
+app.use("/lecturer",require('./src/lecturers/Routers/lecturerRouter'))
+app.use("/secretary",require('./src/secretarys/Routers/secretaryRouter'));
 // load token for server
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
