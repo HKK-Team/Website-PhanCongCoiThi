@@ -1,7 +1,7 @@
-import "./BillList.css";
+import "./TestScheduleList.css";
 import "./../../components/headerTable/headerTable.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline } from "@material-ui/icons";
+import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
@@ -21,7 +21,7 @@ const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 // bảng lịch thi
-export default function BillList() {
+export default function TestScheduleList() {
   GetData();
   const [data] = useState(getdata.getSchedulesApi);
   const tenHocKy = [];

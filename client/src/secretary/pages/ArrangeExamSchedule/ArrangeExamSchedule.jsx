@@ -1,6 +1,5 @@
-
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline } from "@material-ui/icons";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { getdata } from "../../totalData";
 import { useCallback, useEffect, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";

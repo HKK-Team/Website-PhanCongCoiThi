@@ -1,9 +1,12 @@
 import React from "react";
 import './../../../secretary/components/Topbar/Topbar.css'
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import Settings from '@mui/icons-material/Settings';
+import Language from '@mui/icons-material/Language';
+import NotificationsNone from '@mui/icons-material/NotificationsNone';
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import { Menu, MenuItem } from "@material-ui/core";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
 
 export default function TopBarLecturers() {

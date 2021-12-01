@@ -4,7 +4,7 @@ import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 // tạo mới người dùng
-export default function NewUser() {
+export default function NewLecturers() {
   const {
     register,
     handleSubmit,

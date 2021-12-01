@@ -2,13 +2,13 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../GlobalState";
+import { GlobalState } from "../../../globalState";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import { useForm } from "react-hook-form";
 import "./Product.css";
 
 // chỉnh sửa sản phẩm
-export default function Product() {
+export default function Subjects() {
   useEffect(() => {
     document.body.style.overflow = "auto";
     return () => {

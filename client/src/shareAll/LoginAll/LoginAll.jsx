@@ -67,7 +67,7 @@ export default function LoginAll() {
             <span>Wellcom! Please Submit Login.</span>
             </div>
             <div className = "email">
-              <span>{lecturer.email}</span>
+              <span >{lecturer.email}</span>
             </div>
             <form onSubmit = {CreateUser}>
               <button className = "btn">Đăng Nhập</button>

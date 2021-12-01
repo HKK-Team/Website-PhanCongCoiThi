@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 // thêm sản phẩm mới
-export default function NewProduct() {
+export default function NewSubjects() {
   const {
     register,
     handleSubmit,

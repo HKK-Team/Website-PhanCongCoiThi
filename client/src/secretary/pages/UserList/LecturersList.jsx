@@ -1,10 +1,10 @@
 import "./UserList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline } from "@material-ui/icons";
+import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import HeaderTable from "./../../components/headerTable/headerTable";
+import HeaderTable from "../../components/headerTable/headerTable";
 import { Tooltip } from "@mui/material";
 
 import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
@@ -14,7 +14,7 @@ import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import GetData from "../../totalData";
 
 // Bảng Giảng Viên
-export default function UserList() {
+export default function LecturersList() {
   GetData();
   const [data] = useState(getdata.getLecturersApi);
   const [giangvien, setgiangvien] = useState([]);

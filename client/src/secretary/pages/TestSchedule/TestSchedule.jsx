@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import { GlobalState } from "../../../GlobalState";
+import { GlobalState } from "../../../globalState";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 export default function TestSchedule() {

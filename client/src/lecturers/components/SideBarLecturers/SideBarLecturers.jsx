@@ -1,8 +1,7 @@
-import {
-  MailOutline,
-  DynamicFeed,
-  ChatBubbleOutline,
-} from "@material-ui/icons";
+
+import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline';
+import DynamicFeed from '@mui/icons-material/DynamicFeed';
+import MailOutline from '@mui/icons-material/MailOutline';
 import "./../../../secretary/components/Sidebar/Sidebar.css";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";

@@ -1,15 +1,18 @@
-import { MailOutline, PermIdentity, Publish } from "@material-ui/icons";
+
+import Publish from '@mui/icons-material/Publish';
+import PermIdentity from '@mui/icons-material/PermIdentity';
+import MailOutline from '@mui/icons-material/MailOutline';
 import { Tooltip } from "@mui/material";
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../GlobalState";
+import { GlobalState } from "../../../globalState";
 import { useForm } from "react-hook-form";
 import "./User.css";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 // chỉnh sửa thông tin khách hàng
-export default function User() {
+export default function Lecturers() {
   const {
     register,
     handleSubmit,

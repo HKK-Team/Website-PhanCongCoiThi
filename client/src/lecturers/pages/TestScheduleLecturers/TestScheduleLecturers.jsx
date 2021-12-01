@@ -1,9 +1,8 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { userRows } from "../../../secretary/totalData";
 import { useState } from "react";
 
 export default function TestScheduleLecturers() {
-  const [data] = useState(userRows);
+  const [data] = useState([]);
 
   // khởi tạo dữ liệu bảng
   const columns = [

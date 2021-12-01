@@ -1,6 +1,6 @@
 import "./ProductList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline } from "@material-ui/icons";
+import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -9,7 +9,7 @@ import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import axios from "axios";
 import * as XLSX from "xlsx";
-export default function ProductList() {
+export default function SubjectsList() {
   GetData();
   const [data] = useState(getdata.getSubjectApi);
   const [monthi, setMonthi] = useState([]);

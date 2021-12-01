@@ -1,8 +1,12 @@
 import React from "react";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import LanguageIcon from '@mui/icons-material/Language';
+import SettingsIcon from '@mui/icons-material/Settings';
+// import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import { Menu, MenuItem } from "@material-ui/core";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
 
 export default function Topbar() {
@@ -23,15 +27,15 @@ export default function Topbar() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <NotificationsNone />
+            <NotificationsNoneIcon />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Language />
+            <LanguageIcon />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Settings onClick={handleClick} />
+            <SettingsIcon onClick={handleClick} />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
