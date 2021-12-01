@@ -9,7 +9,7 @@ export default function NewProduct() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
     await toastPromise(

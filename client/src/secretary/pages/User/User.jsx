@@ -2,7 +2,7 @@ import { MailOutline, PermIdentity, Publish } from "@material-ui/icons";
 import { Tooltip } from "@mui/material";
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../globalState";
+import { GlobalState } from "../../../GlobalState";
 import { useForm } from "react-hook-form";
 import "./User.css";
 import axios from "axios";

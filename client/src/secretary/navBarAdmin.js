@@ -1,5 +1,4 @@
 import Sidebar from "./components/Sidebar/Sidebar";
-import { Fragment } from "react";
 import Topbar from "./components/Topbar/Topbar";
 import "./app.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -12,7 +11,6 @@ import NewProduct from "./pages/NewProduct/NewProduct";
 import BillList from "./pages/BillList/BillList";
 import TestSchedule from "./pages/TestSchedule/TestSchedule";
 import ArrangeExamSchedule from "./pages/ArrangeExamSchedule/ArrangeExamSchedule";
-import EditArrangeExamSchedule from "./pages/EditArrangeExamSchedule/EditArrangeExamSchedule";
 import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
 import AccountSecretary from "./pages/AccoutSecretary/AccoutSecretary";
 function navBarAdmin() {
@@ -28,11 +26,6 @@ function navBarAdmin() {
             exact
             path="/arrangeExamSchedule"
             component={ArrangeExamSchedule}
-          />
-          <Route
-            exact
-            path="/arrangeExamSchedule/:arrangeExamScheduleID"
-            component={EditArrangeExamSchedule}
           />
           <Route exact path="/lecturers" component={UserList} />
           <Route exact path="/lecturers/:lecturersId" component={User} />

@@ -59,7 +59,6 @@ export default function ProductList() {
       }
     );
   };
-  console.log(monthi);
   const handleDelete = (id) => {
     if (window.confirm("Bạn thực sự muốn xóa không?")) {
       toastPromise(

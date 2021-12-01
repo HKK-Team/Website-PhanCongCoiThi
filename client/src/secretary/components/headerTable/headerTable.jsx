@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import "./headerTable.css";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { Link } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import { useForm } from "react-hook-form";
@@ -72,59 +68,6 @@ export default function headerTable(props) {
     </div>
   );
 }
-
-export function HeaderTableTestSchedule(props) {
-  return (
-    <div className="header-table">
-      <h1 className="header-table-title">{props.title}</h1>
-      <div className="header-table-buttons">
-        <FormControl style={{ marginRight: 10, width: 200 }} size="small">
-          <InputLabel id="demo-simple-select-label">Chọn lịch thi</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value="Chọn lịch thi"
-            label="Chọn lịch thi"
-          >
-            <MenuItem value={10}>HKI</MenuItem>
-            <MenuItem value={20}>HKI</MenuItem>
-            <MenuItem value={30}>HKIII</MenuItem>
-          </Select>
-        </FormControl>
-        <Tooltip title="Gửi mail thông báo tất cả giảng viên" arrow>
-          <Button variant="contained" size="small" style={{ marginRight: 10 }}>
-            Gửi mail thông báo tất cả
-          </Button>
-        </Tooltip>
-        <Tooltip
-          title="Gửi mail thông báo một vài giảng viên đã chỉnh sửa"
-          arrow
-        >
-          <Button variant="contained" size="small" style={{ marginRight: 10 }}>
-            Gửi mail thông báo một vài giảng viên
-          </Button>
-        </Tooltip>
-        <Tooltip title="xuất dữ liệu Excel" arrow>
-          <Button
-            variant="contained"
-            color="success"
-            size="small"
-            style={{ marginRight: 10 }}
-          >
-            export Excel{" "}
-          </Button>
-        </Tooltip>
-        <p className="header-table-ps">
-          P/s: Hãy kiểm tra thật kỹ tất cả thông tin trước khi gửi mail
-        </p>
-        <p className="header-table-ps">
-          P/s: Hãy click vào select box để chọn giảng viên cần gửi mail, trong
-          trường hợp muốn gửi số ít
-        </p>
-      </div>
-    </div>
-  );
-}
 export function HeaderTableArrangeExamSchedule(props) {
   const {
     register,
@@ -181,7 +124,7 @@ export function HeaderTableArrangeExamSchedule(props) {
           style={{ width: 300 }}
           {...register("tenHocKy", { required: true, maxLength: 80 })}
         />
-        <span style={{ fontSize: 16, color: "red" , paddingLeft:20}}>
+        <span style={{ fontSize: 16, color: "red", paddingLeft: 20 }}>
           {errors.tenHocKy?.type === "required" && "Vui lòng điền tên lịch thi"}
         </span>
         <p className="header-table-ps">

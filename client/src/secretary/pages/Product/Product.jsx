@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../globalState";
+import { GlobalState } from "../../../GlobalState";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import { useForm } from "react-hook-form";
 import "./Product.css";
@@ -18,7 +19,6 @@ export default function Product() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
   } = useForm();
 
   const onSubmit = async (items) => {

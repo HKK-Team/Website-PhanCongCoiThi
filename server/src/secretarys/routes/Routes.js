@@ -17,4 +17,7 @@ router.route("/deleteMonthi/:id").delete(MonThiCtrl.deleteMonThi);
 
 router.route("/createLichthi").post(lichThiCtrl.createLichThi);
 router.route("/getLichthi").get(lichThiCtrl.getLichThi);
+router.route("/editLichthi").put(lichThiCtrl.eidtLichThi);
+router.route("/deleteLichthi/:id").delete(lichThiCtrl.deleteLichThi);
+router.route("/deleteAllLichThi/:key").delete(lichThiCtrl.deleteAllLichThi);
 module.exports = router;

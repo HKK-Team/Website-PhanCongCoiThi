@@ -1,10 +1,9 @@
+
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { billRows, getdata } from "../../totalData";
+import { getdata } from "../../totalData";
 import { useCallback, useEffect, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
-import { Link } from "react-router-dom";
-import { Alert } from "@mui/material";
 import GetData from "./../../totalData.js";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
@@ -12,6 +11,7 @@ import { Prompt } from "react-router";
 let today = new Date();
 let date =
   today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+// object khởi tạo ngày giờ coi thi
 let d = {
   ngayKiemTra: date,
   gioBatDau: "08:00",
@@ -31,31 +31,58 @@ function shuffle(array) {
   }
   return array;
 }
-
 export default function ArrangeExamSchedule() {
   GetData();
-  let a = [...getdata.getSubjectApi];
-  let b = [...getdata.getLecturersApi];
-  const [c, setC] = useState([]);
-  const [checkOut, setCheckOut] = useState(false);
+  let a = [...getdata.getSubjectApi]; // khoi tao mang chua mon hoc
+  let b = [...getdata.getLecturersApi]; // khoi tao mang chua giang vien
+  const length = Math.round(a.length / b.length);
+  //xử lý khi giảng viên ít hơn môn học
+  for (let key = 0; key < length; key++) {
+    if (length === 1) {
+      break;
+    } else {
+      b = b.concat(getdata.getLecturersApi);
+    }
+  }
+  const [c, setC] = useState([]); // mảng gộp dữ liệu của giảng viên và môn học
+  const [checkOut, setCheckOut] = useState(false); // check xem có thay đổi khi edit
 
+  // tự động sắp xếp lịch
   function handleAutoMatic(e) {
-    shuffle(a);
-    shuffle(b);
-    if (c.length === a.length) {
-      setC([]);
-      for (let key = 0; key < a.length; key++) {
-        setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+    if (checkOut === true) {
+      if (window.confirm("Bạn có chắc chắn muốn tạo lại lịch thi không?")) {
+        shuffle(a);
+        shuffle(b);
+        if (c.length === a.length) {
+          setC([]);
+          for (let key = 0; key < a.length; key++) {
+            setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+          }
+        } else {
+          for (let key = 0; key < a.length; key++) {
+            setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+          }
+        }
       }
     } else {
-      for (let key = 0; key < a.length; key++) {
-        setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+      shuffle(a);
+      shuffle(b);
+      if (c.length === a.length) {
+        setC([]);
+        for (let key = 0; key < a.length; key++) {
+          setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+        }
+      } else {
+        for (let key = 0; key < a.length; key++) {
+          setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+        }
       }
+      setCheckOut(true);
     }
-    setCheckOut(true);
   }
-  // const [data, setData] = useState([]);
-  let data = [];
+
+  let data = []; // khởi tạo mảng data
+  // thêm dữ liệu vào data
   c.forEach((item) => {
     let dsGiangVien = {
       hoTen1: item[1]?.hoTen,
@@ -70,6 +97,7 @@ export default function ArrangeExamSchedule() {
     // setData((prev) => [...prev,{...item[0],...dsGiangVien,...item[3]}]);
     data.push({ ...item[0], ...dsGiangVien, ...item[3] });
   });
+  // lưu lại thay đổi trong data
   const handleEditRowsModelChange = useCallback(
     (model) => {
       let object = Object.values(model);
@@ -100,7 +128,6 @@ export default function ArrangeExamSchedule() {
     },
     [data]
   );
-
   // ngăn chặn rời đi khi chưa lưu
   useEffect(() => {
     if (checkOut) {
@@ -109,7 +136,7 @@ export default function ArrangeExamSchedule() {
       window.onbeforeunload = undefined;
     }
   }, [checkOut]);
-
+  // xóa dữ liệu
   const handleDelete = (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
       const index = data.findIndex((x) => x._id === id);
@@ -287,10 +314,8 @@ export default function ArrangeExamSchedule() {
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        // editRowsModel={editRowsModel}
         editMode="row"
         onEditRowsModelChange={handleEditRowsModelChange}
-        // pageSize={10}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

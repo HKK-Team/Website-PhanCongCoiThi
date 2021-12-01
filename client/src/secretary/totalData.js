@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GlobalState } from "./../globalState";
+import { GlobalState } from "./../GlobalState";
 import MostPopularProducts from "./components/MostPopularProducts/MostPopularProducts";
 import SellingProducts from "./components/SellingProducts/SellingProducts";
 import WidgetLg from "./components/WidgetLg/WidgetLg";
