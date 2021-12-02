@@ -21,6 +21,7 @@ const scheduleSchema = new mongoose.Schema({
     toKiem: String,
     maHocPhan: String,
     ngayKiemTra: String,
+    nhomKiemTra:String,
     __v:Number
 })
 

@@ -14,14 +14,21 @@ export default function HomeAll() {
   // console.log(isLogged);
 
   const history = useHistory();
-  const [searchLecturerId, setsearchLecturerId] = state.ScheduleApi.searchLecturerId;
+  const [save, setSave] = state.ScheduleApi.save;
+  const [search, setsearch] = state.ScheduleApi.search;
 
   const getInput = (e) => {
-    setsearchLecturerId("giangVien.maVienChuc=" + e.toString())
+    setSave(e.toString())
   };
 
+  if (save[0] === "D") {
+    setsearch("nhomKiemTra[regex]=" + save);
+  } else {
+    setsearch("giangVien.maVienChuc=" + save);
+  }
+  
   const eventSearch = () => {
-    if (searchLecturerId === "") {
+    if (save === "") {
       alert("Hãy nhập vào mã giảng viên hoặc tên lớp !!!");
     } else {
       let path = `/testScheduleLecturers`;

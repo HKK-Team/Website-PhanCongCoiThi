@@ -18,7 +18,7 @@ function Pages() {
       <Route exact path="/" component={HomeAll} />
       <Route exact path="/login" component={((login ? NotFound : LoginAll) || (isLogged ? NotFound: LoginAll))} />
       <PagesLecturers />
-      {/* <NavBarAdmin /> */}
+      <NavBarAdmin />
     </Switch>
   );
 }

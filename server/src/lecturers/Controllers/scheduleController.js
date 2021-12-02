@@ -9,7 +9,7 @@ class ApiFeatures {
   filtering() {
           const queryObj = {...this.queryString } //queryString = req.query
 
-          const excludedFields = ['page', 'sort', 'limit']
+          const excludedFields = ['page', 'sort', 'limit','search']
           excludedFields.forEach(el => delete(queryObj[el]))
 
           let queryStr = JSON.stringify(queryObj)
@@ -37,6 +37,12 @@ const scheduleCrtl = {
                 .lean(), req.query).filtering().sort()
             const schedule = await features.query
             res.json(schedule);
+
+            // res.json({
+            //     status: 'success',
+            //     result: schedule.length,
+            //     schedule: schedule
+            // })
           } catch (err) {
             return res.status(500).json({ msg: err.message });
           }
