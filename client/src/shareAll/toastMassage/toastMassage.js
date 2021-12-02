@@ -40,13 +40,13 @@ export function toastPromise(promise, successCallback) {
   toast.promise(promise, {
     pending: "Please wait...",
     success: {
-      render() {
-        return successCallback();
+      render(data) {
+        return successCallback(data);
       },
     },
     error: {
       render(data) {
-        return JSON.stringify(data.data.response.data.msg);
+        return JSON.stringify(data?.data?.response?.data?.msg);
       },
     },
   });

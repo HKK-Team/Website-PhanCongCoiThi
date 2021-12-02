@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Pages from "./pages/pages";
 import { DataProvider } from "./globalState";
+import Pages from "./pages/pages";
 
 function App() {
   return (
@@ -19,9 +19,9 @@ function App() {
         pauseOnHover
       />
       <DataProvider>
-      <Router>
-          <Pages></Pages>
-      </Router>
+        <Router>
+          <Pages />
+        </Router>
       </DataProvider>
     </React.Fragment>
   );

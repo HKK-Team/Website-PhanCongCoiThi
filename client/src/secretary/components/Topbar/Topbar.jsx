@@ -1,11 +1,17 @@
 import React from "react";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import LanguageIcon from "@mui/icons-material/Language";
+import SettingsIcon from "@mui/icons-material/Settings";
+// import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import { Menu, MenuItem } from "@material-ui/core";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
 export default function Topbar() {
+
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -14,8 +20,12 @@ export default function Topbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const Logout = async() =>{
+    window.sessionStorage.removeItem('SecretaryLogin');
+    window.sessionStorage.removeItem('SecretaryEmail');
+  }
   return (
-    <div className="topbar">
+    <div className="topbarSecretary">
       <div className="topbarWrapper">
         <div className="topLeft">
           <img src={logo} alt="" className="logo" />
@@ -23,15 +33,15 @@ export default function Topbar() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <NotificationsNone />
+            <NotificationsNoneIcon />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Language />
+            <LanguageIcon />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Settings onClick={handleClick} />
+            <SettingsIcon onClick={handleClick} />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -42,14 +52,15 @@ export default function Topbar() {
               }}
             >
               <MenuItem>
-                <Link to="/profileSecretary" style={{ color: "black" }}>
+                <Link to="/HomeSecretary/profileSecretary" style={{ color: "black" }}>
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem><Link to="/accountSercetary" style={{ color: "black" }}>
+              <MenuItem>
+                <Link to="/HomeSecretary/accountSercetary" style={{ color: "black" }}>
                   My Account
                 </Link></MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem><a href="/login" onClick={Logout}>Logout</a></MenuItem>
             </Menu>
           </div>
           <div className="topbarIconContainer">
@@ -63,7 +74,7 @@ export default function Topbar() {
             />
           </div>
           <div className="topbarIconContainer">
-            <LogoutIcon />
+          <a href="/login" onClick={Logout}><LogoutIcon/></a>
           </div>
         </div>
       </div>

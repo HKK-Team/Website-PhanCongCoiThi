@@ -1,5 +1,10 @@
-// import { Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Fragment, useEffect } from "react";
+import {
+  // BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import TopBarLecturers from "./../components/TopBarLecturers/TopBarLecturers";
 import SideBarLecturers from "./../components/SideBarLecturers/SideBarLecturers";
 import TestScheduleLecturers from "./TestScheduleLecturers/TestScheduleLecturers";
@@ -9,25 +14,46 @@ import EssaySubject from "./EssaySubject/EssaySubject";
 import React from "react";
 import NotFound from "../../utils/not_found/NotFound";
 function PagesLecturers() {
-
-  const [isLogged] = localStorage.getItem('LecturerLogin');
+  const [isLogged] = sessionStorage.getItem("LecturerLogin") || "";
+  const param = useLocation();
+  useEffect(() => {
+    if (param.pathname.search("/HomeLecturers") ===0) {
+      document.querySelector(".containerAdmin-Secretarys")?.remove();
+      document.querySelector(".topbarSecretary")?.remove();
+    }
+    // return () => {
+    //   cleanup
+    // }
+  }, [param])
   return (
-    <Router>
+    <Fragment>
       <TopBarLecturers />
-      <div className="containerAdmin">
+      <div className="containerAdmin-Lecturers">
         <SideBarLecturers />
-        <Switch>
-          <Route exact path="/profileLecturers" component={isLogged ? ProfileLecturers : NotFound} />
-          <Route exact path="/accountLecturers" component={isLogged ? AccountLecturers : NotFound} />
-          <Route exact path="/essaySubject" component={isLogged ?EssaySubject : NotFound} />
+        <Routes>
           <Route
             exact
-            path="/testScheduleLecturers"
-            component={isLogged ?TestScheduleLecturers : NotFound}
+            path="/HomeLecturers/profileLecturers"
+            element={isLogged ? <ProfileLecturers /> : <NotFound />}
           />
-        </Switch>
+          <Route
+            exact
+            path="/HomeLecturers/accountLecturers"
+            element={isLogged ? <AccountLecturers /> : <NotFound />}
+          />
+          <Route
+            exact
+            path="/HomeLecturers/essaySubject"
+            element={isLogged ? <EssaySubject /> : <NotFound />}
+          />
+          <Route
+            exact
+            path="/HomeLecturers/testScheduleLecturers"
+            element={isLogged ? <TestScheduleLecturers /> : <NotFound/>}
+          />
+        </Routes>
       </div>
-    </Router>
+    </Fragment>
   );
 }
 export default PagesLecturers;
