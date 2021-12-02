@@ -1,4 +1,4 @@
-const Schedules = require('../Models/scheduleModels')
+const Schedules = require('../../secretarys/models/scheduleModels')
 
 class ApiFeatures {
   constructor(query, queryString) {

@@ -6,14 +6,14 @@ import "./HomeAll.css";
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../globalState";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import ProfileLecturers from "../../lecturers/pages/ProfileLecturers/ProfileLecturers";
 export default function HomeAll() {
   const state = useContext(GlobalState);
   // const [isLogged] = state.lecturerApi.isLogin;
   // console.log(isLogged);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const [save, setSave] = state.ScheduleApi.save;
   const [search, setsearch] = state.ScheduleApi.search;
 
@@ -31,8 +31,8 @@ export default function HomeAll() {
     if (save === "") {
       alert("Hãy nhập vào mã giảng viên hoặc tên lớp !!!");
     } else {
-      let path = `/testScheduleLecturers`;
-      history.push(path);
+      let path = `/HomeLecturers/testScheduleLecturers`;
+      navigate(path);
     }
   };
 
