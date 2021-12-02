@@ -1,13 +1,15 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
-const cors = require('cors')
-const app = express();
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
-app.use(cors())
-app.use(express.json())
+const path = require("path");
+
+const app = express();
+app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
+
 // connect to mongodb
 const URI = process.env.MONGODB_URL;
 mongoose.connect(
@@ -23,6 +25,8 @@ mongoose.connect(
 );
 // Routes
 app.use("/import",require('./src/secretarys/routes/Routes'));
+app.use("/api", require("./src/secretarys/routers/scheduleRouter"));
+
 
 app.use("/lecturer",require('./src/lecturers/Routers/lecturerRouter'))
 app.use("/secretary",require('./src/secretarys/Routers/secretaryRouter'));
