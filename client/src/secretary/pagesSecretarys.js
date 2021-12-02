@@ -17,7 +17,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 function PagesSecretarys() {
   const param = useLocation();
   useEffect(() => {
-    if (param.pathname.match("/HomeSecretary")===0) {
+    if (param.pathname.search("/HomeSecretary")===0) {
       document.querySelector(".containerAdmin-Lecturers")?.remove();
       document.querySelector(".topBarLecturers")?.remove();
     }

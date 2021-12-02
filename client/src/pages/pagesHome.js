@@ -8,7 +8,10 @@ import NotFound from "../utils/not_found/NotFound";
 export default function PagesHome() {
   const param = useLocation();
   useEffect(() => {
-    if (!!param.pathname.search("/")===0 || param.pathname.search("/login")===0) {
+    if (
+      !!param.pathname.search("/") === 0 ||
+      param.pathname.search("/login") === 0
+    ) {
       document.querySelector(".containerAdmin-Secretarys").style.display =
         "none";
       document.querySelector(".topbarSecretary").style.display = "none";
