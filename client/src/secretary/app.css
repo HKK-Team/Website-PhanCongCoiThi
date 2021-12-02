@@ -1,8 +1,12 @@
-.containerAdmin{
+.containerAdmin-Secretarys{
     display: flex;
     margin-top: 10px;
 }
 
+.containerAdmin-Lecturers{
+    display: flex;
+    margin-top: 10px;
+}
 .link{
     text-decoration: none;
     color: inherit;

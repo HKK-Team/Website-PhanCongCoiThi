@@ -1,9 +1,12 @@
 import React from "react";
 import './../../../secretary/components/Topbar/Topbar.css'
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import Settings from '@mui/icons-material/Settings';
+import Language from '@mui/icons-material/Language';
+import NotificationsNone from '@mui/icons-material/NotificationsNone';
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import { Menu, MenuItem } from "@material-ui/core";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
 
 export default function TopBarLecturers() {
@@ -20,7 +23,7 @@ export default function TopBarLecturers() {
     window.localStorage.removeItem("email");
   }
   return (
-    <div className="topbar">
+    <div className="topBarLecturers">
       <div className="topbarWrapper">
         <div className="topLeft">
           <img src={logo} alt="" className="logo" />
@@ -47,11 +50,11 @@ export default function TopBarLecturers() {
               }}
             >
               <MenuItem>
-                <Link to="/profileLecturers" style={{ color: "black" }}>
+                <Link to="/HomeLecturers/profileLecturers" style={{ color: "black" }}>
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem><Link to="/accountLecturers" style={{ color: "black" }}>
+              <MenuItem><Link to="/HomeLecturers/accountLecturers" style={{ color: "black" }}>
                   My Account
                 </Link></MenuItem>
               <MenuItem><a href="/login" onClick={logout}>Logout</a></MenuItem>

@@ -21,6 +21,9 @@ mongoose.connect(
     console.log("Connected to MongoDB");
   }
 );
+// Routes
+app.use("/import",require('./src/secretarys/routes/Routes'));
+
 app.use("/lecturer",require('./src/lecturers/Routers/lecturerRouter'))
 app.use("/secretary",require('./src/secretarys/Routers/secretaryRouter'));
 // load token for server
@@ -32,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
-// set up socket io
+
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
 });

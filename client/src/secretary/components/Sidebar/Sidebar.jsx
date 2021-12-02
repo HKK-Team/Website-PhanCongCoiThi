@@ -1,10 +1,8 @@
 import "./Sidebar.css";
-import {
-  PermIdentity,
-  MailOutline,
-  DynamicFeed,
-  ChatBubbleOutline,
-} from "@material-ui/icons";
+import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline';
+import PermIdentity from '@mui/icons-material/PermIdentity';
+import DynamicFeed from '@mui/icons-material/DynamicFeed';
+import MailOutline from '@mui/icons-material/MailOutline';
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -17,7 +15,7 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Bảng điều khiển</h3>
           <ul className="sidebarList">
-            <NavLink to="/arrangeExamSchedule" className="link">
+            <NavLink to="/HomeSecretary/arrangeExamSchedule" className="link">
               <li className="sidebarListItem">
                 <AssignmentIcon className="sidebarIcon" />
                 Sắp xếp lịch thi
@@ -28,19 +26,19 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quản lý</h3>
           <ul className="sidebarList">
-            <NavLink to="/lecturers" className="link">
+            <NavLink to="/HomeSecretary/lecturers" className="link">
               <li className="sidebarListItem">
                 <PermIdentity className="sidebarIcon" />
                 Giảng viên
               </li>
             </NavLink>
-            <NavLink to="/subjects" className="link">
+            <NavLink to="/HomeSecretary/subjects" className="link">
               <li className="sidebarListItem">
                 <LibraryBooksIcon className="sidebarIcon" />
                 Môn học
               </li>
             </NavLink>
-            <NavLink to="/testSchedule" className="link">
+            <NavLink to="/HomeSecretary/testSchedule" className="link">
               <li className="sidebarListItem">
                 <EventNoteIcon className="sidebarIcon" />
                 Lịch thi

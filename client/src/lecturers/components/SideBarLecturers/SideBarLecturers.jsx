@@ -1,8 +1,7 @@
-import {
-  MailOutline,
-  DynamicFeed,
-  ChatBubbleOutline,
-} from "@material-ui/icons";
+
+import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline';
+import DynamicFeed from '@mui/icons-material/DynamicFeed';
+import MailOutline from '@mui/icons-material/MailOutline';
 import "./../../../secretary/components/Sidebar/Sidebar.css";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -15,13 +14,13 @@ export default function SideBarLecturers() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quản lý</h3>
           <ul className="sidebarList">
-            <NavLink to="/testScheduleLecturers" className="link">
+            <NavLink to="/HomeLecturers/testScheduleLecturers" className="link">
               <li className="sidebarListItem">
                 <EventNoteIcon className="sidebarIcon" />
                 Lịch coi thi
               </li>
             </NavLink>
-            <NavLink to="/essaySubject" className="link">
+            <NavLink to="/HomeLecturers/essaySubject" className="link">
               <li className="sidebarListItem">
                 <LibraryBooksIcon className="sidebarIcon" />
                 Đăng ký tiểu luận

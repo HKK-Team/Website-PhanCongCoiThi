@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import "./HomeAll.css";
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import { Link } from "react-router-dom";
-// import { GlobalState } from "../../GlobalState";
+// import { GlobalState } from "../../globalState";
 // import ProfileLecturers from "../../lecturers/pages/ProfileLecturers/ProfileLecturers";
 export default function HomeAll() {
   // const state = useContext(GlobalState);

@@ -1,9 +1,8 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { userRows } from "../../../secretary/totalData";
 import { useState, useContext } from "react";
-import { GlobalState } from "../../../GlobalState";
+import { GlobalState } from "../../../globalState";
 export default function EssaySubject() {
-  const [data] = useState(userRows);
+  const [data] = useState([]);
   const state = useContext(GlobalState);
   // const [isLogged] = state.lecturerApi.isLogin;
   console.log(state.lecturerApi);
