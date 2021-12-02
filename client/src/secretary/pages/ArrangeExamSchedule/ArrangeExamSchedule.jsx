@@ -143,7 +143,6 @@ export default function ArrangeExamSchedule() {
       let ob = [...data];
       ob.splice(`${index}`, 1);
       data = ob;
-      console.log(data);
     }
   };
   // khởi tạo dữ liệu bảng

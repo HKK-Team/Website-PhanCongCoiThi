@@ -22,6 +22,13 @@ mongoose.connect(
   }
 );
 // Routes
+app.use("/api", require("./src/lecturers/Routers/scheduleRouter"));
+app.use("/api", require("./src/lecturers/Routers/registSubjectsRouter"));
+
+
+// app.use("/sendMail", require("./src/user/routers/mailSeriveRoutes"));
+app.use("/login",require('./src/lecturers/Routers/lecturerRouter'))
+app.use("/login",require('./src/secretarys/Routers/secretaryRouter'));
 app.use("/import",require('./src/secretarys/routes/Routes'));
 
 app.use("/lecturer",require('./src/lecturers/Routers/lecturerRouter'))

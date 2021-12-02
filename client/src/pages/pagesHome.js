@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router";
-import { GlobalState } from "../globalState";
 import HomeAll from "../shareAll/HomeAll/HomeAll";
 import LoginAll from "../shareAll/LoginAll/LoginAll";
 import NotFound from "../utils/not_found/NotFound";
@@ -21,9 +20,8 @@ export default function PagesHome() {
     }
   }, [param]);
 
-  const state = useContext(GlobalState);
-  const [isLogged] = state.secretaryApi.isLogin;
-  const login = localStorage.getItem("LecturerLogin") || "";
+  const [isLogged] = sessionStorage.getItem("SecretaryLogin") || "";
+  const login = sessionStorage.getItem("LecturerLogin") || "";
   return (
     <Routes>
       <Route exact path="/" element={<HomeAll />} />

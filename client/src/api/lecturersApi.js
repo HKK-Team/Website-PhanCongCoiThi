@@ -7,7 +7,7 @@ function LecturersAPI() {
     useEffect(() => {
             const getLecturer = async() => {
                 try {
-                    setUser(window.localStorage.getItem("email"));
+                    setUser(window.sessionStorage.getItem("LecturerEmail"));
                     const res = await axios.get(`/lecturer/getuser?email[regex]=${users}`);
                     setLecturer(res.data)
                     setIsLogin(true)

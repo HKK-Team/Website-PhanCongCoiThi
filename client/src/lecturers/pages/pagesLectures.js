@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -14,7 +14,7 @@ import EssaySubject from "./EssaySubject/EssaySubject";
 import React from "react";
 import NotFound from "../../utils/not_found/NotFound";
 function PagesLecturers() {
-  const [isLogged] = localStorage.getItem("LecturerLogin") || "";
+  const [isLogged] = sessionStorage.getItem("LecturerLogin") || "";
   const param = useLocation();
   useEffect(() => {
     if (param.pathname.search("/HomeLecturers") ===0) {
@@ -25,7 +25,6 @@ function PagesLecturers() {
     //   cleanup
     // }
   }, [param])
-
   return (
     <Fragment>
       <TopBarLecturers />
@@ -50,7 +49,7 @@ function PagesLecturers() {
           <Route
             exact
             path="/HomeLecturers/testScheduleLecturers"
-            element={<TestScheduleLecturers />}
+            element={isLogged ? <TestScheduleLecturers /> : <NotFound/>}
           />
         </Routes>
       </div>

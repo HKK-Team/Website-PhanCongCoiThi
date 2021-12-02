@@ -1,34 +1,42 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useState } from "react";
+import { userRows } from "../../../secretary/totalData";
+import { useState, useContext } from "react";
+import { GlobalState } from "../../../globalState";
+import { getdata } from "../../../secretary/totalData";
+import GetData from "../../../secretary/totalData";
 
 export default function TestScheduleLecturers() {
-  const [data] = useState([]);
+  GetData();
+  const [data] = useState(getdata.schedule);
 
   // khởi tạo dữ liệu bảng
   const columns = [
     {
-      field: "hoTen",
-      headerName: "Họ Và Tên",
+      field: "toKiem",
+      headerName: "Tổ kiểm tra",
+      width: 150,
+    },
+    { field: "nhomKiemTra", headerName: "Nhóm học", width: 150 },
+    { field: "soLuongSinhVien", headerName: "Số lượng sinh viên", width: 250 },
+    {
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
       width: 200,
       renderCell: (params) => {
-        return (
-          <div className="userListUser">
-            <img
-              className="userListImg"
-              src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
-              alt=""
-            />
-            {params.row.lastname} {params.row.firstname}
-          </div>
-        );
+        return params?.row?.ngayKiemTra
       },
     },
-    { field: "email", headerName: "Email", width: 250 },
+    { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 180 },
+    { field: "maPhong", headerName: "Phòng", width: 150 },
+    { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 250 },
+    { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 250 },
     {
-      field: "maVienChuc",
-      headerName: "Mã viên chức",
-      width: 260,
+      field: "chuongTrinhBoMon",
+      headerName: "Chương trình/Bộ môn",
+      width: 250,
     },
+    { field: "heDaoTao", headerName: "Hệ đào tạo", width: 150 },
+    { field: "ghiChu", headerName: "Ghi chú", width: 150 },
   ];
 
   return (
@@ -36,9 +44,10 @@ export default function TestScheduleLecturers() {
       <h2>Bảng Phân công coi thi</h2>
       <DataGrid
         rows={data}
+        getRowId={(row) => row._id}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={getdata.schedule.length}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",
