@@ -1,12 +1,16 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { billRows } from "../../totalData";
-import { useCallback, useState } from "react";
+import { useCallback, useState,useContext } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import { Link } from "react-router-dom";
 import { Alert } from "@mui/material";
+import { GlobalState } from "../../../GlobalState";
 
 export default function ArrangeExamSchedule() {
+  const state = useContext(GlobalState);
+  const [user] = state.secretaryApi.secretary
+  console.log(user);
   const [data, setData] = useState(billRows);
   const [editRowsModel, setEditRowsModel] = useState({});
   const handleEditRowsModelChange = useCallback((model) => {

@@ -16,8 +16,8 @@ export default function TopBarLecturers() {
     setAnchorEl(null);
   };
   const logout = () =>{
-    window.localStorage.removeItem("LecturerLogin");
-    window.localStorage.removeItem("email");
+    window.sessionStorage.removeItem("LecturerLogin");
+    window.sessionStorage.removeItem("LecturerEmail");
   }
   return (
     <div className="topbar">

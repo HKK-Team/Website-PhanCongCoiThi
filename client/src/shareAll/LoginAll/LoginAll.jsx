@@ -46,8 +46,8 @@ export default function LoginAll() {
     if(reg.test(lecturer.email)===true)
     {
       await axios.post("http://localhost:5000/lecturer/login",{...lecturer});
-      localStorage.setItem("LecturerLogin", true);
-      localStorage.setItem("email",lecturer.email);
+      sessionStorage.setItem("LecturerLogin", true);
+      sessionStorage.setItem("LecturerEmail",lecturer.email);
       alert("Bạn đã đăng nhập Google thành công!");
       window.location.href = "/profileLecturers";
     }
@@ -85,7 +85,8 @@ export default function LoginAll() {
     e.preventDefault();
     try{
       await axios.post("http://localhost:5000/secretary/login", { ...secretary });
-      localStorage.setItem("SecretaryLogin", true);
+      sessionStorage.setItem("SecretaryLogin", true);
+      sessionStorage.setItem("SecretaryEmail", secretary.email);
       alert("Bạn đã đăng nhập thành công!");
       window.location.href = "/arrangeExamSchedule";
     }catch(err){

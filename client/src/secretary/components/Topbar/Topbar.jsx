@@ -14,6 +14,10 @@ export default function Topbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const Logout = async() =>{
+    window.sessionStorage.removeItem('SecretaryLogin');
+    window.sessionStorage.removeItem('SecretaryEmail');
+  }
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -49,7 +53,7 @@ export default function Topbar() {
               <MenuItem><Link to="/accountSercetary" style={{ color: "black" }}>
                   My Account
                 </Link></MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem><a href="/login" onClick={Logout}>Logout</a></MenuItem>
             </Menu>
           </div>
           <div className="topbarIconContainer">
@@ -63,7 +67,7 @@ export default function Topbar() {
             />
           </div>
           <div className="topbarIconContainer">
-            <LogoutIcon />
+          <a href="/login" onClick={Logout}><LogoutIcon/></a>
           </div>
         </div>
       </div>

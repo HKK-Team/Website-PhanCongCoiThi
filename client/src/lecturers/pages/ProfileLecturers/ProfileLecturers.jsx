@@ -1,8 +1,12 @@
 import { MailOutline, PermIdentity, Publish } from "@material-ui/icons";
 
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-
+import { GlobalState } from "../../../GlobalState";
+import React,{useContext} from "react";
 export default function ProfileLecturers() {
+  const state = useContext(GlobalState);
+  const users = state.lecturerApi.lecturer;
+  console.log(users[0].user)
   return (
     <div className="user">
       <div className="userTitleContainer">
@@ -26,15 +30,15 @@ export default function ProfileLecturers() {
 
             <div className="userShowInfo">
               <PermIdentity className="userShowIcon" />
-              <span className="userShowInfoTitle">Kỹ thuật phần mềm</span>
+              <span className="userShowInfoTitle">CTĐT : Kỹ thuật phần mềm</span>
             </div>
             <div className="userShowInfo">
               <LocalPhoneIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">123124145</span>
+              <span className="userShowInfoTitle">Phone Number : 123124145</span>
             </div>
             <div className="userShowInfo">
               <MailOutline className="userShowIcon" />
-              <span className="userShowInfoTitle">khanhdoan693@gmail.com</span>
+              <span className="userShowInfoTitle">Email : khanhdoan693@gmail.com</span>
             </div>
           </div>
         </div>

@@ -26,20 +26,23 @@
   /* background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%); */
   border-radius: 5px 5px 5px 5px;
 }
-.well {
+.well span{
   font-size: 20px;
   font-style: italic;
   text-align: center;
+  color: black;
 }
 .Logged {
   width: 300px;
   height: 70x;
-  /* background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%);
-    border-radius: 7px 7px 7px 7px; */
+  /* background: -webkit-linear-gradient(0deg, #3c96ff 0%, #2dfbff 100%); */
+    border-radius: 7px 7px 7px 7px;
 }
-.email {
+.email span{
   font-style: italic;
   text-align: center;
+  color: black;
+  margin-left: 2px;
 }
 .Login-Secretary {
   height: 30px;

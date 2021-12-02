@@ -9,7 +9,7 @@ import EssaySubject from "./EssaySubject/EssaySubject";
 import React from "react";
 import NotFound from "../../utils/not_found/NotFound";
 function PagesLecturers() {
-  const [isLogged] = localStorage.getItem('LecturerLogin');
+  const [isLogged] = sessionStorage.getItem('LecturerLogin');
   return (
     <Router>
       <TopBarLecturers />
