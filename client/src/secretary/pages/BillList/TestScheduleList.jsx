@@ -131,7 +131,7 @@ export default function TestScheduleList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/testSchedule/" + params.id}>
+            <Link to={"/HomeSecretary/testSchedule/" + params.id}>
               <button className="userListEdit">Chỉnh sửa</button>
             </Link>
             <DeleteOutline

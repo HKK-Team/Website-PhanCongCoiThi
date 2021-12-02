@@ -58,7 +58,7 @@ export default function Subjects() {
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">Chỉnh sửa môn học</h1>
-        <Link to="/newSubjects">
+        <Link to="/HomeSecretary/newSubjects">
           <button className="productAddButton">Thêm môn học</button>
         </Link>
       </div>

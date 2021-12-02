@@ -18,7 +18,7 @@ export default function NewSubjects() {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/subjects";
+          window.location.href = "/HomeSecretary/subjects";
         }, 1000);
         return "Thêm Thành Công";
       }

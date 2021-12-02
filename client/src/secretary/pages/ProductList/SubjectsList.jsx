@@ -123,7 +123,7 @@ export default function SubjectsList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/subjects/" + params.id}>
+            <Link to={"/HomeSecretary/subjects/" + params.id}>
               <button className="productListEdit">Chỉnh sửa</button>
             </Link>
             <DeleteOutline
@@ -141,7 +141,7 @@ export default function SubjectsList() {
       <HeaderTable
         title="Bảng Môn Học"
         name="Thêm môn học"
-        urlNew="/newSubjects"
+        urlNew="/HomeSecretary/newSubjects"
         form={formMH}
         onChange={(e) => readExcelMonThi(e.target.files[0])}
       />

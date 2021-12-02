@@ -14,13 +14,13 @@ export default function SideBarLecturers() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quản lý</h3>
           <ul className="sidebarList">
-            <NavLink to="/testScheduleLecturers" className="link">
+            <NavLink to="/HomeLecturers/testScheduleLecturers" className="link">
               <li className="sidebarListItem">
                 <EventNoteIcon className="sidebarIcon" />
                 Lịch coi thi
               </li>
             </NavLink>
-            <NavLink to="/essaySubject" className="link">
+            <NavLink to="/HomeLecturers/essaySubject" className="link">
               <li className="sidebarListItem">
                 <LibraryBooksIcon className="sidebarIcon" />
                 Đăng ký tiểu luận

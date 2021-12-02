@@ -1,15 +1,17 @@
-import React from "react";
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import LanguageIcon from '@mui/icons-material/Language';
-import SettingsIcon from '@mui/icons-material/Settings';
+import React, { useEffect } from "react";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import LanguageIcon from "@mui/icons-material/Language";
+import SettingsIcon from "@mui/icons-material/Settings";
 // import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
 export default function Topbar() {
+
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -19,7 +21,7 @@ export default function Topbar() {
     setAnchorEl(null);
   };
   return (
-    <div className="topbar">
+    <div className="topbarSecretary">
       <div className="topbarWrapper">
         <div className="topLeft">
           <img src={logo} alt="" className="logo" />
@@ -46,13 +48,15 @@ export default function Topbar() {
               }}
             >
               <MenuItem>
-                <Link to="/profileSecretary" style={{ color: "black" }}>
+                <Link to="/HomeSecretary/profileSecretary" style={{ color: "black" }}>
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem><Link to="/accountSercetary" style={{ color: "black" }}>
+              <MenuItem>
+                <Link to="/HomeSecretary/accountSercetary" style={{ color: "black" }}>
                   My Account
-                </Link></MenuItem>
+                </Link>
+              </MenuItem>
               <MenuItem>Logout</MenuItem>
             </Menu>
           </div>

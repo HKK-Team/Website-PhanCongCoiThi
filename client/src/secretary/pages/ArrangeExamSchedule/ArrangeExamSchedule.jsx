@@ -6,7 +6,7 @@ import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/hea
 import GetData from "./../../totalData.js";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
-import { Prompt } from "react-router";
+// import { usePrompt } from "react-router-dom";
 let today = new Date();
 let date =
   today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
@@ -135,6 +135,7 @@ export default function ArrangeExamSchedule() {
       window.onbeforeunload = undefined;
     }
   }, [checkOut]);
+  // usePrompt("Hello from usePrompt -- Are you sure you want to leave?", checkOut);
   // xóa dữ liệu
   const handleDelete = (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
@@ -303,10 +304,10 @@ export default function ArrangeExamSchedule() {
         onClick={handleAutoMatic}
         data={data}
       />
-      <Prompt
+      {/* <Prompt
         when={checkOut}
         message="Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn thoát không?"
-      />
+      /> */}
       <DataGrid
         className={classes.root}
         getRowId={(row) => row?._id}

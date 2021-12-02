@@ -45,7 +45,7 @@ export default function Lecturers() {
     <div className="user">
       <div className="userTitleContainer">
         <h1 className="userTitle">Chỉnh sửa thông tin giảng viên</h1>
-        <Link to="/newlecturers">
+        <Link to="/HomeSecretary/newlecturers">
           <button className="userAddButton">Thêm giảng viên</button>
         </Link>
       </div>

@@ -23,7 +23,7 @@ export default function TopBarLecturers() {
     window.localStorage.removeItem("email");
   }
   return (
-    <div className="topbar">
+    <div className="topBarLecturers">
       <div className="topbarWrapper">
         <div className="topLeft">
           <img src={logo} alt="" className="logo" />
@@ -50,11 +50,11 @@ export default function TopBarLecturers() {
               }}
             >
               <MenuItem>
-                <Link to="/profileLecturers" style={{ color: "black" }}>
+                <Link to="/HomeLecturers/profileLecturers" style={{ color: "black" }}>
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem><Link to="/accountLecturers" style={{ color: "black" }}>
+              <MenuItem><Link to="/HomeLecturers/accountLecturers" style={{ color: "black" }}>
                   My Account
                 </Link></MenuItem>
               <MenuItem><a href="/login" onClick={logout}>Logout</a></MenuItem>

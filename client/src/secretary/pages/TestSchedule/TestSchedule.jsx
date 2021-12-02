@@ -28,7 +28,7 @@ export default function TestSchedule() {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/testSchedule";
+          window.location.href = "/HomeSecretary/testSchedule";
         }, 1000);
         return "Cập Nhật Thành Công";
       }

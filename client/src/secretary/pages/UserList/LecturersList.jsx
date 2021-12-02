@@ -100,7 +100,7 @@ export default function LecturersList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/lecturers/" + params.id}>
+            <Link to={"/HomeSecretary/lecturers/" + params.id}>
               <Tooltip title="Chỉnh sửa giảng viên" arrow>
                 <button className="userListEdit">Chỉnh sửa</button>
               </Tooltip>
@@ -122,7 +122,7 @@ export default function LecturersList() {
       <HeaderTable
         title="Bảng Giảng Viên"
         name="Thêm giảng viên"
-        urlNew="/newlecturers"
+        urlNew="/HomeSecretary/newlecturers"
         form={formGV}
         onChange={(e) => readExcelGiangVien(e.target.files[0])}
       />

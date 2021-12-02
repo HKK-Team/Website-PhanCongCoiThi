@@ -1,52 +1,104 @@
 import Sidebar from "./components/Sidebar/Sidebar";
-// import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Topbar from "./components/Topbar/Topbar";
 import "./app.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import UserList from "./pages/UserList/LecturersList";
-import User from "./pages/User/Lecturers";
-import NewUser from "./pages/NewUser/NewLecturers";
-import ProductList from "./pages/ProductList/SubjectsList";
-import Product from "./pages/Product/Subjects";
-import NewProduct from "./pages/NewProduct/NewSubjects";
-import BillList from "./pages/BillList/TestScheduleList";
 import TestSchedule from "./pages/TestSchedule/TestSchedule";
 import ArrangeExamSchedule from "./pages/ArrangeExamSchedule/ArrangeExamSchedule";
-import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
 import AccountSecretary from "./pages/AccoutSecretary/AccoutSecretary";
-function navBarAdmin() {
+import TestScheduleList from "./pages/BillList/TestScheduleList";
+import NewSubjects from "./pages/NewProduct/NewSubjects";
+import Subjects from "./pages/Product/Subjects";
+import SubjectsList from "./pages/ProductList/SubjectsList";
+import NewLecturers from "./pages/NewUser/NewLecturers";
+import Lecturers from "./pages/User/Lecturers";
+import LecturersList from "./pages/UserList/LecturersList";
+import ProfileLecturers from "../lecturers/pages/ProfileLecturers/ProfileLecturers";
+import { Routes, Route, useLocation } from "react-router-dom";
+function PagesSecretarys() {
+  const param = useLocation();
+  useEffect(() => {
+    if (param.pathname.match("/HomeSecretary")===0) {
+      document.querySelector(".containerAdmin-Lecturers")?.remove();
+      document.querySelector(".topBarLecturers")?.remove();
+    }
+    // return () => {
+    //   const containerAdminLecturers = document.createElement(".containerAdmin-Lecturers");
+    //   const topBarLecturers = document.createElement(".topBarLecturers");
+    //   const root = document.getElementById("root");
+    //   root.appendChild(containerAdminLecturers);
+    //   root.appendChild(topBarLecturers);
+    // };
+  }, [param]);
+
   return (
-    <Router>
+    <Fragment>
       <Topbar />
-      <div className="containerAdmin">
+      <div className="containerAdmin-Secretarys">
         {/* Menu nav */}
         <Sidebar />
         {/* Link url */}
-        <Switch>
+        <Routes>
           <Route
             exact
-            path="/arrangeExamSchedule"
-            component={ArrangeExamSchedule}
+            path="/HomeSecretary/arrangeExamSchedule"
+            element={<ArrangeExamSchedule />}
           />
-          <Route exact path="/lecturers" component={UserList} />
-          <Route exact path="/lecturers/:lecturersId" component={User} />
-          <Route exact path="/newLecturers" component={NewUser} />
-          <Route exact path="/subjects" component={ProductList} />
-          <Route exact path="/subjects/:subjectsId" component={Product} />
-          <Route exact path="/newSubjects" component={NewProduct} />
-          <Route exact path="/testSchedule" component={BillList} />
           <Route
             exact
-            path="/testSchedule/:testScheduleID"
-            component={TestSchedule}
+            path="/HomeSecretary/lecturers"
+            element={<LecturersList />}
           />
-          <Route exact path="/profileSecretary" component={ProfileSecretary} />
-          <Route exact path="/accountSercetary" component={AccountSecretary} />
-        </Switch>
+          <Route
+            exact
+            path="/HomeSecretary/lecturers/:lecturersId"
+            element={<Lecturers />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/newLecturers"
+            element={<NewLecturers />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/subjects"
+            element={<SubjectsList />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/subjects/:subjectsId"
+            element={<Subjects />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/newSubjects"
+            element={<NewSubjects />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/testSchedule"
+            element={<TestScheduleList />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/testSchedule/:testScheduleID"
+            element={<TestSchedule />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/profileSecretary"
+            element={<ProfileLecturers />}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/accountSercetary"
+            element={<AccountSecretary />}
+          />
+        </Routes>
+
         {/* end of  Link url */}
       </div>
-    </Router>
+    </Fragment>
   );
 }
 
-export default navBarAdmin;
+export default PagesSecretarys;
