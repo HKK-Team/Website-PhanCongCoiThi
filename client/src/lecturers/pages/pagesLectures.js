@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -49,7 +49,7 @@ function PagesLecturers() {
           <Route
             exact
             path="/HomeLecturers/testScheduleLecturers"
-            element={<TestScheduleLecturers />}
+            element={isLogged ? <TestScheduleLecturers /> : <NotFound/>}
           />
         </Routes>
       </div>

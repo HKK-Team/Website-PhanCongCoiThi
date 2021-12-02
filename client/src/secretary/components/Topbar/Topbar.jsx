@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LanguageIcon from "@mui/icons-material/Language";
 import SettingsIcon from "@mui/icons-material/Settings";

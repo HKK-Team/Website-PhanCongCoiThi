@@ -36,7 +36,6 @@ export default function TestScheduleList() {
   data.forEach((item) => {
     if (item.tenHocKi === key) dataTenHocKy.push(item);
   });
-  console.log(dataTenHocKy);
   const handleDeleteLichThi = (key) => {
     if (window.confirm("Bạn thực sự muốn xóa không?")) {
       toastPromise(

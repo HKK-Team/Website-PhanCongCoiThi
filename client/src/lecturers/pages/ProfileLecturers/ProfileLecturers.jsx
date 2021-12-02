@@ -3,7 +3,7 @@ import Publish from '@mui/icons-material/Publish';
 import PermIdentity from '@mui/icons-material/MailOutline';
 import MailOutline from '@mui/icons-material/PermIdentity';
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import { GlobalState } from "../../../GlobalState";
+import {GlobalState} from "../../../globalState";
 import React,{useContext} from "react";
 export default function ProfileLecturers() {
   const state = useContext(GlobalState);

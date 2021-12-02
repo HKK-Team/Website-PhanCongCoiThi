@@ -14,7 +14,9 @@ import Lecturers from "./pages/User/Lecturers";
 import LecturersList from "./pages/UserList/LecturersList";
 import ProfileLecturers from "../lecturers/pages/ProfileLecturers/ProfileLecturers";
 import { Routes, Route, useLocation } from "react-router-dom";
+import NotFound from "../utils/not_found/NotFound";
 function PagesSecretarys() {
+  const isLogged = sessionStorage.getItem("SecretaryLogin");
   const param = useLocation();
   useEffect(() => {
     if (param.pathname.match("/HomeSecretary")===0) {
@@ -41,57 +43,57 @@ function PagesSecretarys() {
           <Route
             exact
             path="/HomeSecretary/arrangeExamSchedule"
-            element={<ArrangeExamSchedule />}
+            element={isLogged ? <ArrangeExamSchedule /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/lecturers"
-            element={<LecturersList />}
+            element={isLogged ? <LecturersList /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/lecturers/:lecturersId"
-            element={<Lecturers />}
+            element={isLogged ? <Lecturers /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/newLecturers"
-            element={<NewLecturers />}
+            element={isLogged ? <NewLecturers /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/subjects"
-            element={<SubjectsList />}
+            element={isLogged ? <SubjectsList /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/subjects/:subjectsId"
-            element={<Subjects />}
+            element={isLogged ? <Subjects /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/newSubjects"
-            element={<NewSubjects />}
+            element={isLogged ? <NewSubjects /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/testSchedule"
-            element={<TestScheduleList />}
+            element={isLogged ? <TestScheduleList /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/testSchedule/:testScheduleID"
-            element={<TestSchedule />}
+            element={isLogged ? <TestSchedule /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/profileSecretary"
-            element={<ProfileLecturers />}
+            element={isLogged ? <ProfileLecturers /> : NotFound()}
           />
           <Route
             exact
             path="/HomeSecretary/accountSercetary"
-            element={<AccountSecretary />}
+            element={isLogged ? <AccountSecretary /> : NotFound()}
           />
         </Routes>
 
