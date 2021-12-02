@@ -44,10 +44,11 @@ export default function LoginAll() {
   var reg = /^([0-9]{13})+@student.tdmu.edu.vn$/i;
   const CreateUser = async (e) => {
     e.preventDefault();
-    if (reg.test(lecturer.email) === true) {
-      await axios.post("http://localhost:5000/lecturer/login", { ...lecturer });
-      localStorage.setItem("LecturerLogin", true);
-      localStorage.setItem("email", lecturer.email);
+    if(reg.test(lecturer.email)===true)
+    {
+      await axios.post("http://localhost:5000/lecturer/login",{...lecturer});
+      sessionStorage.setItem("LecturerLogin", true);
+      sessionStorage.setItem("LecturerEmail",lecturer.email);
       alert("Bạn đã đăng nhập Google thành công!");
       window.location.href = "/HomeLecturers";
     } else {
@@ -85,11 +86,10 @@ export default function LoginAll() {
   };
   const loginSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/secretary/login", {
-        ...secretary,
-      });
-      localStorage.setItem("SecretaryLogin", true);
+    try{
+      await axios.post("http://localhost:5000/secretary/login", { ...secretary });
+      sessionStorage.setItem("SecretaryLogin", true);
+      sessionStorage.setItem("SecretaryEmail", secretary.email);
       alert("Bạn đã đăng nhập thành công!");
       window.location.href = "/HomeSecretary";
     } catch (err) {
