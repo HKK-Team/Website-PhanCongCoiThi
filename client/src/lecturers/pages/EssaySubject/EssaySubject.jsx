@@ -4,11 +4,13 @@ import { getdata } from "../../../secretary/totalData";
 import GetData from "../../../secretary/totalData";
 import { useState, useContext } from "react";
 import { GlobalState } from "../../../globalState";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
 
 export default function EssaySubject() {
   GetData();
   const [data] = useState(getdata.rgSubjects);
-  
+
   const state = useContext(GlobalState);
   // const [isLogged] = state.lecturerApi.isLogin;
   //console.log(state.lecturerApi);
@@ -22,7 +24,7 @@ export default function EssaySubject() {
       headerName: "Nhóm kiểm tra",
       width: 190,
       renderCell: (params) => {
-          return params?.row?.dsDangKi?.nhomKT;
+        return params?.row?.dsDangKi?.nhomKT;
       },
     },
     {
@@ -82,11 +84,30 @@ export default function EssaySubject() {
       },
     },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      return {
+        root: {
+          "& .MuiButton-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="userList">
       <h2>Bảng đăng ký môn tiểu luận</h2>
       <DataGrid
+        className={classes.root}
         rows={data}
         getRowId={(row) => row._id}
         disableSelectionOnClick

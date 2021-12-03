@@ -10,8 +10,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
 export default function Topbar() {
-
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,10 +18,10 @@ export default function Topbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const Logout = async() =>{
-    window.sessionStorage.removeItem('SecretaryLogin');
-    window.sessionStorage.removeItem('SecretaryEmail');
-  }
+  const Logout = async () => {
+    window.sessionStorage.removeItem("SecretaryLogin");
+    window.sessionStorage.removeItem("SecretaryEmail");
+  };
   return (
     <div className="topbarSecretary">
       <div className="topbarWrapper">
@@ -33,15 +31,15 @@ export default function Topbar() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <NotificationsNoneIcon />
+            <NotificationsNoneIcon style={{color:'#000000'}}/>
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <LanguageIcon />
+            <LanguageIcon style={{color:'#000000'}}/>
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <SettingsIcon onClick={handleClick} />
+            <SettingsIcon onClick={handleClick} style={{color:'#000000'}}/>
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -52,15 +50,26 @@ export default function Topbar() {
               }}
             >
               <MenuItem>
-                <Link to="/HomeSecretary/profileSecretary" style={{ color: "black" }}>
+                <Link
+                  to="/HomeSecretary/profileSecretary"
+                  style={{ color: "black" }}
+                >
                   Profile
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/HomeSecretary/accountSercetary" style={{ color: "black" }}>
+                <Link
+                  to="/HomeSecretary/accountSercetary"
+                  style={{ color: "black" }}
+                >
                   My Account
-                </Link></MenuItem>
-              <MenuItem><a href="/login" onClick={Logout}>Logout</a></MenuItem>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <a href="/login" onClick={Logout}>
+                  Logout
+                </a>
+              </MenuItem>
             </Menu>
           </div>
           <div className="topbarIconContainer">
@@ -74,7 +83,9 @@ export default function Topbar() {
             />
           </div>
           <div className="topbarIconContainer">
-          <a href="/login" onClick={Logout}><LogoutIcon/></a>
+            <a href="/login" onClick={Logout}>
+              <LogoutIcon style={{ color: "#000000" }} />
+            </a>
           </div>
         </div>
       </div>

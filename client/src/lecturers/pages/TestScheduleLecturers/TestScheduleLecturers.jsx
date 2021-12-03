@@ -4,6 +4,8 @@ import { useState, useContext } from "react";
 import { GlobalState } from "../../../globalState";
 import { getdata } from "../../../secretary/totalData";
 import GetData from "../../../secretary/totalData";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
 
 export default function TestScheduleLecturers() {
   GetData();
@@ -38,11 +40,30 @@ export default function TestScheduleLecturers() {
     { field: "heDaoTao", headerName: "Hệ đào tạo", width: 150 },
     { field: "ghiChu", headerName: "Ghi chú", width: 150 },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      return {
+        root: {
+          "& .MuiButton-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="userList">
       <h2>Bảng Phân công coi thi</h2>
       <DataGrid
+        className={classes.root}
         rows={data}
         getRowId={(row) => row._id}
         disableSelectionOnClick

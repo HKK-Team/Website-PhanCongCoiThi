@@ -9,6 +9,8 @@ import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
 export default function SubjectsList() {
   GetData();
   const [data] = useState(getdata.getSubjectApi);
@@ -135,7 +137,25 @@ export default function SubjectsList() {
       },
     },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      return {
+        root: {
+          "& .MuiButton-root": {
+            color:'#1976d2',
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color:'#1976d2',
+            fontWeight: "700",
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="productList">
       <HeaderTable
@@ -146,6 +166,7 @@ export default function SubjectsList() {
         onChange={(e) => readExcelMonThi(e.target.files[0])}
       />
       <DataGrid
+       className={classes.root}
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick

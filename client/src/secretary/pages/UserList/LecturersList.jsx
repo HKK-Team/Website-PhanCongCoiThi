@@ -1,11 +1,13 @@
 import "./UserList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import DeleteOutline from '@mui/icons-material/DeleteOutline';
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import HeaderTable from "../../components/headerTable/headerTable";
 import { Tooltip } from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
 
 import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
 import * as XLSX from "xlsx";
@@ -116,7 +118,25 @@ export default function LecturersList() {
       },
     },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      return {
+        root: {
+          "& .MuiButton-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="userList">
       <HeaderTable
@@ -127,6 +147,7 @@ export default function LecturersList() {
         onChange={(e) => readExcelGiangVien(e.target.files[0])}
       />
       <DataGrid
+        className={classes.root}
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick

@@ -290,6 +290,14 @@ export default function ArrangeExamSchedule() {
           "& .MuiDataGrid-cell--editable": {
             backgroundColor,
           },
+          "& .MuiButton-root": {
+            color:'#1976d2',
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color:'#1976d2',
+            fontWeight: "700",
+          },
         },
       };
     },

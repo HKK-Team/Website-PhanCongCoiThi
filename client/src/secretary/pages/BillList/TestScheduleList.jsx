@@ -1,7 +1,7 @@
 import "./TestScheduleList.css";
 import "./../../components/headerTable/headerTable.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import DeleteOutline from '@mui/icons-material/DeleteOutline';
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
@@ -15,6 +15,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 
 import ReactExport from "react-export-excel";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from "@mui/material/styles";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -142,7 +144,25 @@ export default function TestScheduleList() {
       },
     },
   ];
-
+  const defaultTheme = createTheme();
+  const useStyles = makeStyles(
+    (theme) => {
+      return {
+        root: {
+          "& .MuiButton-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#1976d2",
+            fontWeight: "700",
+          },
+        },
+      };
+    },
+    { defaultTheme }
+  );
+  const classes = useStyles();
   return (
     <div className="userList">
       <div className="header-table">
@@ -262,6 +282,7 @@ export default function TestScheduleList() {
         </div>
       </div>
       <DataGrid
+        className={classes.root}
         getRowId={(row) => row._id}
         rows={dataTenHocKy}
         disableSelectionOnClick

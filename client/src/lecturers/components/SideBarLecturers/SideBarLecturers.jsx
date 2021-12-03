@@ -1,7 +1,6 @@
-
-import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline';
-import DynamicFeed from '@mui/icons-material/DynamicFeed';
-import MailOutline from '@mui/icons-material/MailOutline';
+import ChatBubbleOutline from "@mui/icons-material/ChatBubbleOutline";
+import DynamicFeed from "@mui/icons-material/DynamicFeed";
+import MailOutline from "@mui/icons-material/MailOutline";
 import "./../../../secretary/components/Sidebar/Sidebar.css";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -16,13 +15,19 @@ export default function SideBarLecturers() {
           <ul className="sidebarList">
             <NavLink to="/HomeLecturers/testScheduleLecturers" className="link">
               <li className="sidebarListItem">
-                <EventNoteIcon className="sidebarIcon" />
+                <EventNoteIcon
+                  className="sidebarIcon"
+                  style={{ color: "#000000" }}
+                />
                 Lịch coi thi
               </li>
             </NavLink>
             <NavLink to="/HomeLecturers/essaySubject" className="link">
               <li className="sidebarListItem">
-                <LibraryBooksIcon className="sidebarIcon" />
+                <LibraryBooksIcon
+                  className="sidebarIcon"
+                  style={{ color: "#000000" }}
+                />
                 Đăng ký tiểu luận
               </li>
             </NavLink>
@@ -32,15 +37,24 @@ export default function SideBarLecturers() {
           <h3 className="sidebarTitle">Thông báo</h3>
           <ul className="sidebarList">
             <li className="sidebarListItem">
-              <MailOutline className="sidebarIcon" />
+              <MailOutline
+                className="sidebarIcon"
+                style={{ color: "#000000" }}
+              />
               Mail
             </li>
             <li className="sidebarListItem">
-              <DynamicFeed className="sidebarIcon" />
+              <DynamicFeed
+                className="sidebarIcon"
+                style={{ color: "#000000" }}
+              />
               Feedback
             </li>
             <li className="sidebarListItem">
-              <ChatBubbleOutline className="sidebarIcon" />
+              <ChatBubbleOutline
+                className="sidebarIcon"
+                style={{ color: "#000000" }}
+              />
               Messages
             </li>
           </ul>

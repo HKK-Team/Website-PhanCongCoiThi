@@ -1,12 +1,12 @@
 import React from "react";
-import './../../../secretary/components/Topbar/Topbar.css'
-import Settings from '@mui/icons-material/Settings';
-import Language from '@mui/icons-material/Language';
-import NotificationsNone from '@mui/icons-material/NotificationsNone';
+import "./../../../secretary/components/Topbar/Topbar.css";
+import Settings from "@mui/icons-material/Settings";
+import Language from "@mui/icons-material/Language";
+import NotificationsNone from "@mui/icons-material/NotificationsNone";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "./../../../images/tdmu-elearning-banner.png";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
 export default function TopBarLecturers() {
@@ -18,10 +18,10 @@ export default function TopBarLecturers() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const logout = () =>{
+  const logout = () => {
     window.sessionStorage.removeItem("LecturerLogin");
     window.sessionStorage.removeItem("LecturerEmail");
-  }
+  };
   return (
     <div className="topBarLecturers">
       <div className="topbarWrapper">
@@ -31,15 +31,15 @@ export default function TopBarLecturers() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <NotificationsNone />
+            <NotificationsNone style={{ color: "#000000" }} />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Language />
+            <Language style={{ color: "#000000" }} />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <Settings onClick={handleClick} />
+            <Settings onClick={handleClick} style={{ color: "#000000" }} />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -50,14 +50,26 @@ export default function TopBarLecturers() {
               }}
             >
               <MenuItem>
-                <Link to="/HomeLecturers/profileLecturers" style={{ color: "black" }}>
+                <Link
+                  to="/HomeLecturers/profileLecturers"
+                  style={{ color: "black" }}
+                >
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem><Link to="/HomeLecturers/accountLecturers" style={{ color: "black" }}>
+              <MenuItem>
+                <Link
+                  to="/HomeLecturers/accountLecturers"
+                  style={{ color: "black" }}
+                >
                   My Account
-                </Link></MenuItem>
-              <MenuItem><a href="/login" onClick={logout}>Logout</a></MenuItem>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <a href="/login" onClick={logout}>
+                  Logout
+                </a>
+              </MenuItem>
             </Menu>
           </div>
           <div className="topbarIconContainer">
@@ -71,7 +83,9 @@ export default function TopBarLecturers() {
             />
           </div>
           <div className="topbarIconContainer">
-            <a href="/login" onClick={logout}><LogoutIcon/></a>
+            <a href="/login" onClick={logout}>
+              <LogoutIcon style={{ color: "#000000" }} />
+            </a>
           </div>
         </div>
       </div>
