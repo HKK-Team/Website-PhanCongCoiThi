@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
@@ -11,7 +11,15 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
+import { GlobalState } from "../../../globalState";
 export default function SubjectsList() {
+  const state = useContext(GlobalState);
+  let maKhoa = "";
+  if (state?.secretaryApi?.secretary[0].length === 0) {
+    maKhoa = " ";
+  } else {
+    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
+  }
   GetData();
   const [data] = useState(getdata.getSubjectApi);
   const [monthi, setMonthi] = useState([]);
@@ -28,7 +36,6 @@ export default function SubjectsList() {
         const wsname = wb.SheetNames[0];
 
         const ws = wb.Sheets[wsname];
-        console.log(ws);
         const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
 
         resolve(data);
@@ -40,6 +47,7 @@ export default function SubjectsList() {
     });
     promise.then((d) => {
       d.shift();
+      d.maKhoa = maKhoa;
       setMonthi(d);
       ImportMonThi();
     });

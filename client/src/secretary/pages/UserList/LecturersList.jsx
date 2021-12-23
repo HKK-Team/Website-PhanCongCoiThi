@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HeaderTable from "../../components/headerTable/headerTable";
 import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
@@ -14,9 +14,18 @@ import * as XLSX from "xlsx";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import GetData from "../../totalData";
+import { GlobalState } from "../../../globalState";
 
 // Bảng Giảng Viên
 export default function LecturersList() {
+  const state = useContext(GlobalState);
+  let maKhoa = "";
+  if (state?.secretaryApi?.secretary[0].length === 0) {
+    maKhoa = " ";
+  } else {
+    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
+  }
+
   GetData();
   const [data] = useState(getdata.getLecturersApi);
   const [giangvien, setgiangvien] = useState([]);
@@ -47,6 +56,7 @@ export default function LecturersList() {
     });
     promise.then((d) => {
       d.shift();
+      d.maKhoa = maKhoa;
       setgiangvien(d);
       ImportGiangVien();
     });

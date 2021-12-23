@@ -1,7 +1,6 @@
-
-import Publish from '@mui/icons-material/Publish';
-import PermIdentity from '@mui/icons-material/PermIdentity';
-import MailOutline from '@mui/icons-material/MailOutline';
+import Publish from "@mui/icons-material/Publish";
+import PermIdentity from "@mui/icons-material/PermIdentity";
+import MailOutline from "@mui/icons-material/MailOutline";
 import { Tooltip } from "@mui/material";
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -67,14 +66,20 @@ export default function Lecturers() {
 
             <div className="userShowInfo">
               <Tooltip title="Mã viên chức" arrow>
-                <PermIdentity className="userShowIcon" />
+                <PermIdentity
+                  className="userShowIcon"
+                  style={{ color: "#000000" }}
+                />
               </Tooltip>
               <Tooltip title="Mã viên chức" arrow>
                 <span className="userShowInfoTitle">{data?.maVienChuc}</span>
               </Tooltip>
             </div>
             <div className="userShowInfo">
-              <MailOutline className="userShowIcon" />
+              <MailOutline
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
               <span className="userShowInfoTitle">{data?.email}</span>
             </div>
           </div>

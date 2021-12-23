@@ -1,12 +1,13 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { getdata } from "../../totalData";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import GetData from "./../../totalData.js";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
-// import { usePrompt } from "react-router-dom";
+import { usePrompt } from "react-router-dom";
+import { GlobalState } from "../../../globalState";
 let today = new Date();
 let date =
   today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
@@ -31,6 +32,14 @@ function shuffle(array) {
   return array;
 }
 export default function ArrangeExamSchedule() {
+  const state = useContext(GlobalState);
+
+  let maKhoa = "";
+  if (state?.secretaryApi?.secretary[0].length === 0) {
+    maKhoa = " ";
+  } else {
+    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
+  }
   GetData();
   let a = [...getdata.getSubjectApi]; // khoi tao mang chua mon hoc
   let b = [...getdata.getLecturersApi]; // khoi tao mang chua giang vien
@@ -87,11 +96,11 @@ export default function ArrangeExamSchedule() {
       hoTen1: item[1]?.hoTen,
       maVienChuc1: item[1]?.maVienChuc,
       email1: item[1]?.email,
-      maKhoa1: item[1]?.maKhoa,
+      maKhoa1: maKhoa,
       hoTen2: item[2]?.hoTen,
       maVienChuc2: item[2]?.maVienChuc,
       email2: item[2]?.email,
-      maKhoa2: item[2]?.maKhoa,
+      maKhoa2: maKhoa,
     };
     // setData((prev) => [...prev,{...item[0],...dsGiangVien,...item[3]}]);
     data.push({ ...item[0], ...dsGiangVien, ...item[3] });
@@ -122,6 +131,7 @@ export default function ArrangeExamSchedule() {
           item.soPhutKiemTra = object[0].soPhutKiemTra.value;
           item.tenHp = object[0].tenHp.value;
           item.toKiem = object[0].toKiem.value;
+          item.maKhoa = maKhoa;
         }
       });
     },
@@ -135,7 +145,10 @@ export default function ArrangeExamSchedule() {
       window.onbeforeunload = undefined;
     }
   }, [checkOut]);
-  // usePrompt("Hello from usePrompt -- Are you sure you want to leave?", checkOut);
+  usePrompt(
+    "Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn thoát không?",
+    checkOut
+  );
   // xóa dữ liệu
   const handleDelete = (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
@@ -291,11 +304,11 @@ export default function ArrangeExamSchedule() {
             backgroundColor,
           },
           "& .MuiButton-root": {
-            color:'#1976d2',
+            color: "#1976d2",
             fontWeight: "700",
           },
           "& .MuiSvgIcon-root": {
-            color:'#1976d2',
+            color: "#1976d2",
             fontWeight: "700",
           },
         },
@@ -311,10 +324,7 @@ export default function ArrangeExamSchedule() {
         onClick={handleAutoMatic}
         data={data}
       />
-      {/* <Prompt
-        when={checkOut}
-        message="Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn thoát không?"
-      /> */}
+
       <DataGrid
         className={classes.root}
         getRowId={(row) => row?._id}

@@ -27,15 +27,24 @@ export default function profileSecretary(props) {
             <span className="userShowTitle">Chi tiết liên hệ</span>
 
             <div className="userShowInfo">
-              <PermIdentity className="userShowIcon" />
+              <PermIdentity
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
               <span className="userShowInfoTitle">Kỹ thuật phần mềm</span>
             </div>
             <div className="userShowInfo">
-              <LocalPhoneIcon className="userShowIcon" />
+              <LocalPhoneIcon
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
               <span className="userShowInfoTitle">123124145</span>
             </div>
             <div className="userShowInfo">
-              <MailOutline className="userShowIcon" />
+              <MailOutline
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
               <span className="userShowInfoTitle">khanhdoan693@gmail.com</span>
             </div>
           </div>

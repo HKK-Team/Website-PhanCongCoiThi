@@ -10,6 +10,7 @@ const GiangVienCtrl = {
         for (let key in req.body) {
           if (req.body.hasOwnProperty(key)) {
             item = req.body[key];
+            let maKhoa = req.body.maKhoa;
             let maVienChuc = item.maVienChuc;
             let check = await danhSachGiangVien.findOne({ maVienChuc });
             if (check) {
@@ -19,7 +20,7 @@ const GiangVienCtrl = {
                 hoTen: item.hoTen,
                 maVienChuc: item.maVienChuc,
                 email: item.emailGV,
-                maKhoa: "",
+                maKhoa: maKhoa,
               });
               await newGiangVien.save();
             }

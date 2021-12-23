@@ -10,6 +10,7 @@ const MonThiCtrl = {
         for (var key in req.body) {
           if (req.body.hasOwnProperty(key)) {
             item = req.body[key];
+            let maKhoa = req.body.maKhoa;
             let nhomKT = item.nhomKT;
             let maHp = item.maHp;
             let check = await monThi.findOne({ nhomKT, maHp });
@@ -28,7 +29,7 @@ const MonThiCtrl = {
                 doViToChuc: item.doViToChuc,
                 toKiem: item.toKiem,
                 soLuong: item.soLuong,
-                maKhoa: "",
+                maKhoa: maKhoa,
               });
               await newMonThi.save();
             }
