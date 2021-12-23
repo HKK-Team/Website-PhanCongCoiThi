@@ -12,7 +12,7 @@ import SubjectsList from "./pages/ProductList/SubjectsList";
 import NewLecturers from "./pages/NewUser/NewLecturers";
 import Lecturers from "./pages/User/Lecturers";
 import LecturersList from "./pages/UserList/LecturersList";
-import ProfilSecretart from "./pages/ProfileSecretary/ProfileSecretary"
+import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
 import { Routes, Route, useLocation } from "react-router-dom";
 import NotFound from "../utils/not_found/NotFound";
 function PagesSecretarys() {
@@ -88,7 +88,7 @@ function PagesSecretarys() {
           <Route
             exact
             path="/HomeSecretary/profileSecretary"
-            element={isLogged ? <ProfilSecretart /> : NotFound()}
+            element={isLogged ? <ProfileSecretary /> : NotFound()}
           />
           <Route
             exact

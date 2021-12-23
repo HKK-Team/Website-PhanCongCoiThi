@@ -52,11 +52,20 @@ const lecturerCtrl = {
         const features = new APIfeatures(Lecturer.find(), req.query)
             .filtering()
         const user = await features.query
-        res.json({
-            status: 'success',
-            result: user.length,
-            user : user
-        })
+        res.json(user)
+    },
+    EditUser : async(req,res) =>{
+        // check your id
+        user = req.body;
+        // update to mongodb
+        const editUser = new Lecturer(user);
+        try {
+            await Lecturer.updateOne({ _id: req.body._id }, editUser);
+            return res.status(200).json("Bạn đã update thông tin thành công!")
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
     }
 };
 module.exports = lecturerCtrl
