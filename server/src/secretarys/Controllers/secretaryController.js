@@ -36,14 +36,23 @@ const secretaryCtrl = {
             const features = new APIfeatures(Secretary.find(), req.query)
             .filtering()
             const user = await features.query
-            res.json({
-                status: 'success',
-                result: user.length,
-                user : user
-            })
+            res.json(user)
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
     },
+    EditUser : async(req,res) =>{
+        // check your id
+        user = req.body;
+        // update to mongodb
+        const editUser = new Secretary(user);
+        try {
+            await Secretary.updateOne({ _id: req.body._id }, editUser);
+            return res.status(200).json("Bạn đã update thông tin thành công!")
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    }
 }
 module.exports = secretaryCtrl

@@ -22,6 +22,7 @@ function SecretaryAPI() {
     return {
         secretary: [secretary, setSecretary],
         isLogin: [isLogin, setIsLogin],
+        users : [users,setUser],
     }
 }
 
