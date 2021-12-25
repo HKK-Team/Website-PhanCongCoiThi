@@ -3,7 +3,7 @@ const lichThiCtrl = {
   createLichThi: async (req, res) => {
     try {
       for (var key in req.body.datas) {
-        if (req.body.datas.hasOwnProperty(key)) {
+        if (req.body.datas.hasOwnProperty(key) && key !== 'maKhoa') {
           item = req.body.datas[key];
           tenHocKy = req.body.tenHocKy;
           nhomKiemTra = item.nhomKT;

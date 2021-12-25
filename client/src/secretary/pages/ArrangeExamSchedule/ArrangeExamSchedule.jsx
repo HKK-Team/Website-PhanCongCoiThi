@@ -1,13 +1,14 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { getdata } from "../../totalData";
-import { useCallback, useContext, useEffect, useState } from "react";
+
+import { useCallback, useEffect, useState } from "react";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
-import GetData from "./../../totalData.js";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
 import { usePrompt } from "react-router-dom";
-import { GlobalState } from "../../../globalState";
+import { useDispatch, useSelector } from "react-redux";
+import { getLecturersApiAsync } from "../../sliceApi/LecturersSlice/lecturersSlice";
+import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
 let today = new Date();
 let date =
   today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
@@ -18,6 +19,7 @@ let d = {
   maPhong: "",
   soPhutKiemTra: 60,
 };
+
 function shuffle(array) {
   let currentIndex = array.length,
     randomIndex;
@@ -32,29 +34,34 @@ function shuffle(array) {
   return array;
 }
 export default function ArrangeExamSchedule() {
-  const state = useContext(GlobalState);
+  let { data: lecturers } = useSelector(
+    (state) => state.Lecturers.LecturersApi
+  );
+  let { data: subjects } = useSelector((state) => state.Subjects.SubjectsApi);
+  const dispatch = useDispatch();
 
-  let maKhoa = "";
-  if (state?.secretaryApi?.secretary[0].length === 0) {
-    maKhoa = " ";
-  } else {
-    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
-  }
-  GetData();
-  let a = [...getdata.getSubjectApi]; // khoi tao mang chua mon hoc
-  let b = [...getdata.getLecturersApi]; // khoi tao mang chua giang vien
+  useEffect(() => {
+    dispatch(getLecturersApiAsync());
+    dispatch(getSubjectsApiAsync());
+  }, [dispatch]);
+
+  let a = [...subjects]; // khoi tao mang chua mon hoc
+  let b = [...lecturers]; // khoi tao mang chua giang vien
+
+  let maKhoa = "KTPM";
+
   const length = Math.round(a.length / b.length);
   //xử lý khi giảng viên ít hơn môn học
   for (let key = 0; key < length; key++) {
-    if (length === 1) {
+    if (length + 1 === 1) {
       break;
     } else {
-      b = b.concat(getdata.getLecturersApi);
+      b = b.concat(b);
     }
   }
-  const [c, setC] = useState([]); // mảng gộp dữ liệu của giảng viên và môn học
-  const [checkOut, setCheckOut] = useState(false); // check xem có thay đổi khi edit
 
+  const [c, setC] = useState([]); // mảng gộp dữ liệu của giảng viên và môn học
+  const [checkOut, setCheckOut] = useState(false);
   // tự động sắp xếp lịch
   function handleAutoMatic(e) {
     if (checkOut === true) {
@@ -105,6 +112,7 @@ export default function ArrangeExamSchedule() {
     // setData((prev) => [...prev,{...item[0],...dsGiangVien,...item[3]}]);
     data.push({ ...item[0], ...dsGiangVien, ...item[3] });
   });
+
   // lưu lại thay đổi trong data
   const handleEditRowsModelChange = useCallback(
     (model) => {
@@ -137,6 +145,7 @@ export default function ArrangeExamSchedule() {
     },
     [data]
   );
+
   // ngăn chặn rời đi khi chưa lưu
   useEffect(() => {
     if (checkOut) {

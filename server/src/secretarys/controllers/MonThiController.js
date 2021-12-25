@@ -1,14 +1,14 @@
 const monThi = require("../models/MonThiModal");
 const MonThiCtrl = {
   check: async (req, res) => {
-    if (Object.keys(req.body).length===0) {
+    if (Object.keys(req.body).length === 0) {
       res.status(400).json({
         msg: "Lỗi đường truyền mạng , hãy thử lại 1 lần nữa",
       });
     } else {
       try {
         for (var key in req.body) {
-          if (req.body.hasOwnProperty(key)) {
+          if (req.body.hasOwnProperty(key) && key !== "maKhoa") {
             item = req.body[key];
             let maKhoa = req.body.maKhoa;
             let nhomKT = item.nhomKT;

@@ -76,6 +76,7 @@ export function HeaderTableArrangeExamSchedule(props) {
   } = useForm();
   const onSubmit = async (data) => {
     let datas = props.data;
+    console.log(datas);
     await toastPromise(
       axios.post("http://localhost:5000/import/createLichthi", {
         ...data,

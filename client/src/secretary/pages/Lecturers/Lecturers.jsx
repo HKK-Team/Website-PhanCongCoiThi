@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { GlobalState } from "../../../globalState";
 import { useForm } from "react-hook-form";
-import "./User.css";
+import "./Lecturers.css";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 

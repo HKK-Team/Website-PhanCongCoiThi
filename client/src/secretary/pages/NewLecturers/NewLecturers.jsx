@@ -1,4 +1,4 @@
-import "./NewUser.css";
+import "./NewLecturers.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";

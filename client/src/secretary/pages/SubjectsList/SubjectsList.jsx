@@ -1,28 +1,25 @@
-import "./ProductList.css";
+import "./SubjectsList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import DeleteOutline from '@mui/icons-material/DeleteOutline';
-import GetData, { getdata } from "../../totalData";
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import axios from "axios";
-import * as XLSX from "xlsx";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
-import { GlobalState } from "../../../globalState";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import * as XLSX from "xlsx";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
 export default function SubjectsList() {
-  const state = useContext(GlobalState);
-  let maKhoa = "";
-  if (state?.secretaryApi?.secretary[0].length === 0) {
-    maKhoa = " ";
-  } else {
-    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
-  }
-  GetData();
-  const [data] = useState(getdata.getSubjectApi);
+  const { data, loading } = useSelector((state) => state.Subjects.SubjectsApi);
   const [monthi, setMonthi] = useState([]);
+  const [maKhoa, setMakhoa] = useState("KTPM");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSubjectsApiAsync());
+  }, [dispatch]);
   const readExcelMonThi = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -145,17 +142,19 @@ export default function SubjectsList() {
       },
     },
   ];
+
   const defaultTheme = createTheme();
+
   const useStyles = makeStyles(
     (theme) => {
       return {
         root: {
           "& .MuiButton-root": {
-            color:'#1976d2',
+            color: "#1976d2",
             fontWeight: "700",
           },
           "& .MuiSvgIcon-root": {
-            color:'#1976d2',
+            color: "#1976d2",
             fontWeight: "700",
           },
         },
@@ -163,7 +162,9 @@ export default function SubjectsList() {
     },
     { defaultTheme }
   );
+
   const classes = useStyles();
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="productList">
       <HeaderTable
@@ -174,7 +175,7 @@ export default function SubjectsList() {
         onChange={(e) => readExcelMonThi(e.target.files[0])}
       />
       <DataGrid
-       className={classes.root}
+        className={classes.root}
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick

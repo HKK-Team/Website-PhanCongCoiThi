@@ -1,4 +1,4 @@
-import "./NewProduct.css";
+import "./NewSubjects.css";
 import logo from "./../../../images/tdmu-elearning-banner.png";
 import axios from "axios";
 import { useForm } from "react-hook-form";

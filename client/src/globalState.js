@@ -3,9 +3,9 @@ import ScheduleApi from './api/scheduleApi';
 import RegistSubjectsAPI from './api/registSubjectsApi';
 import LecturerApi from "./api/lecturersApi";
 import SecretaryApi from "./api/secretarysApi";
-import GetLecturersApi from "./secretary/api/LecturersApi/LecturersApi";
-import GetSubjectsApi from "./secretary/api/SubjectsApi/SubjectsApi";
-import GetSchedulesApi from "./secretary/api/SchedulesApi/SchedulesApi";
+// import GetLecturersApi from "./secretary/api/LecturersApi/LecturersApi";
+// import GetSubjectsApi from "./secretary/api/SubjectsSlice/subjectsSlice";
+// import GetSchedulesApi from "./secretary/api/SchedulesSlice/schedulesSlice";
 
 export const GlobalState = createContext()
 export const DataProvider = ({children}) =>{
@@ -14,9 +14,9 @@ export const DataProvider = ({children}) =>{
         ScheduleApi:ScheduleApi(),
         RegistSubjectsAPI:RegistSubjectsAPI(),
         secretaryApi : SecretaryApi(),
-        getLecturersApi: GetLecturersApi(),
-        getSubjectsApi: GetSubjectsApi(),
-        getSchedulesApi: GetSchedulesApi(),
+        // getLecturersApi: GetLecturersApi(),
+        // getSubjectsApi: GetSubjectsApi(),
+        // getSchedulesApi: GetSchedulesApi(),
     }
     return (
         <GlobalState.Provider value={state}>

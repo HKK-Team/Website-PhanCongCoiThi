@@ -1,55 +1,46 @@
-import "./UserList.css";
+import "./LecturersList.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
 import HeaderTable from "../../components/headerTable/headerTable";
 import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
-
 import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
 import * as XLSX from "xlsx";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import GetData from "../../totalData";
-import { GlobalState } from "../../../globalState";
+import { useDispatch, useSelector } from "react-redux";
+import { getLecturersApiAsync } from "../../sliceApi/LecturersSlice/lecturersSlice";
+import { useEffect, useState } from "react";
+import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
 
 // Bảng Giảng Viên
 export default function LecturersList() {
-  const state = useContext(GlobalState);
-  let maKhoa = "";
-  if (state?.secretaryApi?.secretary[0].length === 0) {
-    maKhoa = " ";
-  } else {
-    maKhoa = state?.secretaryApi?.secretary[0]?.user[0]?.maKhoa;
-  }
-
-  GetData();
-  const [data] = useState(getdata.getLecturersApi);
+  const { data, loading } = useSelector(
+    (state) => state.Lecturers.LecturersApi
+  );
   const [giangvien, setgiangvien] = useState([]);
+  const [maKhoa, setMakhoa] = useState("KTPM");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getLecturersApiAsync());
+  }, [dispatch]);
 
   // read excel import from giangvien
   const readExcelGiangVien = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsArrayBuffer(file);
-
       fileReader.onload = (e) => {
         const bufferArray = e.target.result;
-
         const wb = XLSX.read(bufferArray, { type: "buffer" });
-
         const wsname = wb.SheetNames[0];
-
         const ws = wb.Sheets[wsname];
-
         const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
-
         resolve(data);
       };
-
       fileReader.onerror = (error) => {
         reject(error);
       };
@@ -128,7 +119,9 @@ export default function LecturersList() {
       },
     },
   ];
+
   const defaultTheme = createTheme();
+
   const useStyles = makeStyles(
     (theme) => {
       return {
@@ -146,7 +139,9 @@ export default function LecturersList() {
     },
     { defaultTheme }
   );
+
   const classes = useStyles();
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="userList">
       <HeaderTable

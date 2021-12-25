@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { GlobalState } from "../../../globalState";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import { useForm } from "react-hook-form";
-import "./Product.css";
+import "./Subjects.css";
 
 // chỉnh sửa sản phẩm
 export default function Subjects() {

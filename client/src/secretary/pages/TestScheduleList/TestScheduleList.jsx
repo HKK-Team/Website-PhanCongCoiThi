@@ -2,11 +2,10 @@ import "./TestScheduleList.css";
 import "./../../components/headerTable/headerTable.css";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import GetData, { getdata } from "../../totalData";
 import { Link } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -17,6 +16,10 @@ import Button from "@mui/material/Button";
 import ReactExport from "react-export-excel";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import scheduleSlice, {
+  getSchedulesApiAsync,
+} from "../../sliceApi/SchedulesSlice/schedulesSlice";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -24,20 +27,31 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 // bảng lịch thi
 export default function TestScheduleList() {
-  GetData();
-  const [data] = useState(getdata.getSchedulesApi);
-  const tenHocKy = [];
-  data.forEach((item) => tenHocKy.push(item.tenHocKi));
-  const setTenHocKy = new Set(tenHocKy);
+  const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
+
+  const setTenHocKy = useSelector(
+    (state) =>
+      new Set(
+        state.Schedules.SchedulesApi.data.map((element) => element.tenHocKi)
+      )
+  );
   const keyTenHocKy = [...setTenHocKy];
   const [key, setkey] = useState(keyTenHocKy[0]);
+  const data = useSelector((state) =>
+    state.Schedules.SchedulesApi.data.filter(
+      (e) => e.tenHocKi === state.Schedules.filters.tenHocKi
+    )
+  );
   const handleChange = (event) => {
     setkey(event.target.value);
+    dispatch(scheduleSlice.actions.FilterTenHocKi(event.target.value));
   };
-  const dataTenHocKy = [];
-  data.forEach((item) => {
-    if (item.tenHocKi === key) dataTenHocKy.push(item);
-  });
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSchedulesApiAsync());
+  }, [dispatch]);
+
   const handleDeleteLichThi = (key) => {
     if (window.confirm("Bạn thực sự muốn xóa không?")) {
       toastPromise(
@@ -51,6 +65,7 @@ export default function TestScheduleList() {
       );
     }
   };
+
   // xóa hóa đơn khỏi bảng
   const handleDelete = (id) => {
     if (window.confirm("Bạn thực sự muốn xóa không?")) {
@@ -65,6 +80,7 @@ export default function TestScheduleList() {
       );
     }
   };
+
   // khởi tạo dữ liệu bảng
   const columns = [
     { field: "maHocPhan", headerName: "Mã học phần", width: 180 },
@@ -144,7 +160,9 @@ export default function TestScheduleList() {
       },
     },
   ];
+
   const defaultTheme = createTheme();
+
   const useStyles = makeStyles(
     (theme) => {
       return {
@@ -162,7 +180,10 @@ export default function TestScheduleList() {
     },
     { defaultTheme }
   );
+
   const classes = useStyles();
+
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="userList">
       <div className="header-table">
@@ -220,7 +241,7 @@ export default function TestScheduleList() {
               </Tooltip>
             }
           >
-            <ExcelSheet data={dataTenHocKy} name="Sheet1">
+            <ExcelSheet data={data} name="Sheet1">
               <ExcelColumn label="Mã học phần" value="maHocPhan" />
               <ExcelColumn label="Tên học phần" value="tenHocPhan" />
               <ExcelColumn label="Nhóm kiểm tra" value="nhomKiemTra" />
@@ -284,7 +305,7 @@ export default function TestScheduleList() {
       <DataGrid
         className={classes.root}
         getRowId={(row) => row._id}
-        rows={dataTenHocKy}
+        rows={data}
         disableSelectionOnClick
         columns={columns}
         checkboxSelection

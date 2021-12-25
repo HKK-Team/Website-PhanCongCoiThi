@@ -1,7 +1,7 @@
 import Publish from "@mui/icons-material/Publish";
 import PermIdentity from "@mui/icons-material/MailOutline";
 import MailOutline from "@mui/icons-material/PermIdentity";
-import{useContext,useState} from "react";
+import { useContext, useState } from "react";
 import { GlobalState } from "../../../globalState";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import axios from "axios";
@@ -9,14 +9,14 @@ import axios from "axios";
 export default function ProfileSecretary() {
   const state = useContext(GlobalState);
   const users = state.secretaryApi.secretary;
-  const Name = users[0].map((item)=>(item.hoTen));
-  const Phone = users[0].map((item)=>(item.soDienThoai));
-  const id = users[0].map((item)=>(item._id))
-  const [profile,setProfile] = useState({
-    _id : id[0],
-    email : window.sessionStorage.getItem("SecretaryEmail"),
-    hoTen : Name[0],
-    soDienThoai : Phone[0]
+  const Name = users[0].map((item) => item.hoTen);
+  const Phone = users[0].map((item) => item.soDienThoai);
+  const id = users[0].map((item) => item._id);
+  const [profile, setProfile] = useState({
+    _id: id[0],
+    email: window.sessionStorage.getItem("SecretaryEmail"),
+    hoTen: Name[0],
+    soDienThoai: Phone[0],
   });
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -25,9 +25,9 @@ export default function ProfileSecretary() {
   const EditUserSubmit = async (e) => {
     e.preventDefault();
 
-      axios.post("http://localhost:5000/secretary/edituser", { ...profile })
-      alert("Update User Succesfully!");
-      window.location.href = "/HomeSecretary";
+    axios.post("http://localhost:5000/secretary/edituser", { ...profile });
+    alert("Update User Succesfully!");
+    window.location.href = "/HomeSecretary";
   };
   return (
     <div className="user">
@@ -43,8 +43,12 @@ export default function ProfileSecretary() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">{users[0].map((item)=>(item.hoTen))}</span>
-              <span className="userShowUserTitle">{users[0].map((item)=>(item.maKhoa))}</span>
+              <span className="userShowUsername">
+                {users[0].map((item) => item.hoTen)}
+              </span>
+              <span className="userShowUserTitle">
+                {users[0].map((item) => item.maKhoa)}
+              </span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -55,15 +59,25 @@ export default function ProfileSecretary() {
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">Kỹ thuật phần mềm</span>
+              <span className="userShowInfoTitle">
+                {users[0].map((item) => item.email)}
+              </span>
             </div>
             <div className="userShowInfo">
-              <LocalPhoneIcon className="userShowIcon"  style={{ color: "#000000" }}/>
-              <span className="userShowInfoTitle">Phone Number : {users[0].map((item)=>(item.soDienThoai))}</span>
+              <LocalPhoneIcon
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
+              <span className="userShowInfoTitle">
+                Phone Number : {users[0].map((item) => item.soDienThoai)}
+              </span>
             </div>
             <div className="userShowInfo">
-              <MailOutline className="userShowIcon"  style={{ color: "#000000" }}/>
-              <span className="userShowInfoTitle">Email : {users[0].map((item)=>(item.email))}</span>
+              <MailOutline
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
+              <span className="userShowInfoTitle">{users[0].map((item) => item.chuongTrinhDaoTao)}</span>
             </div>
           </div>
         </div>
@@ -75,7 +89,7 @@ export default function ProfileSecretary() {
                 <label>Họ và Tên</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item)=>(item.hoTen))}
+                  placeholder={users[0].map((item) => item.hoTen)}
                   name="hoTen"
                   value={profile.hoTen}
                   className="userUpdateInput"
@@ -87,7 +101,7 @@ export default function ProfileSecretary() {
                 <input
                   type="text"
                   name="email"
-                  placeholder={users[0].map((item)=>(item.email))}
+                  placeholder={users[0].map((item) => item.email)}
                   value={profile.email}
                   className="userUpdateInput"
                   onChange={onChangeInput}
@@ -97,7 +111,7 @@ export default function ProfileSecretary() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item)=>(item.soDienThoai))}
+                  placeholder={users[0].map((item) => item.soDienThoai)}
                   name="soDienThoai"
                   value={profile.soDienThoai}
                   className="userUpdateInput"
