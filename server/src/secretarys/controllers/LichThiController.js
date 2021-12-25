@@ -3,7 +3,7 @@ const lichThiCtrl = {
   createLichThi: async (req, res) => {
     try {
       for (var key in req.body.datas) {
-        if (req.body.datas.hasOwnProperty(key) && key !== 'maKhoa') {
+        if (req.body.datas.hasOwnProperty(key) && key !== "maKhoa") {
           item = req.body.datas[key];
           tenHocKy = req.body.tenHocKy;
           nhomKiemTra = item.nhomKT;
@@ -39,15 +39,18 @@ const lichThiCtrl = {
                   maVienChuc: item.maVienChuc1,
                   maKhoa: item.maKhoa1,
                   email: item.email1,
+                  maChuongTrinh: item.maChuongTrinh1,
                 },
                 {
                   hoTen: item.hoTen2,
                   maVienChuc: item.maVienChuc2,
                   maKhoa: item.maKhoa2,
                   email: item.email2,
+                  maChuongTrinh: item.maChuongTrinh2,
                 },
               ],
               maKhoa: item.maKhoa,
+              maChuongTrinh: item.maChuongTrinh,
             });
             await newSchedules.save();
           }
@@ -152,7 +155,7 @@ const lichThiCtrl = {
       for (let i = 0, len = collectionNames.length; i < len; i++) {
         let collectionName = collectionNames[i];
         if (collectionName.tenHocKi === req.params.key) {
-          await Schedules.findByIdAndDelete(collectionName._doc._id)
+          await Schedules.findByIdAndDelete(collectionName._doc._id);
         }
       }
       res.json({ msg: "Xóa thành công" });

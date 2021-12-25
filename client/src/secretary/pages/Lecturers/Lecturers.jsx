@@ -1,20 +1,21 @@
-import Publish from "@mui/icons-material/Publish";
-import PermIdentity from "@mui/icons-material/PermIdentity";
 import MailOutline from "@mui/icons-material/MailOutline";
+import PermIdentity from "@mui/icons-material/PermIdentity";
+import Publish from "@mui/icons-material/Publish";
 import { Tooltip } from "@mui/material";
-import { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../globalState";
-import { useForm } from "react-hook-form";
-import "./Lecturers.css";
 import axios from "axios";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import "./Lecturers.css";
 
 // chỉnh sửa thông tin khách hàng
 export default function Lecturers() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
@@ -34,12 +35,19 @@ export default function Lecturers() {
 
   const params = useParams();
 
-  const state = useContext(GlobalState);
-
-  const [lecturers] = state.getLecturersApi.getLecturers;
+  const { data: lecturers, loading } = useSelector(
+    (state) => state.Lecturers.LecturersApi
+  );
 
   const [data] = lecturers.filter((item) => item._id === params.lecturersId);
 
+  useEffect(() => {
+    setValue("hoTen", data?.hoTen);
+    setValue("maVienChuc", data?.maVienChuc);
+    setValue("Email", data?.email);
+  }, [data, setValue]);
+
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="user">
       <div className="userTitleContainer">

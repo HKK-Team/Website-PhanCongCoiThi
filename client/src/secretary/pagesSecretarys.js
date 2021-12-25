@@ -15,23 +15,26 @@ import LecturersList from "./pages/LecturersList/LecturersList";
 import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
 import { Routes, Route, useLocation } from "react-router-dom";
 import NotFound from "../utils/not_found/NotFound";
+import { useDispatch } from "react-redux";
+import { getSecretaryAccApiAsync } from "../api/secretarysAccountSlice";
+import { getLecturersApiAsync } from "./sliceApi/LecturersSlice/lecturersSlice";
+import { getSubjectsApiAsync } from "./sliceApi/SubjectsSlice/subjectsSlice";
+
 function PagesSecretarys() {
   const isLogged = sessionStorage.getItem("SecretaryLogin");
   const param = useLocation();
   useEffect(() => {
-    if (param.pathname.search("/HomeSecretary")===0) {
+    if (param.pathname.search("/HomeSecretary") === 0) {
       document.querySelector(".containerAdmin-Lecturers")?.remove();
       document.querySelector(".topBarLecturers")?.remove();
     }
-    // return () => {
-    //   const containerAdminLecturers = document.createElement(".containerAdmin-Lecturers");
-    //   const topBarLecturers = document.createElement(".topBarLecturers");
-    //   const root = document.getElementById("root");
-    //   root.appendChild(containerAdminLecturers);
-    //   root.appendChild(topBarLecturers);
-    // };
   }, [param]);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getLecturersApiAsync());
+    dispatch(getSubjectsApiAsync());
+    dispatch(getSecretaryAccApiAsync());
+  }, [dispatch]);
   return (
     <Fragment>
       <Topbar />

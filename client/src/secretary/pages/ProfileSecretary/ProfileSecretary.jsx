@@ -1,22 +1,21 @@
-import Publish from "@mui/icons-material/Publish";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import PermIdentity from "@mui/icons-material/MailOutline";
 import MailOutline from "@mui/icons-material/PermIdentity";
-import { useContext, useState } from "react";
-import { GlobalState } from "../../../globalState";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import Publish from "@mui/icons-material/Publish";
 import axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
 // chỉnh sửa thông tin khách hàng
 export default function ProfileSecretary() {
-  const state = useContext(GlobalState);
-  const users = state.secretaryApi.secretary;
-  const Name = users[0].map((item) => item.hoTen);
-  const Phone = users[0].map((item) => item.soDienThoai);
-  const id = users[0].map((item) => item._id);
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const { soDienThoai, hoTen, _id, maKhoa, chuongTrinhDaoTao, email } =
+    secretaryAccount;
   const [profile, setProfile] = useState({
-    _id: id[0],
-    email: window.sessionStorage.getItem("SecretaryEmail"),
-    hoTen: Name[0],
-    soDienThoai: Phone[0],
+    _id: _id,
+    email: email,
+    hoTen: hoTen,
+    soDienThoai: soDienThoai,
   });
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -43,12 +42,8 @@ export default function ProfileSecretary() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">
-                {users[0].map((item) => item.hoTen)}
-              </span>
-              <span className="userShowUserTitle">
-                {users[0].map((item) => item.maKhoa)}
-              </span>
+              <span className="userShowUsername">{hoTen}</span>
+              <span className="userShowUserTitle">{maKhoa}</span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -59,25 +54,21 @@ export default function ProfileSecretary() {
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">
-                {users[0].map((item) => item.email)}
-              </span>
+              <span className="userShowInfoTitle">{email}</span>
             </div>
             <div className="userShowInfo">
               <LocalPhoneIcon
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">
-                Phone Number : {users[0].map((item) => item.soDienThoai)}
-              </span>
+              <span className="userShowInfoTitle">{soDienThoai}</span>
             </div>
             <div className="userShowInfo">
               <MailOutline
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">{users[0].map((item) => item.chuongTrinhDaoTao)}</span>
+              <span className="userShowInfoTitle">{chuongTrinhDaoTao}</span>
             </div>
           </div>
         </div>
@@ -89,7 +80,7 @@ export default function ProfileSecretary() {
                 <label>Họ và Tên</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item) => item.hoTen)}
+                  placeholder={hoTen}
                   name="hoTen"
                   value={profile.hoTen}
                   className="userUpdateInput"
@@ -101,7 +92,7 @@ export default function ProfileSecretary() {
                 <input
                   type="text"
                   name="email"
-                  placeholder={users[0].map((item) => item.email)}
+                  placeholder={email}
                   value={profile.email}
                   className="userUpdateInput"
                   onChange={onChangeInput}
@@ -111,7 +102,7 @@ export default function ProfileSecretary() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item) => item.soDienThoai)}
+                  placeholder={soDienThoai}
                   name="soDienThoai"
                   value={profile.soDienThoai}
                   className="userUpdateInput"

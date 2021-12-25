@@ -1,16 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { GlobalState } from "../../../globalState";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 export default function TestSchedule() {
   useEffect(() => {
     document.body.style.overflow = "auto";
     return () => {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     };
   }, []);
   const {
@@ -35,9 +34,12 @@ export default function TestSchedule() {
     );
   };
   const param = useParams();
-  const state = useContext(GlobalState);
-  const [subjects] = state.getSchedulesApi.getSchedules;
-  const [data] = subjects.filter(
+
+  const { data: testschedules, loading } = useSelector(
+    (state) => state.Schedules.SchedulesApi
+  );
+
+  const [data] = testschedules.filter(
     (schedules) => schedules._id === param.testScheduleID
   );
   useEffect(() => {
@@ -61,7 +63,9 @@ export default function TestSchedule() {
     setValue("maVienChuc1", data?.giangVien[0]?.maVienChuc);
     setValue("hoTen2", data?.giangVien[1]?.hoTen);
     setValue("maVienChuc2", data?.giangVien[1]?.maVienChuc);
-  }, [data]);
+  }, [data, setValue]);
+
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="product">
       <div className="productTitleContainer">
@@ -98,19 +102,28 @@ export default function TestSchedule() {
             <input
               type="text"
               placeholder="60"
-              {...register("soLuongSinhVien", { required: false, maxLength: 80 })}
+              {...register("soLuongSinhVien", {
+                required: false,
+                maxLength: 80,
+              })}
             />
             <label>Đơn vị tổ chức kiểm tra</label>
             <input
               type="text"
               placeholder="Viện KT-CN"
-              {...register("donViToChucKiemTra", { required: false, maxLength: 80 })}
+              {...register("donViToChucKiemTra", {
+                required: false,
+                maxLength: 80,
+              })}
             />
             <label>Chương trình/Bộ môn</label>
             <input
               type="text"
               placeholder="Công nghệ thông tin và trí tuệ nhân tạo"
-              {...register("chuongTrinhBoMon", { required: false, maxLength: 80 })}
+              {...register("chuongTrinhBoMon", {
+                required: false,
+                maxLength: 80,
+              })}
             />
             <label>Ngày kiểm tra</label>
             <input
@@ -135,7 +148,10 @@ export default function TestSchedule() {
             <input
               type="text"
               placeholder="Trắc nghiệm trực tuyến"
-              {...register("hinhThucKiemTra", { required: false, maxLength: 80 })}
+              {...register("hinhThucKiemTra", {
+                required: false,
+                maxLength: 80,
+              })}
             />
             <label>Số phút kiểm tra</label>
             <input

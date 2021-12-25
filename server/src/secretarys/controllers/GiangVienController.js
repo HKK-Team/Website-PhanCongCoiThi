@@ -8,9 +8,14 @@ const GiangVienCtrl = {
     } else {
       try {
         for (let key in req.body) {
-          if (req.body.hasOwnProperty(key) && key !== 'maKhoa') {
+          if (
+            req.body.hasOwnProperty(key) &&
+            key !== "maKhoa" &&
+            key !== "maChuongTrinh"
+          ) {
             item = req.body[key];
             let maKhoa = req.body.maKhoa;
+            let maChuongTrinh = req.body.maChuongTrinh;
             let maVienChuc = item.maVienChuc;
             let check = await danhSachGiangVien.findOne({ maVienChuc });
             if (check) {
@@ -21,6 +26,7 @@ const GiangVienCtrl = {
                 maVienChuc: item.maVienChuc,
                 email: item.emailGV,
                 maKhoa: maKhoa,
+                maChuongTrinh: maChuongTrinh,
               });
               await newGiangVien.save();
             }
@@ -57,12 +63,13 @@ const GiangVienCtrl = {
 
   createGiangVien: async (req, res) => {
     try {
-      const { maVienChuc, hoTen, email } = req.body;
+      const { maVienChuc, hoTen, email, maKhoa, maChuongTrinh } = req.body;
       const newGiangVien = danhSachGiangVien({
         hoTen: hoTen,
         maVienChuc: maVienChuc,
         email: email,
-        maKhoa: "",
+        maKhoa: maKhoa,
+        maChuongTrinh: maChuongTrinh,
       });
       await newGiangVien.save();
       res.json({ msg: "Thêm thành công" });

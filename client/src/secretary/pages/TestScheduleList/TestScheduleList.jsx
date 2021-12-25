@@ -1,25 +1,26 @@
-import "./TestScheduleList.css";
-import "./../../components/headerTable/headerTable.css";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { Link } from "react-router-dom";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-
-import ReactExport from "react-export-excel";
-import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import ReactExport from "react-export-excel";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import scheduleSlice, {
-  getSchedulesApiAsync,
+  getSchedulesApiAsync
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
+import "./../../components/headerTable/headerTable.css";
+import "./TestScheduleList.css";
+
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -29,12 +30,22 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 export default function TestScheduleList() {
   const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
 
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
+
   const setTenHocKy = useSelector(
     (state) =>
       new Set(
-        state.Schedules.SchedulesApi.data.map((element) => element.tenHocKi)
+        state.Schedules.SchedulesApi.data.map((element) =>
+          element.maKhoa === maKhoa &&
+          element.maChuongTrinh === chuongTrinhDaoTao
+            ? element.tenHocKi
+            : "Không có lịch thi nào"
+        )
       )
   );
+
   const keyTenHocKy = [...setTenHocKy];
   const [key, setkey] = useState(keyTenHocKy[0]);
   const data = useSelector((state) =>
@@ -42,6 +53,7 @@ export default function TestScheduleList() {
       (e) => e.tenHocKi === state.Schedules.filters.tenHocKi
     )
   );
+  
   const handleChange = (event) => {
     setkey(event.target.value);
     dispatch(scheduleSlice.actions.FilterTenHocKi(event.target.value));

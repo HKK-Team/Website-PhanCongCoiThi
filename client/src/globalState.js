@@ -2,10 +2,7 @@ import React, {createContext} from 'react';
 import ScheduleApi from './api/scheduleApi';
 import RegistSubjectsAPI from './api/registSubjectsApi';
 import LecturerApi from "./api/lecturersApi";
-import SecretaryApi from "./api/secretarysApi";
-// import GetLecturersApi from "./secretary/api/LecturersApi/LecturersApi";
-// import GetSubjectsApi from "./secretary/api/SubjectsSlice/subjectsSlice";
-// import GetSchedulesApi from "./secretary/api/SchedulesSlice/schedulesSlice";
+// import SecretaryApi from "./api/secretarysApi";
 
 export const GlobalState = createContext()
 export const DataProvider = ({children}) =>{
@@ -13,10 +10,7 @@ export const DataProvider = ({children}) =>{
         lecturerApi : LecturerApi(),
         ScheduleApi:ScheduleApi(),
         RegistSubjectsAPI:RegistSubjectsAPI(),
-        secretaryApi : SecretaryApi(),
-        // getLecturersApi: GetLecturersApi(),
-        // getSubjectsApi: GetSubjectsApi(),
-        // getSchedulesApi: GetSchedulesApi(),
+        // secretaryApi : SecretaryApi(),
     }
     return (
         <GlobalState.Provider value={state}>

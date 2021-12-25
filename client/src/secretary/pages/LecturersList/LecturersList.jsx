@@ -1,32 +1,35 @@
-import "./LecturersList.css";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { Link } from "react-router-dom";
-import HeaderTable from "../../components/headerTable/headerTable";
-import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { Tooltip } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
-import * as XLSX from "xlsx";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import { useDispatch, useSelector } from "react-redux";
-import { getLecturersApiAsync } from "../../sliceApi/LecturersSlice/lecturersSlice";
-import { useEffect, useState } from "react";
-import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
+import HeaderTable from "../../components/headerTable/headerTable";
+import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
+import "./LecturersList.css";
 
 // Bảng Giảng Viên
 export default function LecturersList() {
-  const { data, loading } = useSelector(
-    (state) => state.Lecturers.LecturersApi
-  );
-  const [giangvien, setgiangvien] = useState([]);
-  const [maKhoa, setMakhoa] = useState("KTPM");
-  const dispatch = useDispatch();
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
 
-  useEffect(() => {
-    dispatch(getLecturersApiAsync());
-  }, [dispatch]);
+  const { loading } = useSelector((state) => state.Lecturers.LecturersApi);
+  const data = useSelector((state) =>
+    state.Lecturers.LecturersApi.data.filter(
+      (item) =>
+        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+    )
+  );
+  console.log(data);
+
+  const [giangvien, setgiangvien] = useState([]);
 
   // read excel import from giangvien
   const readExcelGiangVien = (file) => {
@@ -48,6 +51,7 @@ export default function LecturersList() {
     promise.then((d) => {
       d.shift();
       d.maKhoa = maKhoa;
+      d.maChuongTrinh = chuongTrinhDaoTao;
       setgiangvien(d);
       ImportGiangVien();
     });

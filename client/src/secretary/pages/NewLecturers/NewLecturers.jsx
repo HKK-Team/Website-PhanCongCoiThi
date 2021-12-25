@@ -2,6 +2,8 @@ import "./NewLecturers.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import { useSelector } from "react-redux";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
 
 // tạo mới người dùng
 export default function NewLecturers() {
@@ -10,8 +12,13 @@ export default function NewLecturers() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
 
   const onSubmit = async (data) => {
+    data.maKhoa = maKhoa;
+    data.maChuongTrinh = chuongTrinhDaoTao;
     await toastPromise(
       axios.post("http://localhost:5000/import/createGiangVien", {
         ...data,

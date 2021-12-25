@@ -3,6 +3,8 @@ import logo from "./../../../images/tdmu-elearning-banner.png";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
+import { useSelector } from "react-redux";
 
 // thêm sản phẩm mới
 export default function NewSubjects() {
@@ -11,7 +13,14 @@ export default function NewSubjects() {
     handleSubmit,
     // formState: { errors },
   } = useForm();
+
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
+
   const onSubmit = async (data) => {
+    data.maKhoa = maKhoa;
+    data.maChuongTrinh = chuongTrinhDaoTao;
     await toastPromise(
       axios.post("http://localhost:5000/import/createMonThi", {
         ...data,

@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import { useContext, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { GlobalState } from "../../../globalState";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import "./Subjects.css";
 
 // chỉnh sửa sản phẩm
@@ -12,14 +11,10 @@ export default function Subjects() {
   useEffect(() => {
     document.body.style.overflow = "auto";
     return () => {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     };
   }, []);
-  const {
-    register,
-    handleSubmit,
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (items) => {
     await toastPromise(
@@ -36,9 +31,9 @@ export default function Subjects() {
     );
   };
   const param = useParams();
-  const state = useContext(GlobalState);
-
-  const [subjects] = state.getSubjectsApi.getSubjects;
+  const { data: subjects, loading } = useSelector(
+    (state) => state.Subjects.SubjectsApi
+  );
   const [data] = subjects.filter((subject) => subject._id === param.subjectsId);
 
   useEffect(() => {
@@ -53,7 +48,8 @@ export default function Subjects() {
     setValue("soLuong", data.soLuong);
     setValue("maGV", data.maGV);
     setValue("heDT", data.heDT);
-  }, [data]);
+  }, [data, setValue]);
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="product">
       <div className="productTitleContainer">

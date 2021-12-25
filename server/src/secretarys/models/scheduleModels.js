@@ -5,7 +5,13 @@ const scheduleSchema = new mongoose.Schema({
   chuongTrinhBoMon: String,
   donViToChucKiemTra: String,
   giangVien: [
-    { email: String, hoTen: String, maKhoa: String, maVienChuc: String },
+    {
+      email: String,
+      hoTen: String,
+      maKhoa: String,
+      maVienChuc: String,
+      maChuongTrinh: String,
+    },
   ],
   gioBatDau: String,
   heDaoTao: String,
@@ -21,6 +27,7 @@ const scheduleSchema = new mongoose.Schema({
   maHocPhan: String,
   ngayKiemTra: String,
   nhomKiemTra: String,
+  maChuongTrinh: String,
 });
 
 module.exports = mongoose.model("Schedules", scheduleSchema);

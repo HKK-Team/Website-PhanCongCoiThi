@@ -1,13 +1,12 @@
-import React from "react";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LanguageIcon from "@mui/icons-material/Language";
-import SettingsIcon from "@mui/icons-material/Settings";
-// import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "./../../../images/tdmu-elearning-banner.png";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import React from "react";
 import { Link } from "react-router-dom";
+import logo from "./../../../images/tdmu-elearning-banner.png";
 
 export default function Topbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -31,15 +30,15 @@ export default function Topbar() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <NotificationsNoneIcon style={{color:'#000000'}}/>
+            <NotificationsNoneIcon style={{ color: "#000000" }} />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <LanguageIcon style={{color:'#000000'}}/>
+            <LanguageIcon style={{ color: "#000000" }} />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
-            <SettingsIcon onClick={handleClick} style={{color:'#000000'}}/>
+            <SettingsIcon onClick={handleClick} style={{ color: "#000000" }} />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}

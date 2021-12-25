@@ -1,25 +1,33 @@
-import "./SubjectsList.css";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { createTheme } from "@mui/material/styles";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
-import { makeStyles } from "@material-ui/styles";
-import { createTheme } from "@mui/material/styles";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import * as XLSX from "xlsx";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
+import "./SubjectsList.css";
+
 export default function SubjectsList() {
-  const { data, loading } = useSelector((state) => state.Subjects.SubjectsApi);
+  const { loading } = useSelector((state) => state.Subjects.SubjectsApi);
   const [monthi, setMonthi] = useState([]);
-  const [maKhoa, setMakhoa] = useState("KTPM");
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getSubjectsApiAsync());
-  }, [dispatch]);
+
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
+
+  const data = useSelector((state) =>
+    state.Subjects.SubjectsApi.data.filter(
+      (item) =>
+        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+    )
+  );
+
   const readExcelMonThi = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -45,6 +53,7 @@ export default function SubjectsList() {
     promise.then((d) => {
       d.shift();
       d.maKhoa = maKhoa;
+      d.maChuongTrinh = chuongTrinhDaoTao;
       setMonthi(d);
       ImportMonThi();
     });
@@ -56,9 +65,9 @@ export default function SubjectsList() {
         ...monthi,
       }),
       (data) => {
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         return (
           JSON.stringify(data?.data?.response?.data?.msg) ||
           "Bạn đã nhập dữ liệu môn thi thành công"

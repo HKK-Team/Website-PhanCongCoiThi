@@ -8,9 +8,14 @@ const MonThiCtrl = {
     } else {
       try {
         for (var key in req.body) {
-          if (req.body.hasOwnProperty(key) && key !== "maKhoa") {
+          if (
+            req.body.hasOwnProperty(key) &&
+            key !== "maKhoa" &&
+            key !== "maChuongTrinh"
+          ) {
             item = req.body[key];
             let maKhoa = req.body.maKhoa;
+            let maChuongTrinh = req.body.maChuongTrinh;
             let nhomKT = item.nhomKT;
             let maHp = item.maHp;
             let check = await monThi.findOne({ nhomKT, maHp });
@@ -30,6 +35,7 @@ const MonThiCtrl = {
                 toKiem: item.toKiem,
                 soLuong: item.soLuong,
                 maKhoa: maKhoa,
+                maChuongTrinh: maChuongTrinh,
               });
               await newMonThi.save();
             }
@@ -104,6 +110,7 @@ const MonThiCtrl = {
         toKiem,
         soLuong,
         maKhoa,
+        maChuongTrinh,
       } = req.body;
       const newMonThi = new monThi({
         maHp: maHp,
@@ -117,7 +124,8 @@ const MonThiCtrl = {
         doViToChuc: doViToChuc,
         toKiem: toKiem,
         soLuong: soLuong,
-        maKhoa: "",
+        maKhoa: maKhoa,
+        maChuongTrinh: maChuongTrinh,
       });
       await newMonThi.save();
       res.json({ msg: "Thêm thành công" });

@@ -1,14 +1,14 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import DeleteOutline from "@mui/icons-material/DeleteOutline";
-
-import { useCallback, useEffect, useState } from "react";
-import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import { makeStyles } from "@material-ui/styles";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { createTheme } from "@mui/material/styles";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { usePrompt } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getLecturersApiAsync } from "../../sliceApi/LecturersSlice/lecturersSlice";
-import { getSubjectsApiAsync } from "../../sliceApi/SubjectsSlice/subjectsSlice";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
+import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
+import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
+
 let today = new Date();
 let date =
   today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
@@ -34,21 +34,29 @@ function shuffle(array) {
   return array;
 }
 export default function ArrangeExamSchedule() {
-  let { data: lecturers } = useSelector(
-    (state) => state.Lecturers.LecturersApi
-  );
-  let { data: subjects } = useSelector((state) => state.Subjects.SubjectsApi);
-  const dispatch = useDispatch();
+  const secretaryAccount = useSelector(getSecretaryAccLogin);
+  const maKhoa = secretaryAccount?.maKhoa;
+  const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
 
-  useEffect(() => {
-    dispatch(getLecturersApiAsync());
-    dispatch(getSubjectsApiAsync());
-  }, [dispatch]);
+  let { loading } = useSelector((state) => state.Lecturers.LecturersApi);
+  let { loading: loading2 } = useSelector(
+    (state) => state.Subjects.SubjectsApi
+  );
+  const lecturers = useSelector((state) =>
+    state.Lecturers.LecturersApi.data.filter(
+      (item) =>
+        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+    )
+  );
+  const subjects = useSelector((state) =>
+    state.Subjects.SubjectsApi.data.filter(
+      (item) =>
+        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+    )
+  );
 
   let a = [...subjects]; // khoi tao mang chua mon hoc
   let b = [...lecturers]; // khoi tao mang chua giang vien
-
-  let maKhoa = "KTPM";
 
   const length = Math.round(a.length / b.length);
   //xử lý khi giảng viên ít hơn môn học
@@ -62,8 +70,12 @@ export default function ArrangeExamSchedule() {
 
   const [c, setC] = useState([]); // mảng gộp dữ liệu của giảng viên và môn học
   const [checkOut, setCheckOut] = useState(false);
+
   // tự động sắp xếp lịch
   function handleAutoMatic(e) {
+    if (!a.length && !b.length) {
+      toastInfor("Không có dữ liệu để tự động sắp xếp");
+    }
     if (checkOut === true) {
       if (window.confirm("Bạn có chắc chắn muốn tạo lại lịch thi không?")) {
         shuffle(a);
@@ -96,6 +108,7 @@ export default function ArrangeExamSchedule() {
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   let data = []; // khởi tạo mảng data
   // thêm dữ liệu vào data
   c.forEach((item) => {
@@ -104,15 +117,15 @@ export default function ArrangeExamSchedule() {
       maVienChuc1: item[1]?.maVienChuc,
       email1: item[1]?.email,
       maKhoa1: maKhoa,
+      maChuongTrinh1: chuongTrinhDaoTao,
       hoTen2: item[2]?.hoTen,
       maVienChuc2: item[2]?.maVienChuc,
       email2: item[2]?.email,
       maKhoa2: maKhoa,
+      maChuongTrinh2: chuongTrinhDaoTao,
     };
-    // setData((prev) => [...prev,{...item[0],...dsGiangVien,...item[3]}]);
     data.push({ ...item[0], ...dsGiangVien, ...item[3] });
   });
-
   // lưu lại thay đổi trong data
   const handleEditRowsModelChange = useCallback(
     (model) => {
@@ -139,7 +152,6 @@ export default function ArrangeExamSchedule() {
           item.soPhutKiemTra = object[0].soPhutKiemTra.value;
           item.tenHp = object[0].tenHp.value;
           item.toKiem = object[0].toKiem.value;
-          item.maKhoa = maKhoa;
         }
       });
     },
@@ -326,6 +338,9 @@ export default function ArrangeExamSchedule() {
     { defaultTheme }
   );
   const classes = useStyles();
+
+  if (loading && loading2) return <div className="loading">Loading...</div>;
+
   return (
     <div className="userList">
       <HeaderTableArrangeExamSchedule
