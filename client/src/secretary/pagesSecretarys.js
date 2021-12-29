@@ -31,10 +31,12 @@ function PagesSecretarys() {
   }, [param]);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getLecturersApiAsync());
-    dispatch(getSubjectsApiAsync());
-    dispatch(getSecretaryAccApiAsync());
-  }, [dispatch]);
+    if (param.pathname.search("/HomeSecretary") === 0) {
+      dispatch(getLecturersApiAsync());
+      dispatch(getSubjectsApiAsync());
+      dispatch(getSecretaryAccApiAsync());
+    }
+  }, [dispatch, param]);
   return (
     <Fragment>
       <Topbar />

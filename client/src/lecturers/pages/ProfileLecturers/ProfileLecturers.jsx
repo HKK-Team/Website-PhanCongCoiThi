@@ -1,22 +1,22 @@
-
-import Publish from '@mui/icons-material/Publish';
-import PermIdentity from '@mui/icons-material/MailOutline';
-import MailOutline from '@mui/icons-material/PermIdentity';
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import {GlobalState} from "../../../globalState";
-import React,{useContext,useState} from "react";
-import axios  from 'axios';
+import PermIdentity from "@mui/icons-material/MailOutline";
+import MailOutline from "@mui/icons-material/PermIdentity";
+import Publish from "@mui/icons-material/Publish";
+import axios from "axios";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 export default function ProfileLecturers() {
-  const state = useContext(GlobalState);
-  const users = state.lecturerApi.lecturer;
-  const Name = users[0].map((item)=>(item.fullName));
-  const Phone = users[0].map((item)=>(item.Phone));
-  const id = users[0].map((item)=>(item._id))
-  const [profile,setProfile] = useState({
-    _id : id[0],
-    email : window.sessionStorage.getItem("LecturerEmail"),
-    fullName : Name[0],
-    Phone : Phone[0]
+  const data = useSelector(
+    (state) => state.LecturersAccount.lecturersAccountApi.data[0]
+  );
+
+  const [profile, setProfile] = useState({
+    _id: data?._id,
+    email: data?.email,
+    fullName: data?.fullName,
+    Phone: data?.Phone,
+    maKhoa: data?.maKhoa,
+    maVienChuc: data?.maVienChuc,
   });
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -25,9 +25,9 @@ export default function ProfileLecturers() {
   const EditUserSubmit = async (e) => {
     e.preventDefault();
 
-      axios.post("http://localhost:5000/lecturer/edituser", { ...profile })
-      alert("Update User Succesfully!");
-      window.location.href = "/HomeLecturers";
+    axios.post("http://localhost:5000/lecturer/edituser", { ...profile });
+    alert("Update User Succesfully!");
+    window.location.href = "/HomeLecturers";
   };
   return (
     <div className="user">
@@ -43,24 +43,33 @@ export default function ProfileLecturers() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">{users[0].map((item)=>(item.fullName))}</span>
-              <span className="userShowUserTitle">KTCN</span>
+              <span className="userShowUsername">{data?.fullName}</span>
+              <span className="userShowUserTitle">{data?.maKhoa}</span>
             </div>
           </div>
           <div className="userShowBottom">
             <span className="userShowTitle">Chi tiết liên hệ</span>
 
             <div className="userShowInfo">
-              <PermIdentity className="userShowIcon" />
-              <span className="userShowInfoTitle">CTĐT : Kỹ thuật phần mềm</span>
+              <PermIdentity
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
+              <span className="userShowInfoTitle">{data?.email}</span>
             </div>
             <div className="userShowInfo">
-              <LocalPhoneIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">Phone Number : {users[0].map((item)=>(item.Phone))}</span>
+              <LocalPhoneIcon
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
+              <span className="userShowInfoTitle">{data?.Phone}</span>
             </div>
             <div className="userShowInfo">
-              <MailOutline className="userShowIcon" />
-              <span className="userShowInfoTitle">Email : {users[0].map((item)=>(item.email))}</span>
+              <MailOutline
+                className="userShowIcon"
+                style={{ color: "#000000" }}
+              />
+              <span className="userShowInfoTitle"> {data?.maVienChuc}</span>
             </div>
           </div>
         </div>
@@ -72,7 +81,7 @@ export default function ProfileLecturers() {
                 <label>Họ và Tên</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item)=>(item.fullName))}
+                  placeholder={data?.fullName}
                   name="fullName"
                   value={profile.fullName}
                   className="userUpdateInput"
@@ -84,7 +93,7 @@ export default function ProfileLecturers() {
                 <input
                   type="text"
                   name="email"
-                  placeholder={users[0].map((item)=>(item.email))}
+                  placeholder={data?.email}
                   value={profile.email}
                   className="userUpdateInput"
                   onChange={onChangeInput}
@@ -94,9 +103,36 @@ export default function ProfileLecturers() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={users[0].map((item)=>(item.Phone))}
+                  placeholder={data?.Phone}
                   name="Phone"
                   value={profile.Phone}
+                  className="userUpdateInput"
+                  onChange={onChangeInput}
+                />
+              </div>
+              <div className="userUpdateItem">
+                <label>
+                  <span style={{ color: "red" }}>*</span> Mã Khoa
+                </label>
+                <input
+                  type="text"
+                  placeholder={data?.maKhoa}
+                  name="maKhoa"
+                  value={profile.maKhoa}
+                  className="userUpdateInput"
+                  onChange={onChangeInput}
+                />
+              </div>
+              <div className="userUpdateItem">
+                <label>
+                  {" "}
+                  <span style={{ color: "red" }}>*</span> Mã Viên Chức
+                </label>
+                <input
+                  type="text"
+                  placeholder={data?.maVienChuc}
+                  name="maVienChuc"
+                  value={profile.maVienChuc}
                   className="userUpdateInput"
                   onChange={onChangeInput}
                 />
@@ -104,11 +140,7 @@ export default function ProfileLecturers() {
             </div>
             <div className="userUpdateRight">
               <div className="userUpdateUpload">
-                <img
-                  className="userUpdateImg"
-                  src={users[0].map((item)=>(item.image))}
-                  alt=""
-                />
+                <img className="userUpdateImg" src={data?.image} alt="" />
                 <label htmlFor="file">
                   <Publish className="userUpdateIcon" />
                 </label>

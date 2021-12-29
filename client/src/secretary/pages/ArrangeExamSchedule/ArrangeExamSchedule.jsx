@@ -51,17 +51,20 @@ export default function ArrangeExamSchedule() {
   const subjects = useSelector((state) =>
     state.Subjects.SubjectsApi.data.filter(
       (item) =>
-        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+        item.maKhoa === maKhoa &&
+        item.maChuongTrinh === chuongTrinhDaoTao &&
+        item.hinhThucKT !== "Tiểu luận" &&
+        item.hinhThucKT !== "Đồ án"
     )
   );
 
   let a = [...subjects]; // khoi tao mang chua mon hoc
   let b = [...lecturers]; // khoi tao mang chua giang vien
 
-  const length = Math.round(a.length / b.length);
+  const length = Math.ceil(a.length / b.length);
   //xử lý khi giảng viên ít hơn môn học
-  for (let key = 0; key < length; key++) {
-    if (length + 1 === 1) {
+  for (let key = 0; key <= length-1; key++) {
+    if (length === 1) {
       break;
     } else {
       b = b.concat(b);

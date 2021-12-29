@@ -20,4 +20,5 @@ router.route("/getLichthi").get(lichThiCtrl.getLichThi);
 router.route("/editLichthi").put(lichThiCtrl.eidtLichThi);
 router.route("/deleteLichthi/:id").delete(lichThiCtrl.deleteLichThi);
 router.route("/deleteAllLichThi/:key").delete(lichThiCtrl.deleteAllLichThi);
+router.route("/publicLichThi/:key,:isChecked").put(lichThiCtrl.publicLichThi);
 module.exports = router;

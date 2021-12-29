@@ -1,44 +1,95 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { userRows } from "../../../secretary/totalData";
-import { useState, useContext } from "react";
-import { GlobalState } from "../../../globalState";
-import { getdata } from "../../../secretary/totalData";
-import GetData from "../../../secretary/totalData";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSchedulesApiAsync } from "./../../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
 
 export default function TestScheduleLecturers() {
-  GetData();
-  const [data] = useState(getdata.schedule);
+  const LecturersAccLogin = useSelector(
+    (state) => state.LecturersAccount.lecturersAccountApi.data[0]
+  );
+  const { loding } = useSelector((state) => state.Schedules.SchedulesApi);
+
+  const data = [];
+  // eslint-disable-next-line no-unused-vars
+  const datas = useSelector((state) =>
+    state.Schedules.SchedulesApi.data.forEach((items) => {
+      if (items.public === true) {
+        items.giangVien.filter((item) =>
+          item.maVienChuc === LecturersAccLogin?.maVienChuc
+            ? data.push(items)
+            : null
+        );
+      }
+    })
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSchedulesApiAsync());
+  }, [dispatch]);
 
   // khởi tạo dữ liệu bảng
   const columns = [
+    { field: "maHocPhan", headerName: "Mã học phần", width: 180 },
+    { field: "tenHocPhan", headerName: "Tên học phần", width: 400 },
+    { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 200 },
+
+    { field: "toKiem", headerName: "Tổ Kiểm", width: 140 },
+    { field: "soLuongSinhVien", headerName: "Số lượng SV", width: 160 },
     {
-      field: "toKiem",
-      headerName: "Tổ kiểm tra",
-      width: 150,
+      field: "donViToChucKiemTra",
+      headerName: "Đơn vị tổ chức kiểm tra",
+      width: 250,
     },
-    { field: "nhomKiemTra", headerName: "Nhóm học", width: 150 },
-    { field: "soLuongSinhVien", headerName: "Số lượng sinh viên", width: 250 },
-    {
-      field: "ngayKiemTra",
-      headerName: "Ngày kiểm tra",
-      width: 200,
-      renderCell: (params) => {
-        return params?.row?.ngayKiemTra
-      },
-    },
-    { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 180 },
-    { field: "maPhong", headerName: "Phòng", width: 150 },
-    { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 250 },
-    { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 250 },
     {
       field: "chuongTrinhBoMon",
       headerName: "Chương trình/Bộ môn",
-      width: 250,
+      width: 350,
     },
+
+    { field: "ngayKiemTra", headerName: "Ngày kiểm tra", width: 180 },
+    { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 150 },
+    { field: "maPhong", headerName: "Teamcode/Phòng", width: 200 },
+    { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 200 },
+    { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 180 },
+
+    {
+      field: "giangVien[0].hoTen",
+      headerName: "Cán bộ coi kiểm tra 01(CB01)",
+      width: 230,
+      renderCell: (params) => {
+        return params.row?.giangVien[0]?.hoTen;
+      },
+    },
+    {
+      field: "giangVien[0].maVienChuc",
+      headerName: "Mã viên chức CB01",
+      width: 200,
+      renderCell: (params) => {
+        return params.row?.giangVien[0]?.maVienChuc;
+      },
+    },
+    {
+      field: "giangVien[1].hoTen",
+      headerName: "Cán bộ coi kiểm tra 02(CB02)",
+      width: 230,
+      renderCell: (params) => {
+        return params.row?.giangVien[1]?.hoTen;
+      },
+    },
+    {
+      field: "giangVien[1].maVienChuc",
+      headerName: "Mã viên chức CB02",
+      width: 200,
+      renderCell: (params) => {
+        return params.row?.giangVien[1]?.maVienChuc;
+      },
+    },
+    { field: "GVGD", headerName: "GVGD", width: 200 },
+    { field: "maGV", headerName: "MGV", width: 150 },
     { field: "heDaoTao", headerName: "Hệ đào tạo", width: 150 },
-    { field: "ghiChu", headerName: "Ghi chú", width: 150 },
   ];
   const defaultTheme = createTheme();
   const useStyles = makeStyles(
@@ -59,6 +110,8 @@ export default function TestScheduleLecturers() {
     { defaultTheme }
   );
   const classes = useStyles();
+  if (loding) return <div className="loading">Loading...</div>;
+
   return (
     <div className="userList">
       <h2>Bảng Phân công coi thi</h2>
@@ -68,7 +121,6 @@ export default function TestScheduleLecturers() {
         getRowId={(row) => row._id}
         disableSelectionOnClick
         columns={columns}
-        pageSize={getdata.schedule.length}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

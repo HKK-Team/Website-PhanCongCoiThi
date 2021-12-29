@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import Button from "@mui/material/Button";
@@ -16,11 +17,10 @@ import { Link } from "react-router-dom";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import scheduleSlice, {
-  getSchedulesApiAsync
+  getSchedulesApiAsync,
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 import "./../../components/headerTable/headerTable.css";
 import "./TestScheduleList.css";
-
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -53,7 +53,7 @@ export default function TestScheduleList() {
       (e) => e.tenHocKi === state.Schedules.filters.tenHocKi
     )
   );
-  
+
   const handleChange = (event) => {
     setkey(event.target.value);
     dispatch(scheduleSlice.actions.FilterTenHocKi(event.target.value));
@@ -93,6 +93,22 @@ export default function TestScheduleList() {
     }
   };
 
+  const isChecked = useSelector((state) =>
+    state.Schedules.SchedulesApi.data.find((item) => item.tenHocKi === key)
+  );
+  const handleCheckBoxChange = (event) => {
+    toastPromise(
+      axios.put(
+        `http://localhost:5000/import/publicLichThi/${key},${event.target.checked}`
+      ),
+      () => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        return "Trạng thái lịch thi đã được cập nhật !";
+      }
+    );
+  };
   // khởi tạo dữ liệu bảng
   const columns = [
     { field: "maHocPhan", headerName: "Mã học phần", width: 180 },
@@ -305,6 +321,22 @@ export default function TestScheduleList() {
               Xóa lịch thi này
             </Button>
           </Tooltip>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  defaultChecked
+                  style={{ color: "green" }}
+                  onChange={handleCheckBoxChange}
+                  checked={isChecked?.public || false}
+                />
+              }
+              label="Cho phép mọi người xem lịch thi này"
+            />
+          </FormGroup>
+          <p className="header-table-ps">
+            P/s: Mọi người sẽ không thể xem được lịch thi nếu bạn không cho phép
+          </p>
           <p className="header-table-ps">
             P/s: Hãy kiểm tra thật kỹ tất cả thông tin trước khi gửi mail
           </p>

@@ -28,6 +28,7 @@ const scheduleSchema = new mongoose.Schema({
   ngayKiemTra: String,
   nhomKiemTra: String,
   maChuongTrinh: String,
+  public: Boolean,
 });
 
 module.exports = mongoose.model("Schedules", scheduleSchema);

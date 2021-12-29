@@ -5,22 +5,24 @@ import Publish from "@mui/icons-material/Publish";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getSecretaryAccLogin } from "../../../redux/selectors";
-// chỉnh sửa thông tin khách hàng
+// chỉnh sửa thông tin Thư ký
 export default function ProfileSecretary() {
-  const secretaryAccount = useSelector(getSecretaryAccLogin);
-  const { soDienThoai, hoTen, _id, maKhoa, chuongTrinhDaoTao, email } =
-    secretaryAccount;
+  const data = useSelector(
+    (state) => state.SecretaryAccount.secretaryAccountApi.data[0]
+  );
+
   const [profile, setProfile] = useState({
-    _id: _id,
-    email: email,
-    hoTen: hoTen,
-    soDienThoai: soDienThoai,
+    _id: data?._id,
+    email: data?.email,
+    hoTen: data?.hoTen,
+    soDienThoai: data?.soDienThoai,
   });
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
   };
+
   const EditUserSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,8 +44,8 @@ export default function ProfileSecretary() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">{hoTen}</span>
-              <span className="userShowUserTitle">{maKhoa}</span>
+              <span className="userShowUsername">{data?.hoTen}</span>
+              <span className="userShowUserTitle">{data?.maKhoa}</span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -54,21 +56,23 @@ export default function ProfileSecretary() {
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">{email}</span>
+              <span className="userShowInfoTitle">{data?.email}</span>
             </div>
             <div className="userShowInfo">
               <LocalPhoneIcon
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">{soDienThoai}</span>
+              <span className="userShowInfoTitle">{data?.soDienThoai}</span>
             </div>
             <div className="userShowInfo">
               <MailOutline
                 className="userShowIcon"
                 style={{ color: "#000000" }}
               />
-              <span className="userShowInfoTitle">{chuongTrinhDaoTao}</span>
+              <span className="userShowInfoTitle">
+                {data?.chuongTrinhDaoTao}
+              </span>
             </div>
           </div>
         </div>
@@ -80,7 +84,7 @@ export default function ProfileSecretary() {
                 <label>Họ và Tên</label>
                 <input
                   type="text"
-                  placeholder={hoTen}
+                  placeholder={data?.hoTen}
                   name="hoTen"
                   value={profile.hoTen}
                   className="userUpdateInput"
@@ -92,7 +96,7 @@ export default function ProfileSecretary() {
                 <input
                   type="text"
                   name="email"
-                  placeholder={email}
+                  placeholder={data?.email}
                   value={profile.email}
                   className="userUpdateInput"
                   onChange={onChangeInput}
@@ -102,7 +106,7 @@ export default function ProfileSecretary() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={soDienThoai}
+                  placeholder={data?.soDienThoai}
                   name="soDienThoai"
                   value={profile.soDienThoai}
                   className="userUpdateInput"

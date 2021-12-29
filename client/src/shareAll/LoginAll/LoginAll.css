@@ -15,7 +15,7 @@
   background-color: #1976d2;
   border-radius: 5px 5px 5px 5px;
 }
-.btn-login-email span,svg{
+.btn-login-email span{
     color: white;
 }
 

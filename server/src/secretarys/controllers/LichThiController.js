@@ -51,6 +51,7 @@ const lichThiCtrl = {
               ],
               maKhoa: item.maKhoa,
               maChuongTrinh: item.maChuongTrinh,
+              public: false,
             });
             await newSchedules.save();
           }
@@ -133,6 +134,7 @@ const lichThiCtrl = {
             },
           ],
           maKhoa: maKhoa,
+          public: false,
         }
       );
       res.json({ msg: "Cập nhật thành công" });
@@ -159,6 +161,28 @@ const lichThiCtrl = {
         }
       }
       res.json({ msg: "Xóa thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  publicLichThi: async (req, res) => {
+    try {
+      let collectionNames = await Schedules.find();
+      let isPublic = req.params.isChecked;
+      let key = req.params.key;
+      if (key === "undefined") {
+        return res.status(500).json({ msg: 'Vui lòng chọn lịch thi' });
+      } else {
+        for (let i = 0, len = collectionNames.length; i < len; i++) {
+          let collectionName = collectionNames[i];
+          if (collectionName.tenHocKi === req.params.key) {
+            await Schedules.findByIdAndUpdate(collectionName._doc._id, {
+              public: isPublic,
+            });
+          }
+        }
+        res.json({ msg: "public thành công" });
+      }
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

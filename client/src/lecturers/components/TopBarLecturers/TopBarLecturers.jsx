@@ -59,7 +59,7 @@ export default function TopBarLecturers() {
               </MenuItem>
               <MenuItem>
                 <Link
-                  to="/HomeLecturers/accountLecturers"
+                  to="/HomeLecturers/profileLecturers"
                   style={{ color: "black" }}
                 >
                   My Account

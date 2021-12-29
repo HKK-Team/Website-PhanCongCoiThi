@@ -21,11 +21,14 @@ export const schedulesSlice = createSlice({
   name: "schedules",
   initialState: {
     SchedulesApi: { data: [], loading: false, error: "" },
-    filters: { tenHocKi: "" },
+    filters: { tenHocKi: "", maVienChucVSTenLop: "" },
   },
   reducers: {
     FilterTenHocKi: (state, action) => {
       state.filters.tenHocKi = action.payload;
+    },
+    FilterKeyWord: (state, action) => {
+      state.filters.maVienChucVSTenLop = action.payload;
     },
   },
   extraReducers: {

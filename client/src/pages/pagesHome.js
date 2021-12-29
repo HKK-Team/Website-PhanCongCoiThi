@@ -20,7 +20,7 @@ export default function PagesHome() {
     }
   }, [param]);
 
-  const [isLogged] = sessionStorage.getItem("SecretaryLogin") || "";
+  const isLogged = sessionStorage.getItem("SecretaryLogin") || "";
   const login = sessionStorage.getItem("LecturerLogin") || "";
   return (
     <Routes>

@@ -1,40 +1,37 @@
-import React, { Fragment, useEffect, useState,useContext } from "react";
-import logo from "./../../../src/images/tdmu-elearning-banner.png";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import "./HomeAll.css";
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import React, { Fragment, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { GlobalState } from "../../globalState";
-import { useNavigate } from "react-router-dom";
-// import ProfileLecturers from "../../lecturers/pages/ProfileLecturers/ProfileLecturers";
+import schedulesSlice from "../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
+import FilterSearchHome from "../FilterSearchHome/FilterSearchHome";
+import logo from "./../../../src/images/tdmu-elearning-banner.png";
+import "./HomeAll.css";
 export default function HomeAll() {
-  const state = useContext(GlobalState);
-  // const [isLogged] = state.lecturerApi.isLogin;
-  // console.log(isLogged);
-
-  const navigate = useNavigate();
-  const [save, setSave] = state.ScheduleApi.save;
-  const [search, setsearch] = state.ScheduleApi.search;
-
-  const getInput = (e) => {
-    setSave(e.toString())
+  const keyWord = useSelector(
+    (state) => state.Schedules.filters.maVienChucVSTenLop
+  );
+  const dispatch = useDispatch();
+  const handleInputChange = (e) => {
+    dispatch(schedulesSlice.actions.FilterKeyWord(e.target.value.toUpperCase()));
   };
 
-  if (save[0] === "D") {
-    setsearch("nhomKiemTra[regex]=" + save);
-  } else {
-    setsearch("giangVien.maVienChuc=" + save);
-  }
-  
-  const eventSearch = () => {
-    if (save === "") {
-      alert("Hãy nhập vào mã giảng viên hoặc tên lớp !!!");
-    } else {
-      let path = `/HomeLecturers/testScheduleLecturers`;
-      navigate(path);
-    }
-  };
+  useEffect(() => {
+    const topbarSecretary = document.querySelector(".topbarSecretary");
+    const containerAdminSecretarys = document.querySelector(
+      ".containerAdmin-Secretarys"
+    );
+    const topBarLecturers = document.querySelector(".topBarLecturers");
+    const containerAdminLecturers = document.querySelector(
+      ".containerAdmin-Lecturers"
+    );
+    topbarSecretary.style.display = "none";
+    containerAdminSecretarys.style.display = "none";
+    topBarLecturers.style.display = "none";
+    containerAdminLecturers.style.display = "none";
+    document.body.style.overflowY = "auto";
+  }, []);
 
   return (
     <Fragment>
@@ -68,13 +65,14 @@ export default function HomeAll() {
             <Input
               id="my-input"
               aria-describedby="my-helper-text"
-              onChange={(e) => getInput(e.target.value.toUpperCase())}
+              onChange={handleInputChange}
+              value={keyWord}
             />
             <Button
               variant="contained"
               size="small"
               style={{ marginTop: 10 }}
-              onClick={eventSearch}
+              // onClick={eventSearch}
             >
               Tìm
             </Button>
@@ -85,6 +83,9 @@ export default function HomeAll() {
               Nhập tên lớp nếu bạn là sinh viên
             </FormHelperText>
           </FormControl>
+        </div>
+        <div className="FilterSearchHome">
+          <FilterSearchHome />
         </div>
       </div>
     </Fragment>
