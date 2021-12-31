@@ -7,6 +7,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import { NavLink } from "react-router-dom";
+import { Tooltip } from "@mui/material";
 
 export default function Sidebar() {
   return (
@@ -16,10 +17,15 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Bảng điều khiển</h3>
           <ul className="sidebarList">
             <NavLink to="/HomeSecretary/arrangeExamSchedule" className="link">
-              <li className="sidebarListItem">
-                <AssignmentIcon className="sidebarIcon" style={{ color: "#000000" }}/>
-                Sắp xếp lịch thi
-              </li>
+              <Tooltip title=" Sắp xếp lịch thi">
+                <li className="sidebarListItem">
+                  <AssignmentIcon
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
+                  {/* Sắp xếp lịch thi */}
+                </li>
+              </Tooltip>
             </NavLink>
           </ul>
         </div>
@@ -27,31 +33,37 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Quản lý</h3>
           <ul className="sidebarList">
             <NavLink to="/HomeSecretary/lecturers" className="link">
-              <li className="sidebarListItem">
-                <PermIdentity
-                  className="sidebarIcon"
-                  style={{ color: "#000000" }}
-                />
-                Giảng viên
-              </li>
+              <Tooltip title="Giảng viên">
+                <li className="sidebarListItem">
+                  <PermIdentity
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
+                  {/* Giảng viên */}
+                </li>
+              </Tooltip>
             </NavLink>
             <NavLink to="/HomeSecretary/subjects" className="link">
-              <li className="sidebarListItem">
-                <LibraryBooksIcon
-                  className="sidebarIcon"
-                  style={{ color: "#000000" }}
-                />
-                Môn học
-              </li>
+              <Tooltip title="Môn thi">
+                <li className="sidebarListItem">
+                  <LibraryBooksIcon
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
+                  {/* Môn thi */}
+                </li>
+              </Tooltip>
             </NavLink>
             <NavLink to="/HomeSecretary/testSchedule" className="link">
-              <li className="sidebarListItem">
-                <EventNoteIcon
-                  className="sidebarIcon"
-                  style={{ color: "#000000" }}
-                />
-                Lịch thi
-              </li>
+              <Tooltip title="Lịch thi">
+                <li className="sidebarListItem">
+                  <EventNoteIcon
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
+                  {/* Lịch thi */}
+                </li>
+              </Tooltip>
             </NavLink>
           </ul>
         </div>
@@ -63,21 +75,21 @@ export default function Sidebar() {
                 className="sidebarIcon"
                 style={{ color: "#000000" }}
               />
-              Mail
+              {/* Mail */}
             </li>
             <li className="sidebarListItem">
               <DynamicFeed
                 className="sidebarIcon"
                 style={{ color: "#000000" }}
               />
-              Feedback
+              {/* Feedback */}
             </li>
             <li className="sidebarListItem">
               <ChatBubbleOutline
                 className="sidebarIcon"
                 style={{ color: "#000000" }}
               />
-              Messages
+              {/* Messages */}
             </li>
           </ul>
         </div>

@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { Button, Modal, Typography } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Box } from "@mui/system";
+import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -12,6 +14,18 @@ import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import "./SubjectsList.css";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "White",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function SubjectsList() {
   const { loading } = useSelector((state) => state.Subjects.SubjectsApi);
@@ -38,10 +52,13 @@ export default function SubjectsList() {
 
         const wb = XLSX.read(bufferArray, { type: "buffer" });
 
-        const wsname = wb.SheetNames[0];
+        const wsname = wb.SheetNames[1];
 
         const ws = wb.Sheets[wsname];
-        const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
+        const data = XLSX.utils.sheet_to_json(ws, {
+          raw: false,
+          defval: "",
+        });
 
         resolve(data);
       };
@@ -54,6 +71,10 @@ export default function SubjectsList() {
       d.shift();
       d.maKhoa = maKhoa;
       d.maChuongTrinh = chuongTrinhDaoTao;
+      d.forEach((item) => {
+        item.soLuong -= 0;
+        item.soPhutKiemTra -= 0;
+      });
       setMonthi(d);
       ImportMonThi();
     });
@@ -88,9 +109,14 @@ export default function SubjectsList() {
       );
     }
   };
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const columns = [
-    { field: "maHp", headerName: "Mã học phần", width: 170 },
-    { field: "tenHp", headerName: "Tên Học Phần", width: 400 },
+    { field: "maHp", headerName: "Mã học phần", width: 140 },
+    { field: "tenHp", headerName: "Tên Học Phần", width: 200 },
     {
       field: "nhomKT",
       headerName: "Nhóm kiểm tra",
@@ -113,9 +139,29 @@ export default function SubjectsList() {
       width: 300,
     },
     {
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
+      width: 150,
+    },
+    {
+      field: "gioBatDau",
+      headerName: "Giờ bắt đầu",
+      width: 150,
+    },
+    {
+      field: "maPhong",
+      headerName: "mã phòng/teamCode",
+      width: 180,
+    },
+    {
       field: "hinhThucKT",
       headerName: "Hình thức kiểm tra",
       width: 200,
+    },
+    {
+      field: "soPhutKiemTra",
+      headerName: "Số phút kiểm tra",
+      width: 150,
     },
     {
       field: "GVGD",
@@ -133,9 +179,57 @@ export default function SubjectsList() {
       width: 150,
     },
     {
+      field: "canBoCoiKiem3",
+      headerName: "Cán bộ coi kiểm tra 03",
+      width: 200,
+    },
+    {
+      field: "maCanBoCoiKiem3",
+      headerName: "Mã viên chức CB03",
+      width: 180,
+    },
+    {
+      field: "ghiChu",
+      headerName: "ghi chú",
+      width: 140,
+      renderCell: (params) => {
+        if (params.value !== "" && params.id === params.row._id)
+          return (
+            <>
+              <Button
+                variant="contained"
+                style={{ color: "white" }}
+                onClick={handleOpen}
+              >
+                Mở
+              </Button>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    Ghi chú
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    {params.value}
+                  </Typography>
+                </Box>
+              </Modal>
+            </>
+          );
+      },
+    },
+    {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 130,
       renderCell: (params) => {
         return (
           <>
@@ -174,23 +268,28 @@ export default function SubjectsList() {
 
   const classes = useStyles();
   if (loading) return <div className="loading">Loading...</div>;
+
   return (
     <div className="productList">
       <HeaderTable
-        title="Bảng Môn Học"
-        name="Thêm môn học"
+        title="Bảng Môn Thi"
+        name="Thêm môn thi"
         urlNew="/HomeSecretary/newSubjects"
         form={formMH}
         onChange={(e) => readExcelMonThi(e.target.files[0])}
       />
-      <DataGrid
+      <DataGridPro
         className={classes.root}
         getRowId={(row) => row._id}
+        // autoHeight
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        // pageSize={10}
-        // checkboxSelection
+        initialState={{
+          pinnedColumns: { left: ["maHp", "tenHp"], right: ["action"] },
+        }}
+        density="compact"
+        scrollbarSize={10}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

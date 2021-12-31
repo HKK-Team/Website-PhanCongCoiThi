@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { useSelector } from "react-redux";
+import { TextareaAutosize } from "@mui/material";
 
 // thêm sản phẩm mới
 export default function NewSubjects() {
@@ -21,6 +22,7 @@ export default function NewSubjects() {
   const onSubmit = async (data) => {
     data.maKhoa = maKhoa;
     data.maChuongTrinh = chuongTrinhDaoTao;
+    console.log(data);
     await toastPromise(
       axios.post("http://localhost:5000/import/createMonThi", {
         ...data,
@@ -36,7 +38,7 @@ export default function NewSubjects() {
 
   return (
     <div className="newProduct">
-      <h1 className="addProductTitle">Thêm Môn Học</h1>
+      <h1 className="addProductTitle">Thêm Môn Thi</h1>
       <form className="addProductForm" onSubmit={handleSubmit(onSubmit)}>
         <div className="addProductForm-warrper">
           <div className="addProductItem">
@@ -87,8 +89,6 @@ export default function NewSubjects() {
               {...register("doViToChuc", { required: true, maxLength: 80 })}
             />
           </div>
-        </div>
-        <div className="addProductForm-warrper">
           <div className="addProductItem">
             <label>Chương trình/Bộ môn</label>
             <input
@@ -98,11 +98,46 @@ export default function NewSubjects() {
             />
           </div>
           <div className="addProductItem">
+            <label>Ngày Kiểm tra</label>
+            <input
+              type="text"
+              placeholder="Ngày Kiểm tra"
+              {...register("ngayKiemTra", { required: true, maxLength: 80 })}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Giờ Bắt Đầu</label>
+            <input
+              type="text"
+              placeholder="Giờ Bắt Đầu"
+              {...register("gioBatDau", { required: true, maxLength: 80 })}
+            />
+          </div>
+        </div>
+
+        <div className="addProductForm-warrper">
+          <div className="addProductItem">
+            <label>Mã Phòng/TeamCode</label>
+            <input
+              type="text"
+              placeholder="Mã Phòng/TeamCode"
+              {...register("maPhong", { required: true, maxLength: 80 })}
+            />
+          </div>
+          <div className="addProductItem">
             <label>Hình thức kiểm tra</label>
             <input
               type="text"
               placeholder="Hình thức kiểm tra"
               {...register("hinhThucKT", { required: true, maxLength: 80 })}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Số Phút Kiểm Tra</label>
+            <input
+              type="number"
+              placeholder="Số Phút Kiểm Tra"
+              {...register("soPhutKiemTra", { required: true, maxLength: 80 })}
             />
           </div>
           <div className="addProductItem">
@@ -129,7 +164,41 @@ export default function NewSubjects() {
               {...register("heDT", { required: true, maxLength: 80 })}
             />
           </div>
-          <button className="addProductButton">Tạo môn học</button>
+          <div className="addProductItem">
+            <label>Cán bộ coi kiểm tra 03</label>
+            <input
+              type="text"
+              placeholder="Cán bộ coi kiểm tra 03"
+              {...register("canBoCoiKiem3", { required: true, maxLength: 80 })}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Mã viên chức 03</label>
+            <input
+              type="text"
+              placeholder="Mã viên chức 03"
+              {...register("maCanBoCoiKiem3", {
+                required: true,
+                maxLength: 80,
+              })}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Ghi chú</label>
+            <TextareaAutosize
+              aria-label="minimum height"
+              placeholder="Ghi chú"
+              minRows={5}
+              style={{ width: "100%", padding: 10 }}
+              {...register("ghiChu", { required: false })}
+            />
+          </div>
+          <button
+            className="addProductButton"
+            style={{ background: "green", width: "100%", marginBottom: 10 }}
+          >
+            Tạo môn học
+          </button>
         </div>
         <div className="addProductForm-warrper">
           <img

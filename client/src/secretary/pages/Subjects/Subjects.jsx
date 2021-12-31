@@ -1,3 +1,4 @@
+import { TextareaAutosize } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -8,12 +9,6 @@ import "./Subjects.css";
 
 // chỉnh sửa sản phẩm
 export default function Subjects() {
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-    return () => {
-      document.body.style.overflow = "hidden";
-    };
-  }, []);
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (items) => {
@@ -24,7 +19,7 @@ export default function Subjects() {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/lecturers";
+          window.location.reload();
         }, 1000);
         return "Cập Nhật Thành Công";
       }
@@ -37,25 +32,32 @@ export default function Subjects() {
   const [data] = subjects.filter((subject) => subject._id === param.subjectsId);
 
   useEffect(() => {
-    setValue("maHp", data.maHp);
-    setValue("tenHp", data.tenHp);
-    setValue("nhomKT", data.nhomKT);
-    setValue("hinhThucKT", data.hinhThucKT);
-    setValue("GVGD", data.GVGD);
-    setValue("chuongTrinh", data.chuongTrinh);
-    setValue("doViToChuc", data.doViToChuc);
-    setValue("toKiem", data.toKiem);
-    setValue("soLuong", data.soLuong);
-    setValue("maGV", data.maGV);
-    setValue("heDT", data.heDT);
+    setValue("maHp", data?.maHp);
+    setValue("tenHp", data?.tenHp);
+    setValue("nhomKT", data?.nhomKT);
+    setValue("hinhThucKT", data?.hinhThucKT);
+    setValue("GVGD", data?.GVGD);
+    setValue("chuongTrinh", data?.chuongTrinh);
+    setValue("doViToChuc", data?.doViToChuc);
+    setValue("toKiem", data?.toKiem);
+    setValue("soLuong", data?.soLuong);
+    setValue("maGV", data?.maGV);
+    setValue("heDT", data?.heDT);
+    setValue("ngayKiemTra", data?.ngayKiemTra);
+    setValue("gioBatDau", data?.gioBatDau);
+    setValue("soPhutKiemTra", data?.soPhutKiemTra);
+    setValue("canBoCoiKiem3", data?.canBoCoiKiem3);
+    setValue("maCanBoCoiKiem3", data?.maCanBoCoiKiem3);
+    setValue("ghiChu", data?.ghiChu);
+    setValue("maPhong", data?.maPhong);
   }, [data, setValue]);
   if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="product">
       <div className="productTitleContainer">
-        <h1 className="productTitle">Chỉnh sửa môn học</h1>
+        <h1 className="productTitle">Chỉnh sửa môn thi</h1>
         <Link to="/HomeSecretary/newSubjects">
-          <button className="productAddButton">Thêm môn học</button>
+          <button className="productAddButton">Thêm môn thi</button>
         </Link>
       </div>
       <div className="productTop">
@@ -93,73 +95,109 @@ export default function Subjects() {
             <label>Mã học phần</label>
             <input
               type="text"
-              placeholder={data?.maHp}
               {...register("maHp", { required: false, maxLength: 80 })}
             />
 
             <label>Tên học phần</label>
             <input
               type="text"
-              placeholder={data?.tenHp}
               {...register("tenHp", { required: false, maxLength: 80 })}
             />
             <label>Nhóm kiểm tra</label>
             <input
               type="text"
-              placeholder={data?.nhomKT}
               {...register("nhomKT", { required: false, maxLength: 80 })}
             />
             <label>Tổ kiểm </label>
             <input
               type="text"
-              placeholder={data?.toKiem}
               {...register("toKiem", { required: false, maxLength: 80 })}
             />
             <label>Số lượng SV</label>
             <input
               type="number"
-              placeholder={data?.soLuong}
               {...register("soLuong", { required: false, maxLength: 80 })}
             />
             <label>Đơn vị tổ chức kiểm tra</label>
             <input
               type="text"
-              placeholder={data?.doViToChuc}
               {...register("doViToChuc", { required: false, maxLength: 80 })}
             />
-          </div>
-          <div className="productFormLeft">
+
             <label>Chương trình/Bộ môn</label>
             <input
               type="text"
-              placeholder={data?.chuongTrinh}
               {...register("chuongTrinh", { required: false, maxLength: 80 })}
+            />
+
+            <label>Ngày kiểm tra</label>
+            <input
+              type="text"
+              {...register("ngayKiemTra", {
+                required: false,
+                maxLength: 80,
+              })}
+            />
+            <label>Giờ bắt đầu</label>
+            <input
+              type="text"
+              {...register("gioBatDau", { required: false, maxLength: 80 })}
+            />
+          </div>
+          <div className="productFormLeft">
+            <label>Mã Phòng/teamCode</label>
+            <input
+              type="text"
+              {...register("maPhong", { required: false, maxLength: 80 })}
             />
             <label>Hình thức kiểm tra</label>
             <input
               type="text"
-              placeholder={data?.hinhThucKT}
               {...register("hinhThucKT", { required: false, maxLength: 80 })}
+            />
+            <label>Số phút kiểm tra</label>
+            <input
+              type="number"
+              {...register("soPhutKiemTra", { required: false, maxLength: 80 })}
             />
             <label>GVGD</label>
             <input
               type="text"
-              placeholder={data?.GVGD}
               {...register("GVGD", { required: false, maxLength: 80 })}
             />
             <label>MGV</label>
             <input
               type="text"
-              placeholder={data?.maGV}
               {...register("maGV", { required: false, maxLength: 80 })}
             />
             <label>Hệ đào tạo</label>
             <input
               type="text"
-              placeholder={data?.heDT}
               {...register("heDT", { required: false, maxLength: 80 })}
             />
-            <button className="productButton">Chỉnh sửa</button>
+            <label>Cán bộ coi kiểm 03</label>
+            <input
+              type="text"
+              {...register("canBoCoiKiem3", { required: false, maxLength: 80 })}
+            />
+            <label>Mã viên chức 03</label>
+            <input
+              type="text"
+              {...register("maCanBoCoiKiem3", {
+                required: false,
+                maxLength: 80,
+              })}
+            />
+            <label>Ghi chú</label>
+            <TextareaAutosize
+              aria-label="minimum height"
+              minRows={5}
+              style={{ width: "100%", marginBottom: 20, padding: 10 }}
+              {...register("ghiChu", { required: false })}
+            />
+            <button className="productButton" style={{ background: "green" }}>
+              Chỉnh sửa
+            </button>
           </div>
         </form>
       </div>

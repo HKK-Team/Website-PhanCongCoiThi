@@ -351,6 +351,7 @@ export default function TestScheduleList() {
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick
+        autoHeight
         columns={columns}
         checkboxSelection
         localeText={{

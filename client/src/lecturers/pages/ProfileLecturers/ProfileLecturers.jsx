@@ -24,7 +24,7 @@ export default function ProfileLecturers() {
   };
   const EditUserSubmit = async (e) => {
     e.preventDefault();
-
+    
     axios.post("http://localhost:5000/lecturer/edituser", { ...profile });
     alert("Update User Succesfully!");
     window.location.href = "/HomeLecturers";

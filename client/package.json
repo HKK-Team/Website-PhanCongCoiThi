@@ -9,7 +9,7 @@
     "@material-ui/styles": "^4.11.4",
     "@mui/icons-material": "^5.0.0",
     "@mui/material": "^5.0.6",
-    "@mui/x-data-grid": "^4.0.0",
+    "@mui/x-data-grid-pro": "^5.2.1",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { Tooltip } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -155,14 +155,14 @@ export default function LecturersList() {
         form={formGV}
         onChange={(e) => readExcelGiangVien(e.target.files[0])}
       />
-      <DataGrid
+      <DataGridPro
         className={classes.root}
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick
         columns={columns}
-        // pageSize={10}
-        // checkboxSelection
+        autoHeight
+        density="compact"
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",
