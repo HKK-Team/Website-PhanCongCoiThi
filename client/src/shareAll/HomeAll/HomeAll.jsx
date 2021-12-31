@@ -5,7 +5,6 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import schedulesSlice from "../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
-import FilterSearchHome from "../FilterSearchHome/FilterSearchHome";
 import logo from "./../../../src/images/tdmu-elearning-banner.png";
 import "./HomeAll.css";
 export default function HomeAll() {
@@ -14,7 +13,9 @@ export default function HomeAll() {
   );
   const dispatch = useDispatch();
   const handleInputChange = (e) => {
-    dispatch(schedulesSlice.actions.FilterKeyWord(e.target.value.toUpperCase()));
+    dispatch(
+      schedulesSlice.actions.FilterKeyWord(e.target.value.toUpperCase())
+    );
   };
 
   useEffect(() => {
@@ -72,7 +73,9 @@ export default function HomeAll() {
               variant="contained"
               size="small"
               style={{ marginTop: 10 }}
-              // onClick={eventSearch}
+              onClick={() => {
+                window.location.href = `/FilterSearch/${keyWord}`;
+              }}
             >
               Tìm
             </Button>
@@ -83,9 +86,6 @@ export default function HomeAll() {
               Nhập tên lớp nếu bạn là sinh viên
             </FormHelperText>
           </FormControl>
-        </div>
-        <div className="FilterSearchHome">
-          <FilterSearchHome />
         </div>
       </div>
     </Fragment>

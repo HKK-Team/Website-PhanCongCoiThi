@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router";
+import FilterSearchHome from "../shareAll/FilterSearchHome/FilterSearchHome";
 import HomeAll from "../shareAll/HomeAll/HomeAll";
 import LoginAll from "../shareAll/LoginAll/LoginAll";
 import NotFound from "../utils/not_found/NotFound";
@@ -25,6 +26,7 @@ export default function PagesHome() {
   return (
     <Routes>
       <Route exact path="/" element={<HomeAll />} />
+      <Route exact path="/FilterSearch/:keyWord" element={<FilterSearchHome />} />
       <Route
         exact
         path="/login"

@@ -28,13 +28,4 @@
   color: gray;
   line-height: 1;
 }
-.FilterSearchHome {
-  background-color: white;
-  width: 1500px;
-  position: absolute;
-  top: 65%;
-  left: -90%;
-  z-index: 100;
-  display: inline-block;
-}
 
