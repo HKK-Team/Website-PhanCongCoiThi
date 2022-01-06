@@ -8,6 +8,7 @@ import logo from "./../../../images/tdmu-elearning-banner.png";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
 
 export default function TopBarLecturers() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,7 +79,7 @@ export default function TopBarLecturers() {
               alt=""
               className="topAvatar"
               onClick={() => {
-                alert("hello");
+                toastInfor("Xin chào");
               }}
             />
           </div>

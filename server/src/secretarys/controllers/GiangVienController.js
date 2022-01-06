@@ -64,15 +64,20 @@ const GiangVienCtrl = {
   createGiangVien: async (req, res) => {
     try {
       const { maVienChuc, hoTen, email, maKhoa, maChuongTrinh } = req.body;
-      const newGiangVien = danhSachGiangVien({
-        hoTen: hoTen,
-        maVienChuc: maVienChuc,
-        email: email,
-        maKhoa: maKhoa,
-        maChuongTrinh: maChuongTrinh,
-      });
-      await newGiangVien.save();
-      res.json({ msg: "Thêm thành công" });
+      let check = await danhSachGiangVien.findOne({ maVienChuc });
+      if (check) {
+        return res.status(500).json({ msg: "Mã viên chức đã tồn tại" });
+      } else {
+        const newGiangVien = danhSachGiangVien({
+          hoTen: hoTen,
+          maVienChuc: maVienChuc,
+          email: email,
+          maKhoa: maKhoa,
+          maChuongTrinh: maChuongTrinh,
+        });
+        await newGiangVien.save();
+        res.json({ msg: "Thêm thành công" });
+      }
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

@@ -6,7 +6,7 @@ import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
@@ -16,6 +16,7 @@ import "./LecturersList.css";
 
 // Bảng Giảng Viên
 export default function LecturersList() {
+  const navigate = useNavigate();
   const secretaryAccount = useSelector(getSecretaryAccLogin);
   const maKhoa = secretaryAccount?.maKhoa;
   const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
@@ -27,7 +28,6 @@ export default function LecturersList() {
         item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
     )
   );
-  console.log(data);
 
   const [giangvien, setgiangvien] = useState([]);
 
@@ -64,7 +64,7 @@ export default function LecturersList() {
       }),
       (data) => {
         setTimeout(() => {
-          window.location.reload();
+          navigate('/HomeSecretary/lecturers')
         }, 1000);
         return (
           JSON.stringify(data?.data?.response?.data?.msg) ||
@@ -80,7 +80,7 @@ export default function LecturersList() {
         axios.delete(`http://localhost:5000/import/deleteGiangVien/${id}`),
         () => {
           setTimeout(() => {
-            window.location.reload();
+            navigate('/HomeSecretary/lecturers')
           }, 1000);
           return "Xóa thành công !";
         }

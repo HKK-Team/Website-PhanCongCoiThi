@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSchedulesApiAsync } from "./../../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
@@ -49,7 +49,14 @@ export default function TestScheduleLecturers() {
       width: 350,
     },
 
-    { field: "ngayKiemTra", headerName: "Ngày kiểm tra", width: 180 },
+    {
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
+      width: 180,
+      renderCell: (row) => {
+        return row.value.slice(0, 10);
+      },
+    },
     { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 150 },
     { field: "maPhong", headerName: "Teamcode/Phòng", width: 200 },
     { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 200 },
@@ -115,7 +122,7 @@ export default function TestScheduleLecturers() {
   return (
     <div className="userList">
       <h2>Bảng Phân công coi thi</h2>
-      <DataGrid
+      <DataGridPro
         className={classes.root}
         rows={data}
         getRowId={(row) => row._id}

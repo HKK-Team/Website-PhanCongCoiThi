@@ -2,6 +2,7 @@ const router = require("express").Router();
 const GiangVienCtrl = require("../Controllers/GiangVienController");
 const MonThiCtrl = require("../Controllers/MonThiController");
 const lichThiCtrl = require("../Controllers/LichThiController");
+const namHocCtrl = require("../Controllers/namHocController");
 
 router.route("/giangvien").post(GiangVienCtrl.check);
 router.route("/getGiangVien").get(GiangVienCtrl.getGiangVien);
@@ -21,4 +22,7 @@ router.route("/editLichthi").put(lichThiCtrl.eidtLichThi);
 router.route("/deleteLichthi/:id").delete(lichThiCtrl.deleteLichThi);
 router.route("/deleteAllLichThi/:key").delete(lichThiCtrl.deleteAllLichThi);
 router.route("/publicLichThi/:key,:isChecked").put(lichThiCtrl.publicLichThi);
+
+router.route("/getNamHoc").get(namHocCtrl.getNamHoc);
+
 module.exports = router;

@@ -25,9 +25,13 @@ const scheduleSchema = new mongoose.Schema({
   tenHocPhan: String,
   toKiem: String,
   maHocPhan: String,
-  ngayKiemTra: String,
+  ngayKiemTra: Date,
   nhomKiemTra: String,
   maChuongTrinh: String,
+  canBoCoiKiem3: String,
+  maCanBoCoiKiem3: String,
+  canBoDuBi: String,
+  maCanBoDuBi: String,
   public: Boolean,
 });
 

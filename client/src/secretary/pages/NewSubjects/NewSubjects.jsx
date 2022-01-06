@@ -1,14 +1,15 @@
-import "./NewSubjects.css";
-import logo from "./../../../images/tdmu-elearning-banner.png";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
-import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { useSelector } from "react-redux";
-import { TextareaAutosize } from "@mui/material";
+import { useNavigate } from "react-router";
+import { getSecretaryAccLogin } from "../../../redux/selectors";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import logo from "./../../../images/tdmu-elearning-banner.png";
+import "./NewSubjects.css";
 
 // thêm sản phẩm mới
 export default function NewSubjects() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,14 +23,13 @@ export default function NewSubjects() {
   const onSubmit = async (data) => {
     data.maKhoa = maKhoa;
     data.maChuongTrinh = chuongTrinhDaoTao;
-    console.log(data);
     await toastPromise(
       axios.post("http://localhost:5000/import/createMonThi", {
         ...data,
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/HomeSecretary/subjects";
+          navigate("/HomeSecretary/subjects");
         }, 1000);
         return "Thêm Thành Công";
       }
@@ -100,7 +100,7 @@ export default function NewSubjects() {
           <div className="addProductItem">
             <label>Ngày Kiểm tra</label>
             <input
-              type="text"
+              type="date"
               placeholder="Ngày Kiểm tra"
               {...register("ngayKiemTra", { required: true, maxLength: 80 })}
             />
@@ -113,9 +113,6 @@ export default function NewSubjects() {
               {...register("gioBatDau", { required: true, maxLength: 80 })}
             />
           </div>
-        </div>
-
-        <div className="addProductForm-warrper">
           <div className="addProductItem">
             <label>Mã Phòng/TeamCode</label>
             <input
@@ -124,6 +121,9 @@ export default function NewSubjects() {
               {...register("maPhong", { required: true, maxLength: 80 })}
             />
           </div>
+        </div>
+
+        <div className="addProductForm-warrper">
           <div className="addProductItem">
             <label>Hình thức kiểm tra</label>
             <input
@@ -165,18 +165,18 @@ export default function NewSubjects() {
             />
           </div>
           <div className="addProductItem">
-            <label>Cán bộ coi kiểm tra 03</label>
+            <label>Cán bộ giám sát</label>
             <input
               type="text"
-              placeholder="Cán bộ coi kiểm tra 03"
+              placeholder="Cán bộ giám sát"
               {...register("canBoCoiKiem3", { required: true, maxLength: 80 })}
             />
           </div>
           <div className="addProductItem">
-            <label>Mã viên chức 03</label>
+            <label>Mã cán bộ giám sát</label>
             <input
               type="text"
-              placeholder="Mã viên chức 03"
+              placeholder="Mã viên chức giám sát"
               {...register("maCanBoCoiKiem3", {
                 required: true,
                 maxLength: 80,
@@ -184,15 +184,28 @@ export default function NewSubjects() {
             />
           </div>
           <div className="addProductItem">
-            <label>Ghi chú</label>
-            <TextareaAutosize
-              aria-label="minimum height"
-              placeholder="Ghi chú"
-              minRows={5}
-              style={{ width: "100%", padding: 10 }}
-              {...register("ghiChu", { required: false })}
+            <label>Cán bộ dự bị</label>
+            <input
+              type="text"
+              placeholder="Cán bộ dự bị"
+              {...register("canBoDuBi", {
+                required: true,
+                maxLength: 80,
+              })}
             />
           </div>
+          <div className="addProductItem">
+            <label>Mã Cán bộ dự bị</label>
+            <input
+              type="text"
+              placeholder="Mã Cán bộ dự bị"
+              {...register("maCanBoDuBi", {
+                required: true,
+                maxLength: 80,
+              })}
+            />
+          </div>
+
           <button
             className="addProductButton"
             style={{ background: "green", width: "100%", marginBottom: 10 }}

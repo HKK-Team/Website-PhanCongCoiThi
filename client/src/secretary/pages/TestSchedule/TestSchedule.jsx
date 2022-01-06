@@ -1,17 +1,13 @@
+import { Tooltip } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
 export default function TestSchedule() {
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-    return () => {
-      document.body.style.overflow = "hidden";
-    };
-  }, []);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,7 +23,7 @@ export default function TestSchedule() {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/HomeSecretary/testSchedule";
+          navigate("/HomeSecretary/testSchedule");
         }, 1000);
         return "Cập Nhật Thành Công";
       }
@@ -62,7 +58,10 @@ export default function TestSchedule() {
     setValue("hoTen1", data?.giangVien[0]?.hoTen);
     setValue("maVienChuc1", data?.giangVien[0]?.maVienChuc);
     setValue("hoTen2", data?.giangVien[1]?.hoTen);
-    setValue("maVienChuc2", data?.giangVien[1]?.maVienChuc);
+    setValue("canBoCoiKiem3", data?.canBoCoiKiem3);
+    setValue("maCanBoCoiKiem3", data?.maCanBoCoiKiem3);
+    setValue("canBoDuBi", data?.canBoDuBi);
+    setValue("maCanBoDuBi", data?.maCanBoDuBi);
   }, [data, setValue]);
 
   if (loading) return <div className="loading">Loading...</div>;
@@ -126,24 +125,28 @@ export default function TestSchedule() {
               })}
             />
             <label>Ngày kiểm tra</label>
+            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
             <input
+              disabled
               type="text"
               {...register("ngayKiemTra", { required: false, maxLength: 80 })}
             />
+            </Tooltip>
             <label>Giờ kiểm tra</label>
+            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
             <input
+              disabled
               type="text"
               placeholder="13h"
               {...register("gioBatDau", { required: false, maxLength: 80 })}
             />
+            </Tooltip>
             <label>Teamcode/Phòng</label>
             <input
               type="text"
               placeholder="1234"
               {...register("maPhong", { required: false, maxLength: 80 })}
             />
-          </div>
-          <div className="productFormLeft">
             <label>Hình thức kiểm tra</label>
             <input
               type="text"
@@ -159,26 +162,40 @@ export default function TestSchedule() {
               placeholder="60"
               {...register("soPhutKiemTra", { required: false, maxLength: 80 })}
             />
+          </div>
+          <div className="productFormLeft">
             <label>Cán bộ coi kiểm tra 01(CB02)</label>
+            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
             <input
+              disabled
               type="text"
               {...register("hoTen1", { required: false, maxLength: 80 })}
             />
+            </Tooltip>
             <label>Mã viên chức CB01</label>
+            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
             <input
+              disabled
               type="text"
               {...register("maVienChuc1", { required: false, maxLength: 80 })}
             />
+            </Tooltip>
             <label>Cán bộ coi kiểm tra 02(CB02)</label>
+            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
             <input
+              disabled
               type="text"
               {...register("hoTen2", { required: false, maxLength: 80 })}
             />
+            </Tooltip>
             <label>Mã viên chức CB02</label>
-            <input
-              type="text"
-              {...register("maVienChuc2", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                {...register("maVienChuc2", { required: false, maxLength: 80 })}
+              />
+            </Tooltip>
             <label>GVGD</label>
             <input
               type="text"
@@ -197,7 +214,36 @@ export default function TestSchedule() {
               placeholder="Chinh quy"
               {...register("heDaoTao", { required: false, maxLength: 80 })}
             />
-            <button className="productButton">Update</button>
+            <label>Cán Bộ giám sát</label>
+            <input
+              type="text"
+              placeholder="Chinh quy"
+              {...register("canBoCoiKiem3", { required: false, maxLength: 80 })}
+            />
+            <label>Mã cán bộ giám sát</label>
+            <input
+              type="text"
+              placeholder="Chinh quy"
+              {...register("maCanBoCoiKiem3", {
+                required: false,
+                maxLength: 80,
+              })}
+            />
+            <label>Cán bộ dự bị</label>
+            <input
+              type="text"
+              placeholder="Chinh quy"
+              {...register("canBoDuBi", { required: false, maxLength: 80 })}
+            />
+            <label>Mã cán bộ dự bị</label>
+            <input
+              type="text"
+              placeholder="Chinh quy"
+              {...register("maCanBoDuBi", { required: false, maxLength: 80 })}
+            />
+            <button className="productButton" style={{ background: "green" }}>
+              Cập nhật
+            </button>
           </div>
         </form>
       </div>

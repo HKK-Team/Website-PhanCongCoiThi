@@ -8,12 +8,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { createTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactExport from "react-export-excel";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import scheduleSlice, {
@@ -28,6 +28,7 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 // bảng lịch thi
 export default function TestScheduleList() {
+  const navigate = useNavigate();
   const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
 
   const secretaryAccount = useSelector(getSecretaryAccLogin);
@@ -37,11 +38,11 @@ export default function TestScheduleList() {
   const setTenHocKy = useSelector(
     (state) =>
       new Set(
-        state.Schedules.SchedulesApi.data.map((element) =>
+        state.Schedules.SchedulesApi.data.map((element) => 
           element.maKhoa === maKhoa &&
           element.maChuongTrinh === chuongTrinhDaoTao
             ? element.tenHocKi
-            : "Không có lịch thi nào"
+            : ' '
         )
       )
   );
@@ -50,7 +51,10 @@ export default function TestScheduleList() {
   const [key, setkey] = useState(keyTenHocKy[0]);
   const data = useSelector((state) =>
     state.Schedules.SchedulesApi.data.filter(
-      (e) => e.tenHocKi === state.Schedules.filters.tenHocKi
+      (e) =>
+        e.tenHocKi === state.Schedules.filters.tenHocKi &&
+        e.maKhoa === maKhoa &&
+        e.maChuongTrinh === chuongTrinhDaoTao
     )
   );
 
@@ -70,7 +74,7 @@ export default function TestScheduleList() {
         axios.delete(`http://localhost:5000/import/deleteAllLichThi/${key}`),
         () => {
           setTimeout(() => {
-            window.location.reload();
+            navigate(0);
           }, 1000);
           return "Xóa thành công !";
         }
@@ -85,7 +89,7 @@ export default function TestScheduleList() {
         axios.delete(`http://localhost:5000/import/deleteLichThi/${id}`),
         () => {
           setTimeout(() => {
-            window.location.reload();
+            navigate(0);
           }, 1000);
           return "Xóa thành công !";
         }
@@ -103,20 +107,27 @@ export default function TestScheduleList() {
       ),
       () => {
         setTimeout(() => {
-          window.location.reload();
+          navigate(0);
         }, 1000);
         return "Trạng thái lịch thi đã được cập nhật !";
       }
     );
   };
-  // khởi tạo dữ liệu bảng
-  const columns = [
-    { field: "maHocPhan", headerName: "Mã học phần", width: 180 },
-    { field: "tenHocPhan", headerName: "Tên học phần", width: 400 },
-    { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 200 },
 
-    { field: "toKiem", headerName: "Tổ Kiểm", width: 140 },
-    { field: "soLuongSinhVien", headerName: "Số lượng SV", width: 160 },
+  const columns = [
+    { field: "maHocPhan", headerName: "Mã học phần", width: 140 },
+    { field: "tenHocPhan", headerName: "Tên Học Phần", width: 200 },
+    {
+      field: "nhomKiemTra",
+      headerName: "Nhóm kiểm tra",
+      width: 200,
+    },
+    { field: "toKiem", headerName: "Tổ kiểm", width: 130 },
+    {
+      field: "soLuongSinhVien",
+      headerName: "Số lượng SV",
+      width: 150,
+    },
     {
       field: "donViToChucKiemTra",
       headerName: "Đơn vị tổ chức kiểm tra",
@@ -125,62 +136,141 @@ export default function TestScheduleList() {
     {
       field: "chuongTrinhBoMon",
       headerName: "Chương trình/Bộ môn",
-      width: 350,
+      width: 300,
     },
-
-    { field: "ngayKiemTra", headerName: "Ngày kiểm tra", width: 180 },
-    { field: "gioBatDau", headerName: "Giờ bắt đầu", width: 150 },
-    { field: "maPhong", headerName: "Teamcode/Phòng", width: 200 },
-    { field: "hinhThucKiemTra", headerName: "Hình thức kiểm tra", width: 200 },
-    { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 180 },
-
     {
-      field: "giangVien[0].hoTen",
+      field: "ngayKiemTra",
+      headerName: "Ngày kiểm tra",
+      width: 150,
+      type :'date',
+      renderCell: (rowData) => {
+        return rowData?.value.slice(0, 10);
+      }
+    },
+    {
+      field: "gioBatDau",
+      headerName: "Giờ bắt đầu",
+      width: 150,
+    },
+    {
+      field: "maPhong",
+      headerName: "mã phòng/teamCode",
+      width: 180,
+    },
+    {
+      field: "hinhThucKiemTra",
+      headerName: "Hình thức kiểm tra",
+      width: 200,
+    },
+    {
+      field: "soPhutKiemTra",
+      headerName: "Số phút kiểm tra",
+      width: 150,
+    },
+    {
+      field: "giangVienOne",
       headerName: "Cán bộ coi kiểm tra 01(CB01)",
       width: 230,
       renderCell: (params) => {
-        return params.row?.giangVien[0]?.hoTen;
+        return params.row?.giangVien[0]?.maChuongTrinh !== chuongTrinhDaoTao ? (
+          <span style={{ color: "red" }}>
+            {params.row?.giangVien[0]?.hoTen}
+          </span>
+        ) : (
+          params.row?.giangVien[0]?.hoTen
+        );
       },
     },
     {
-      field: "giangVien[0].maVienChuc",
+      field: "maGiangVienOne",
       headerName: "Mã viên chức CB01",
       width: 200,
       renderCell: (params) => {
-        return params.row?.giangVien[0]?.maVienChuc;
+        return params.row?.giangVien[0]?.maChuongTrinh !== chuongTrinhDaoTao ? (
+          <span style={{ color: "red" }}>
+            {params.row?.giangVien[0]?.maVienChuc}
+          </span>
+        ) : (
+          params.row?.giangVien[0]?.maVienChuc
+        );
       },
     },
     {
-      field: "giangVien[1].hoTen",
+      field: "giangVienTwo",
       headerName: "Cán bộ coi kiểm tra 02(CB02)",
       width: 230,
       renderCell: (params) => {
-        return params.row?.giangVien[1]?.hoTen;
+        return params.row?.giangVien[1]?.maChuongTrinh !== chuongTrinhDaoTao ? (
+          <span style={{ color: "red" }}>
+            {params.row?.giangVien[1]?.hoTen}
+          </span>
+        ) : (
+          params.row?.giangVien[1]?.hoTen
+        );
       },
     },
     {
-      field: "giangVien[1].maVienChuc",
+      field: "maGiangVienTwo",
       headerName: "Mã viên chức CB02",
       width: 200,
       renderCell: (params) => {
-        return params.row?.giangVien[1]?.maVienChuc;
+        return params.row?.giangVien[1]?.maChuongTrinh !== chuongTrinhDaoTao ? (
+          <span style={{ color: "red" }}>
+            {params.row?.giangVien[1]?.maVienChuc}
+          </span>
+        ) : (
+          params.row?.giangVien[1]?.maVienChuc
+        );
       },
     },
-    { field: "GVGD", headerName: "GVGD", width: 200 },
-    { field: "maGV", headerName: "MGV", width: 150 },
-    { field: "heDaoTao", headerName: "Hệ đào tạo", width: 150 },
+    {
+      field: "GVGD",
+      headerName: "GVGD",
+      width: 200,
+    },
+    {
+      field: "maGV",
+      headerName: "MGV",
+      width: 120,
+    },
+    {
+      field: "heDaoTao",
+      headerName: "Hệ đào tạo",
+      width: 150,
+    },
+    {
+      field: "canBoCoiKiem3",
+      headerName: "Cán bộ giám sát",
+      width: 200,
+    },
+    {
+      field: "maCanBoCoiKiem3",
+      headerName: "Mã VC giám sát",
+      width: 180,
+    },
+    {
+      field: "canBoDuBi",
+      headerName: "Cán bộ dự bị",
+      width: 200,
+    },
+    {
+      field: "maCanBoDuBi",
+      headerName: "Mã VC dự bị",
+      width: 180,
+    },
+
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 130,
       renderCell: (params) => {
         return (
           <>
             <Link to={"/HomeSecretary/testSchedule/" + params.id}>
-              <button className="userListEdit">Chỉnh sửa</button>
+              <button className="productListEdit">Chỉnh sửa</button>
             </Link>
             <DeleteOutline
-              className="userListDelete"
+              className="productListDelete"
               onClick={() => handleDelete(params.id)}
             />
           </>
@@ -241,18 +331,6 @@ export default function TestScheduleList() {
               Gửi mail thông báo tất cả
             </Button>
           </Tooltip>
-          <Tooltip
-            title="Gửi mail thông báo một vài giảng viên đã chỉnh sửa"
-            arrow
-          >
-            <Button
-              variant="contained"
-              size="small"
-              style={{ marginRight: 10 }}
-            >
-              Gửi mail thông báo một vài giảng viên
-            </Button>
-          </Tooltip>
 
           <ExcelFile
             filename={`PhânCôngLichThi_${key}`}
@@ -269,7 +347,7 @@ export default function TestScheduleList() {
               </Tooltip>
             }
           >
-            <ExcelSheet data={data} name="Sheet1">
+            <ExcelSheet data={data} name="Bảng phân công">
               <ExcelColumn label="Mã học phần" value="maHocPhan" />
               <ExcelColumn label="Tên học phần" value="tenHocPhan" />
               <ExcelColumn label="Nhóm kiểm tra" value="nhomKiemTra" />
@@ -306,6 +384,10 @@ export default function TestScheduleList() {
               <ExcelColumn label="GVGD" value="GVGD" />
               <ExcelColumn label="MGV" value="maGV" />
               <ExcelColumn label="Hệ đào tạo" value="heDaoTao" />
+              <ExcelColumn label="Cán bộ giám sát" value="canBoCoiKiem3" />
+              <ExcelColumn label="Mã cán bộ giám sát" value="maCanBoCoiKiem3" />
+              <ExcelColumn label="Cán bộ dự bị" value="canBoDuBi" />
+              <ExcelColumn label="Mã cán bộ dự bị" value="maCanBoDuBi" />
             </ExcelSheet>
           </ExcelFile>
           {/* export Excel */}
@@ -321,7 +403,7 @@ export default function TestScheduleList() {
               Xóa lịch thi này
             </Button>
           </Tooltip>
-          <FormGroup>
+          <FormGroup style={{ display: "block" }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -338,22 +420,22 @@ export default function TestScheduleList() {
             P/s: Mọi người sẽ không thể xem được lịch thi nếu bạn không cho phép
           </p>
           <p className="header-table-ps">
-            P/s: Hãy kiểm tra thật kỹ tất cả thông tin trước khi gửi mail
-          </p>
-          <p className="header-table-ps">
-            P/s: Hãy click vào select box để chọn giảng viên cần gửi mail, trong
-            trường hợp muốn gửi số ít
+            P/s: Những giảng viên highlight text
+            <span style={{ color: "red" }}> màu đỏ</span> là giảng viên{" "}
+            <span style={{ color: "red" }}>ngoài chương trình</span>
           </p>
         </div>
       </div>
-      <DataGrid
+      <DataGridPro
         className={classes.root}
         getRowId={(row) => row._id}
         rows={data}
         disableSelectionOnClick
-        autoHeight
         columns={columns}
-        checkboxSelection
+        initialState={{
+          pinnedColumns: { left: ["maHp", "tenHp"], right: ["action"] },
+        }}
+        density="compact"
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

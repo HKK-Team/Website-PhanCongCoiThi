@@ -6,12 +6,13 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams ,useNavigate} from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import "./Lecturers.css";
 
 // chỉnh sửa thông tin khách hàng
 export default function Lecturers() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,6 +20,7 @@ export default function Lecturers() {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
+    data.maVienChuc = data.maVienChuc.toUpperCase();
     await toastPromise(
       axios.put("http://localhost:5000/import/editGiangVien", {
         ...data,
@@ -26,7 +28,7 @@ export default function Lecturers() {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/lecturers";
+          navigate("/HomeSecretary/lecturers");
         }, 1000);
         return "Cập Nhật Thành Công";
       }

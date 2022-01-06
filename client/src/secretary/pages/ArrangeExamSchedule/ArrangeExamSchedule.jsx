@@ -1,38 +1,17 @@
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { MenuItem, Select, Tooltip } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { usePrompt } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
+import arrangeExamScheduleSlide from "../../sliceApi/ArrangeExamSchedule/arrangeExamScheduleSlide";
+import { getSchedulesApiAsync } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 
-let today = new Date();
-let date =
-  today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
-// object khởi tạo ngày giờ coi thi
-let d = {
-  ngayKiemTra: date,
-  gioBatDau: "08:00",
-  maPhong: "",
-  soPhutKiemTra: 60,
-};
-
-function shuffle(array) {
-  let currentIndex = array.length,
-    randomIndex;
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-  return array;
-}
 export default function ArrangeExamSchedule() {
   const secretaryAccount = useSelector(getSecretaryAccLogin);
   const maKhoa = secretaryAccount?.maKhoa;
@@ -42,123 +21,96 @@ export default function ArrangeExamSchedule() {
   let { loading: loading2 } = useSelector(
     (state) => state.Subjects.SubjectsApi
   );
+
+  // khoi tao mang chua giang vien
   const lecturers = useSelector((state) =>
-    state.Lecturers.LecturersApi.data.filter(
-      (item) =>
-        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
-    )
+    state.Lecturers.LecturersApi.data.filter((item) => item.maKhoa === maKhoa)
   );
+
+  const schudules = useSelector((state) => state.Schedules.SchedulesApi.data);
+
   const subjects = useSelector((state) =>
     state.Subjects.SubjectsApi.data.filter(
       (item) =>
         item.maKhoa === maKhoa &&
         item.maChuongTrinh === chuongTrinhDaoTao &&
         item.hinhThucKT !== "Tiểu luận" &&
-        item.hinhThucKT !== "Đồ án"
+        item.hinhThucKT !== "Báo cáo"
     )
   );
 
-  let a = [...subjects]; // khoi tao mang chua mon hoc
-  let b = [...lecturers]; // khoi tao mang chua giang vien
+  const ArrangeExamSchedules = useSelector(
+    (state) => state.ArrangeExamSchedule.arrangeExamScheduleList.data
+  );
 
-  const length = Math.ceil(a.length / b.length);
-  //xử lý khi giảng viên ít hơn môn học
-  for (let key = 0; key <= length-1; key++) {
-    if (length === 1) {
-      break;
-    } else {
-      b = b.concat(b);
-    }
-  }
+  const boundLecturers = useSelector(
+    (state) => state.ArrangeExamSchedule.arrangeExamScheduleList.boundLecturers
+  );
 
-  const [c, setC] = useState([]); // mảng gộp dữ liệu của giảng viên và môn học
+  useEffect(() => {
+    window.moveTo(0, 300);
+  }, []);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSchedulesApiAsync());
+  }, [dispatch]);
+
   const [checkOut, setCheckOut] = useState(false);
 
   // tự động sắp xếp lịch
   function handleAutoMatic(e) {
-    if (!a.length && !b.length) {
-      toastInfor("Không có dữ liệu để tự động sắp xếp");
+    if (!subjects.length) {
+      toastInfor("Không có dữ liệu vui lòng kiểm tra môn thi");
     }
     if (checkOut === true) {
       if (window.confirm("Bạn có chắc chắn muốn tạo lại lịch thi không?")) {
-        shuffle(a);
-        shuffle(b);
-        if (c.length === a.length) {
-          setC([]);
-          for (let key = 0; key < a.length; key++) {
-            setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+        dispatch(arrangeExamScheduleSlide.actions.BoundLecturers("reset"));
+        if (ArrangeExamSchedules.length === subjects.length) {
+          dispatch(arrangeExamScheduleSlide.actions.CreateList("reset"));
+          for (let key = 0; key < subjects.length; key++) {
+            dispatch(
+              arrangeExamScheduleSlide.actions.CreateList(subjects[key])
+            );
           }
         } else {
-          for (let key = 0; key < a.length; key++) {
-            setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+          for (let key = 0; key < subjects.length; key++) {
+            dispatch(
+              arrangeExamScheduleSlide.actions.CreateList(subjects[key])
+            );
           }
         }
       }
     } else {
-      shuffle(a);
-      shuffle(b);
-      if (c.length === a.length) {
-        setC([]);
-        for (let key = 0; key < a.length; key++) {
-          setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+      if (ArrangeExamSchedules.length === subjects.length) {
+        dispatch(arrangeExamScheduleSlide.actions.CreateList("reset"));
+        for (let key = 0; key < subjects.length; key++) {
+          dispatch(arrangeExamScheduleSlide.actions.CreateList(subjects[key]));
         }
       } else {
-        for (let key = 0; key < a.length; key++) {
-          setC((prev) => [...prev, [a[key], b[key], b[key + 1], d]]);
+        for (let key = 0; key < subjects.length; key++) {
+          dispatch(arrangeExamScheduleSlide.actions.CreateList(subjects[key]));
         }
       }
-      setCheckOut(true);
     }
+    setCheckOut(true);
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  let data = []; // khởi tạo mảng data
-  // thêm dữ liệu vào data
-  c.forEach((item) => {
-    let dsGiangVien = {
-      hoTen1: item[1]?.hoTen,
-      maVienChuc1: item[1]?.maVienChuc,
-      email1: item[1]?.email,
-      maKhoa1: maKhoa,
-      maChuongTrinh1: chuongTrinhDaoTao,
-      hoTen2: item[2]?.hoTen,
-      maVienChuc2: item[2]?.maVienChuc,
-      email2: item[2]?.email,
-      maKhoa2: maKhoa,
-      maChuongTrinh2: chuongTrinhDaoTao,
-    };
-    data.push({ ...item[0], ...dsGiangVien, ...item[3] });
-  });
   // lưu lại thay đổi trong data
   const handleEditRowsModelChange = useCallback(
     (model) => {
       let object = Object.values(model);
       let objectKey = Object.keys(model);
-      data.forEach((item) => {
-        if (item._id === objectKey[0]) {
-          item.GVGD = object[0].GVGD.value;
-          item.chuongTrinh = object[0].chuongTrinh.value;
-          item.doViToChuc = object[0].doViToChuc.value;
-          item.gioBatDau = object[0].gioBatDau.value;
-          item.heDT = object[0].heDT.value;
-          item.hinhThucKT = object[0].hinhThucKT.value;
-          item.hoTen1 = object[0].hoTen1.value;
-          item.hoTen2 = object[0].hoTen2.value;
-          item.maGV = object[0].maGV.value;
-          item.maHp = object[0].maHp.value;
-          item.maPhong = object[0].maPhong.value;
-          item.maVienChuc1 = object[0].maVienChuc1.value;
-          item.maVienChuc2 = object[0].maVienChuc2.value;
-          item.ngayKiemTra = object[0].ngayKiemTra.value;
-          item.nhomKT = object[0].nhomKT.value;
-          item.soLuong = object[0].soLuong.value;
-          item.soPhutKiemTra = object[0].soPhutKiemTra.value;
-          item.tenHp = object[0].tenHp.value;
-          item.toKiem = object[0].toKiem.value;
-        }
-      });
+      if (object.length === 0 || objectKey.length === 0) {
+        return;
+      } else {
+        dispatch(
+          arrangeExamScheduleSlide.actions.EditList({ object, objectKey })
+        );
+      }
     },
-    [data]
+    [dispatch]
   );
 
   // ngăn chặn rời đi khi chưa lưu
@@ -169,82 +121,242 @@ export default function ArrangeExamSchedule() {
       window.onbeforeunload = undefined;
     }
   }, [checkOut]);
-  usePrompt(
-    "Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn thoát không?",
-    checkOut
-  );
+
   // xóa dữ liệu
   const handleDelete = (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
-      const index = data.findIndex((x) => x._id === id);
-      let ob = [...data];
-      ob.splice(`${index}`, 1);
-      data = ob;
+      dispatch(arrangeExamScheduleSlide.actions.DeleteList(id));
     }
   };
+
+  const getMaVienChuc = (hoTen) => {
+    let a = "";
+    for (const key in hoTen) {
+      if (hoTen[key] === "-") {
+        break;
+      } else {
+        a += hoTen[key];
+      }
+    }
+    const maVienChuc1 = lecturers.find((item) =>
+      item.hoTen === a.trim() ? item.maVienChuc : ""
+    );
+    return maVienChuc1;
+  };
+
+  function handleChanges(id, field, value, ngayKiemTra, GioBatDau) {
+    const TTGiangVien = getMaVienChuc(value);
+    const object = {
+      id: id,
+      maVienChuc: TTGiangVien?.maVienChuc,
+      ngayKiemTra: ngayKiemTra,
+      gioBatDau: GioBatDau,
+      hoTen: value,
+      email: TTGiangVien?.email,
+      maChuongTrinh: TTGiangVien?.maChuongTrinh,
+      maKhoa: TTGiangVien?.maKhoa,
+      field: field,
+    };
+    dispatch(
+      arrangeExamScheduleSlide.actions.BoundLecturers({
+        object,
+      })
+    );
+    if (field === "hoTen1") {
+      dispatch(
+        arrangeExamScheduleSlide.actions.EditLecturersOne({
+          object,
+        })
+      );
+    } else {
+      dispatch(
+        arrangeExamScheduleSlide.actions.EditLecturersTwo({
+          object,
+        })
+      );
+    }
+    navigate("/HomeSecretary/arrangeExamSchedule");
+  }
+
+  const navigate = useNavigate();
   // khởi tạo dữ liệu bảng
   const columns = [
     {
-      editable: true,
+      editable: false,
       field: "ngayKiemTra",
       headerName: "Ngày kiểm tra",
-      width: 150,
       type: "date",
+      width: 102,
     },
     {
-      editable: true,
+      editable: false,
       field: "gioBatDau",
       headerName: "Giờ bắt đầu",
-      width: 150,
-    },
-    {
-      editable: true,
-      field: "maPhong",
-      headerName: "Teamcode/Phòng",
-      width: 160,
-    },
-    {
-      editable: true,
-      field: "soPhutKiemTra",
-      headerName: "Số phút kiểm tra",
-      width: 180,
-      type: "number",
+      width: 85,
     },
     {
       editable: true,
       field: "hoTen1",
       headerName: "Cán bộ coi kiểm tra 01(CB01)",
-      width: 230,
+      width: 182,
+      renderEditCell: (params) => {
+        const ngay = params.row.ngayKiemTra;
+        const gio = params.row.gioBatDau;
+        const FilterLecturers = [];
+        schudules.filter((item) =>
+          item?.ngayKiemTra === ngay &&
+          item?.gioBatDau === gio &&
+          item?.maChuongTrinh !== chuongTrinhDaoTao &&
+          item?.public === true
+            ? item.giangVien.filter((item) =>
+                FilterLecturers.push(item.maVienChuc)
+              )
+            : ""
+        );
+        const arr = boundLecturers.filter(
+          (item) => item?.ngayKiemTra === ngay && item?.gioBatDau === gio
+        );
+        let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
+        setArr = setArr.concat(FilterLecturers);
+
+        setArr.concat(FilterLecturers);
+        const listArr = lecturers.filter((items) => {
+          const arr = setArr.map((item) =>
+            item === items.maVienChuc ? true : false
+          );
+          if (arr.find((item) => item === true)) {
+          } else {
+            return items;
+          }
+        });
+        listArr.sort((a, b) => {
+          let nameA = chuongTrinhDaoTao.toUpperCase();
+          let nameB = b.maChuongTrinh.toUpperCase();
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        });
+        return (
+          <Select
+            filterSelectedOptions={true}
+            style={{ width: "100%" }}
+            value={params.value}
+            onChange={(e) =>
+              handleChanges(
+                params.id,
+                "hoTen1",
+                e.target.value,
+                params.row.ngayKiemTra,
+                params.row.gioBatDau
+              )
+            }
+          >
+            {listArr.map((item) => (
+              <MenuItem value={item.hoTen} key={item.hoTen}>
+                {`${item.hoTen} - ${item.maChuongTrinh}`}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
     },
     {
       editable: true,
       field: "maVienChuc1",
       headerName: "Mã viên chức CB01",
-      width: 200,
+      width: 107,
     },
     {
       editable: true,
       field: "hoTen2",
       headerName: "Cán bộ coi kiểm tra 02(CB02)",
-      width: 230,
+      width: 182,
+      renderEditCell: (params) => {
+        const ngay = params.row.ngayKiemTra;
+        const gio = params.row.gioBatDau;
+
+        const FilterLecturers = [];
+        schudules.filter((item) =>
+          item?.ngayKiemTra === ngay &&
+          item?.gioBatDau === gio &&
+          item?.maChuongTrinh !== chuongTrinhDaoTao &&
+          item.public === true
+            ? item.giangVien.filter((item) =>
+                FilterLecturers.push(item.maVienChuc)
+              )
+            : ""
+        );
+        const arr = boundLecturers.filter(
+          (item) => item?.ngayKiemTra === ngay && item?.gioBatDau === gio
+        );
+        let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
+
+        setArr.concat(FilterLecturers);
+        const listArr = lecturers.filter((items) => {
+          const arr = setArr.map((item) =>
+            item === items.maVienChuc ? true : false
+          );
+          if (arr.find((item) => item === true)) {
+          } else {
+            return items;
+          }
+        });
+        listArr.sort((a, b) => {
+          let nameA = chuongTrinhDaoTao.toUpperCase();
+          let nameB = b.maChuongTrinh.toUpperCase();
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        });
+        return (
+          <Select
+            style={{ width: "100%" }}
+            value={params.value}
+            onChange={(e) =>
+              handleChanges(
+                params.id,
+                "hoTen2",
+                e.target.value,
+                params.row.ngayKiemTra,
+                params.row.gioBatDau
+              )
+            }
+          >
+            {listArr.map((item) => (
+              <MenuItem value={item.hoTen} key={item.hoTen}>
+                {`${item.hoTen} - ${item.maChuongTrinh}`}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
     },
     {
       editable: true,
       field: "maVienChuc2",
       headerName: "Mã viên chức CB02",
-      width: 200,
+      width: 107,
     },
     {
       editable: true,
       field: "maHp",
       headerName: "Mã học phần",
-      width: 170,
+      width: 97,
     },
     {
       editable: true,
       field: "tenHp",
       headerName: "Tên học phần",
-      width: 400,
+      width: 194,
+      renderCell(params) {
+        return (
+          <div>
+            <Tooltip title={params.value}>
+              <span>{params.value}</span>
+            </Tooltip>
+          </div>
+        );
+      },
     },
     {
       editable: true,
@@ -263,6 +375,19 @@ export default function ArrangeExamSchedule() {
       field: "soLuong",
       headerName: "Số lượng SV",
       width: 130,
+    },
+    {
+      editable: true,
+      field: "maPhong",
+      headerName: "Teamcode/Phòng",
+      width: 160,
+    },
+    {
+      editable: true,
+      field: "soPhutKiemTra",
+      headerName: "Số phút kiểm tra",
+      width: 180,
+      type: "number",
     },
     {
       editable: true,
@@ -302,9 +427,33 @@ export default function ArrangeExamSchedule() {
     },
     {
       editable: true,
+      field: "canBoCoiKiem3",
+      headerName: "Cán bộ giám sát",
+      width: 182,
+    },
+    {
+      editable: true,
+      field: "maCanBoCoiKiem3",
+      headerName: "Mã cán bộ giám sát",
+      width: 107,
+    },
+    {
+      editable: true,
+      field: "canBoDuBi",
+      headerName: "Cán bộ dự bị",
+      width: 182,
+    },
+    {
+      editable: true,
+      field: "maCanBoDuBi",
+      headerName: "Mã cán bộ dự bị",
+      width: 107,
+    },
+    {
+      editable: true,
       field: "action",
-      headerName: "Action",
-      width: 150,
+      headerName: "Xóa",
+      width: 50,
       renderCell: (params) => {
         return (
           <>
@@ -317,11 +466,11 @@ export default function ArrangeExamSchedule() {
       },
     },
   ];
+
   const defaultTheme = createTheme();
   const useStyles = makeStyles(
     (theme) => {
-      const backgroundColor =
-        theme.palette.mode === "dark" ? "#376331" : "rgb(217 243 190)";
+      const backgroundColor = theme.palette.mode === "dark" ? "red" : "white";
       return {
         root: {
           "& .MuiDataGrid-cell--editable": {
@@ -349,13 +498,19 @@ export default function ArrangeExamSchedule() {
       <HeaderTableArrangeExamSchedule
         title="Bảng Sắp Xếp Lịch Thi"
         onClick={handleAutoMatic}
-        data={data}
+        data={ArrangeExamSchedules}
       />
-
-      <DataGrid
+      <DataGridPro
+        initialState={{
+          pinnedColumns: {
+            left: ["ngayKiemTra", "gioBatDau"],
+            right: ["action"],
+          },
+        }}
+        density="compact"
         className={classes.root}
         getRowId={(row) => row?._id}
-        rows={data}
+        rows={ArrangeExamSchedules}
         disableSelectionOnClick
         columns={columns}
         editMode="row"

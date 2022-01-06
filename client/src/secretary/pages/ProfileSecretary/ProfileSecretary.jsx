@@ -5,8 +5,11 @@ import Publish from "@mui/icons-material/Publish";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 // chỉnh sửa thông tin Thư ký
 export default function ProfileSecretary() {
+  const navigate = useNavigate();
   const data = useSelector(
     (state) => state.SecretaryAccount.secretaryAccountApi.data[0]
   );
@@ -25,10 +28,15 @@ export default function ProfileSecretary() {
 
   const EditUserSubmit = async (e) => {
     e.preventDefault();
-
-    axios.post("http://localhost:5000/secretary/edituser", { ...profile });
-    alert("Update User Succesfully!");
-    window.location.href = "/HomeSecretary";
+    toastPromise(
+      axios.post("http://localhost:5000/secretary/edituser", { ...profile }),
+      () => {
+        setTimeout(() => {
+          navigate("/HomeSecretary");
+        }, 1000);
+        return "Thông tin người dùng đã được cập nhật !";
+      }
+    );
   };
   return (
     <div className="user">

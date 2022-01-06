@@ -14,12 +14,16 @@ const monThiSchema = new Schema({
   soLuong: Number,
   maKhoa: String,
   maChuongTrinh: String,
-  ngayKiemTra: String,
+  ngayKiemTra: Date,
   gioBatDau: String,
   maPhong: String,
   soPhutKiemTra: Number,
   canBoCoiKiem3: String,
   maCanBoCoiKiem3: String,
-  ghiChu: String,
+  canBoDuBi: String,
+  maCanBoDuBi: String,
+  created: Date,
+  
 });
+
 module.exports = mongoose.model("monThi", monThiSchema);

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const tieuLuanSchema = new Schema({
-  ngayKiemTra: String,
+  ngayKiemTra: Date,
   gioBatDau: String,
   toKiem: String,
   maPhong: String,
@@ -19,12 +19,12 @@ const tieuLuanSchema = new Schema({
   heDaoTao: String,
   maKhoa: String,
   maChuongTrinh: String,
-
   status: String,
-  phanHoi: boolean,
+  phanHoi: Boolean,
+  moTa: String,
   deXuat: {
     mota: String,
-    ngayKiemTra: String,
+    ngayKiemTra: Date,
     gioBatDau: String,
     toKiem: String,
     maPhong: String,

@@ -5,7 +5,10 @@ import Publish from "@mui/icons-material/Publish";
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { toastSuccess } from "../../../shareAll/toastMassage/toastMassage";
 export default function ProfileLecturers() {
+  const nagivate = useNavigate();
   const data = useSelector(
     (state) => state.LecturersAccount.lecturersAccountApi.data[0]
   );
@@ -24,10 +27,10 @@ export default function ProfileLecturers() {
   };
   const EditUserSubmit = async (e) => {
     e.preventDefault();
-    
+
     axios.post("http://localhost:5000/lecturer/edituser", { ...profile });
-    alert("Update User Succesfully!");
-    window.location.href = "/HomeLecturers";
+    toastSuccess("Update User Succesfully!");
+    nagivate("/HomeLecturers/essaySubject");
   };
   return (
     <div className="user">

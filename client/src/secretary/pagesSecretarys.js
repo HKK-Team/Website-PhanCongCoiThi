@@ -1,23 +1,24 @@
-import Sidebar from "./components/Sidebar/Sidebar";
 import { Fragment, useEffect } from "react";
-import Topbar from "./components/Topbar/Topbar";
+import { useDispatch } from "react-redux";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { getSecretaryAccApiAsync } from "../api/secretarysAccountSlice";
+import NotFound from "../utils/not_found/NotFound";
 import "./app.css";
-import TestSchedule from "./pages/TestSchedule/TestSchedule";
-import ArrangeExamSchedule from "./pages/ArrangeExamSchedule/ArrangeExamSchedule";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Topbar from "./components/Topbar/Topbar";
 import AccountSecretary from "./pages/AccoutSecretary/AccoutSecretary";
-import TestScheduleList from "./pages/TestScheduleList/TestScheduleList";
-import NewSubjects from "./pages/NewSubjects/NewSubjects";
-import Subjects from "./pages/Subjects/Subjects";
-import SubjectsList from "./pages/SubjectsList/SubjectsList";
-import NewLecturers from "./pages/NewLecturers/NewLecturers";
+import ArrangeExamSchedule from "./pages/ArrangeExamSchedule/ArrangeExamSchedule";
 import Lecturers from "./pages/Lecturers/Lecturers";
 import LecturersList from "./pages/LecturersList/LecturersList";
+import NewLecturers from "./pages/NewLecturers/NewLecturers";
+import NewSubjects from "./pages/NewSubjects/NewSubjects";
 import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
-import { Routes, Route, useLocation } from "react-router-dom";
-import NotFound from "../utils/not_found/NotFound";
-import { useDispatch } from "react-redux";
-import { getSecretaryAccApiAsync } from "../api/secretarysAccountSlice";
+import Subjects from "./pages/Subjects/Subjects";
+import SubjectsList from "./pages/SubjectsList/SubjectsList";
+import TestSchedule from "./pages/TestSchedule/TestSchedule";
+import TestScheduleList from "./pages/TestScheduleList/TestScheduleList";
 import { getLecturersApiAsync } from "./sliceApi/LecturersSlice/lecturersSlice";
+import { getNamHocApiAsync } from "./sliceApi/namHocSlice/namHocSlide";
 import { getSubjectsApiAsync } from "./sliceApi/SubjectsSlice/subjectsSlice";
 
 function PagesSecretarys() {
@@ -35,12 +36,13 @@ function PagesSecretarys() {
       dispatch(getLecturersApiAsync());
       dispatch(getSubjectsApiAsync());
       dispatch(getSecretaryAccApiAsync());
+      dispatch(getNamHocApiAsync());
     }
   }, [dispatch, param]);
   return (
     <Fragment>
       <Topbar />
-      <div className="containerAdmin-Secretarys">
+      <div className="containerAdmin-Secretarys" >
         {/* Menu nav */}
         <Sidebar />
         {/* Link url */}

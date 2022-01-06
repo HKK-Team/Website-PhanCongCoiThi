@@ -4,24 +4,28 @@ import {
   Route,
   // BrowserRouter as Router,
   Routes,
-  useLocation
+  useLocation,
+  useNavigate
 } from "react-router-dom";
 import { getLecturersAccApiAsync } from "../../api/lecturersAccountSlice";
+import { getTieuLuanApiAsync } from "../../api/tieuLuanSlide";
 import NotFound from "../../utils/not_found/NotFound";
 import SideBarLecturers from "./../components/SideBarLecturers/SideBarLecturers";
 import TopBarLecturers from "./../components/TopBarLecturers/TopBarLecturers";
 import ProfileLecturers from "./../pages/ProfileLecturers/ProfileLecturers";
+import EditEssaySubject from "./EditEssaySubject/EditEssaySubject";
 import EssaySubject from "./EssaySubject/EssaySubject";
+import EssaySubjectManage from "./EssaySubjectManage/EssaySubjectManage";
 import NewEssaySubject from "./NewEssaySubject/NewEssaySubject";
 import TestScheduleLecturers from "./TestScheduleLecturers/TestScheduleLecturers";
 function PagesLecturers() {
+  const nagivate = useNavigate();
   const [isLogged] = sessionStorage.getItem("LecturerLogin") || "";
   const param = useLocation();
 
   const data = useSelector(
     (state) => state.LecturersAccount.lecturersAccountApi.data[0]
   );
-
   useEffect(() => {
     if (param.pathname.search("/HomeLecturers") === 0) {
       document.querySelector(".containerAdmin-Secretarys")?.remove();
@@ -32,6 +36,7 @@ function PagesLecturers() {
   useEffect(() => {
     if (param.pathname.search("/HomeLecturers") === 0) {
       dispatch(getLecturersAccApiAsync());
+      dispatch(getTieuLuanApiAsync());
     }
   }, [dispatch, param]);
 
@@ -47,11 +52,11 @@ function PagesLecturers() {
         if (param.pathname.search("/HomeLecturers/profileLecturers") === 0) {
           return;
         } else {
-          window.location.href = "/HomeLecturers/profileLecturers";
+          nagivate("/HomeLecturers/profileLecturers");
         }
       }
     }
-  }, [data, param]);
+  }, [data, param, nagivate]);
 
   return (
     <Fragment>
@@ -63,6 +68,11 @@ function PagesLecturers() {
             exact
             path="/HomeLecturers/profileLecturers"
             element={isLogged ? <ProfileLecturers /> : <NotFound />}
+          />
+          <Route
+            exact
+            path="/HomeLecturers/manageEssaySubject"
+            element={isLogged ? <EssaySubjectManage /> : <NotFound />}
           />
           <Route
             exact
@@ -78,6 +88,11 @@ function PagesLecturers() {
             exact
             path="/HomeLecturers/newEssaySubject/:id"
             element={isLogged ? <NewEssaySubject /> : <NotFound />}
+          />
+          <Route
+            exact
+            path="/HomeLecturers/editEssaySubject/:id"
+            element={isLogged ? <EditEssaySubject /> : <NotFound />}
           />
         </Routes>
       </div>

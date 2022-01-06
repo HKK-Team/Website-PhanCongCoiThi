@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -51,7 +51,7 @@ export default function FilterSearchHome() {
   ];
   return (
     <div>
-      <Button variant="contained" size="small" style={{margin:10}}>
+      <Button variant="contained" size="small" style={{ margin: 10 }}>
         <Link to="/" style={{ color: "white" }}>
           {" "}
           Trở lại
@@ -60,7 +60,7 @@ export default function FilterSearchHome() {
       <h1 style={{ textAlign: "center" }}>Hệ Thống Tra cứu lịch thi</h1>
       <h2 style={{ textAlign: "center" }}>Từ Khóa : {param.keyWord}</h2>
       <div style={{ padding: 10, boxShadow: "rgb(0 0 0 / 35%) 0px 5px 15px" }}>
-        <DataGrid
+        <DataGridPro
           autoHeight
           getRowId={(row) => row._id}
           rows={data}

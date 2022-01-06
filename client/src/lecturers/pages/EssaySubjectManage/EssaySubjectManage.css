@@ -1,0 +1,42 @@
+.pending {
+  border-color: #9e6a03;
+  border-radius: 24px;
+  border-style: solid;
+  border-width: 1px;
+  color: #d29922;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  margin: 0px 0px 0px 8px;
+  padding: 0px 7px;
+  text-align: left;
+}
+.success {
+  border-color: #238636;
+  border-radius: 24px;
+  border-style: solid;
+  border-width: 1px;
+  color: #3fb950;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  margin: 0px 0px 0px 8px;
+  padding: 0px 7px;
+  text-align: left;
+}
+.cancel {
+  border-color: #9e2203;
+  border-radius: 24px;
+  border-style: solid;
+  border-width: 1px;
+  color: #9e2f03af;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  margin: 0px 0px 0px 8px;
+  padding: 0px 7px;
+  text-align: left;
+}

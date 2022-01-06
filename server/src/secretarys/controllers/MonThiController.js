@@ -1,4 +1,5 @@
 const monThi = require("../models/MonThiModal");
+
 const MonThiCtrl = {
   check: async (req, res) => {
     if (Object.keys(req.body).length === 0) {
@@ -42,14 +43,15 @@ const MonThiCtrl = {
                 soPhutKiemTra: item.soPhutKiemTra,
                 canBoCoiKiem3: item.canBoCoiKiem3,
                 maCanBoCoiKiem3: item.maCanBoCoiKiem3,
-                ghiChu: item.ghiChu,
+                canBoDuBi: item.canBoDuBi,
+                maCanBoDuBi: item.maCanBoDuBi,
               });
               await newMonThi.save();
             }
           }
         }
         res.status(200).json({ msg: "imported" });
-      } catch (err) {
+    } catch (err) {
         res.status(400).json({ msg: err?.message });
       }
     }
@@ -78,6 +80,15 @@ const MonThiCtrl = {
         toKiem,
         soLuong,
         maKhoa,
+        maChuongTrinh,
+        ngayKiemTra,
+        gioBatDau,
+        maPhong,
+        soPhutKiemTra,
+        canBoCoiKiem3,
+        maCanBoCoiKiem3,
+        canBoDuBi,
+        maCanBoDuBi,
       } = req.body;
       await monThi.findOneAndUpdate(
         { _id: req.body.param.subjectsId },
@@ -94,6 +105,15 @@ const MonThiCtrl = {
           toKiem,
           soLuong,
           maKhoa,
+          maChuongTrinh,
+          ngayKiemTra,
+          gioBatDau,
+          maPhong,
+          soPhutKiemTra,
+          canBoCoiKiem3,
+          maCanBoCoiKiem3,
+          canBoDuBi,
+          maCanBoDuBi,
         }
       );
       res.json({ msg: "Cập nhật thành công" });
@@ -124,7 +144,8 @@ const MonThiCtrl = {
         soPhutKiemTra,
         canBoCoiKiem3,
         maCanBoCoiKiem3,
-        ghiChu,
+        canBoDuBi,
+        maCanBoDuBi,
       } = req.body;
       const newMonThi = new monThi({
         maHp: maHp,
@@ -146,7 +167,8 @@ const MonThiCtrl = {
         soPhutKiemTra: soPhutKiemTra,
         canBoCoiKiem3: canBoCoiKiem3,
         maCanBoCoiKiem3: maCanBoCoiKiem3,
-        ghiChu: ghiChu,
+        canBoDuBi: canBoDuBi,
+        maCanBoDuBi: maCanBoDuBi,
       });
       await newMonThi.save();
       res.json({ msg: "Thêm thành công" });

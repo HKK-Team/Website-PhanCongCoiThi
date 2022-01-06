@@ -4,33 +4,44 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 
-export default function NewEssaySubject() {
+export default function EditEssaySubject() {
   const param = useParams();
   const navigate = useNavigate();
 
-  const { data: subjects, loading } = useSelector(
-    (state) => state.Subjects.SubjectsApi
+  const { data: tieuLuans, login: loading } = useSelector(
+    (state) => state.TieuLuan.tieuLuanApi
   );
-  const [data] = subjects.filter((subject) => subject._id === param.id);
+  const [data] = tieuLuans.filter((subject) => subject._id === param.id);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const onSubmit = async (items) => {
     items.status = "Đang kiểm tra";
     await toastPromise(
-      axios.post("http://localhost:5000/lecturersTieuLuan/createTieuLuan", {
+      axios.put("http://localhost:5000/lecturersTieuLuan/editTieuLuan", {
         ...items,
         data,
+        param,
       }),
       () => {
         setTimeout(() => {
-          navigate("/HomeLecturers/essaySubject");
+          navigate("/HomeLecturers/manageEssaySubject");
         }, 1000);
         return "Đăng ký Thành Công";
       }
     );
   };
+
+  useEffect(() => {
+    setValue("ngayKiemTra", data?.ngayKiemTra);
+    setValue("gioBatDau", data?.gioBatDau);
+    setValue("maPhong", data?.maPhong);
+    setValue("soPhutKiemTra", data?.soPhutKiemTra);
+    setValue("moTa", data?.moTa);
+  }, [data, setValue]);
+
   console.log(data);
   if (loading) return <div className="loading">Loading...</div>;
   return (
@@ -41,16 +52,16 @@ export default function NewEssaySubject() {
       <div className="productTop">
         <div className="productTopRight">
           <div className="productInfoTop">
-            <span className="productName">{data?.tenHp}</span>
+            <span className="productName">{data?.tenHocPhan}</span>
           </div>
           <div className="productInfoBottom">
             <div className="productInfoItem">
               <span className="productInfoKey">Mã học phần:</span>
-              <span className="productInfoValue">{data?.maHp}</span>
+              <span className="productInfoValue">{data?.maHocPhan}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Nhóm kiểm tra:</span>
-              <span className="productInfoValue">{data?.nhomKT}</span>
+              <span className="productInfoValue">{data?.nhomKiemTra}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Tổ kiểm:</span>
@@ -58,11 +69,11 @@ export default function NewEssaySubject() {
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Số lượng SV:</span>
-              <span className="productInfoValue">{data?.soLuong}</span>
+              <span className="productInfoValue">{data?.soLuongSinhVien}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Hình thức kiểm tra:</span>
-              <span className="productInfoValue">{data?.hinhThucKT}</span>
+              <span className="productInfoValue">{data?.hinhThucKiemTra}</span>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ const lichThiCtrl = {
       for (var key in req.body.datas) {
         if (req.body.datas.hasOwnProperty(key) && key !== "maKhoa") {
           item = req.body.datas[key];
-          tenHocKy = req.body.tenHocKy;
+          tenHocKy = `${req.body.namHoc} - ${req.body.hocKy}`;
           nhomKiemTra = item.nhomKT;
           maHocPhan = item.maHp;
           let check = await Schedules.findOne({
@@ -14,7 +14,7 @@ const lichThiCtrl = {
             maHocPhan,
           });
           if (check) {
-            return res.status(400).json({ msg: "Tên lịch thi đã tồn tại" });
+            return res.status(400).json({ msg: "lịch thi đã tồn tại" });
           } else {
             const newSchedules = new Schedules({
               GVGD: item.GVGD,
@@ -51,6 +51,10 @@ const lichThiCtrl = {
               ],
               maKhoa: item.maKhoa,
               maChuongTrinh: item.maChuongTrinh,
+              canBoCoiKiem3: item.canBoCoiKiem3,
+              maCanBoCoiKiem3: item.maCanBoCoiKiem3,
+              canBoDuBi: item.canBoDuBi,
+              maCanBoDuBi: item.maCanBoDuBi,
               public: false,
             });
             await newSchedules.save();
@@ -99,6 +103,10 @@ const lichThiCtrl = {
         tenHp,
         toKiem,
         tenHocKy,
+        canBoCoiKiem3,
+        maCanBoCoiKiem3,
+        canBoDuBi,
+        maCanBoDuBi,
       } = req.body;
       await Schedules.findOneAndUpdate(
         { _id: req.body.param.testScheduleID },
@@ -134,6 +142,10 @@ const lichThiCtrl = {
             },
           ],
           maKhoa: maKhoa,
+          canBoCoiKiem3: canBoCoiKiem3,
+          maCanBoCoiKiem3:maCanBoCoiKiem3,
+          canBoDuBi: canBoDuBi,
+          maCanBoDuBi: maCanBoDuBi,
           public: false,
         }
       );
@@ -171,13 +183,17 @@ const lichThiCtrl = {
       let isPublic = req.params.isChecked;
       let key = req.params.key;
       if (key === "undefined") {
-        return res.status(500).json({ msg: 'Vui lòng chọn lịch thi' });
+        return res.status(500).json({ msg: "Vui lòng chọn lịch thi" });
       } else {
         for (let i = 0, len = collectionNames.length; i < len; i++) {
           let collectionName = collectionNames[i];
           if (collectionName.tenHocKi === req.params.key) {
             await Schedules.findByIdAndUpdate(collectionName._doc._id, {
               public: isPublic,
+            });
+          }else{
+            await Schedules.findByIdAndUpdate(collectionName._doc._id, {
+              public: false,
             });
           }
         }

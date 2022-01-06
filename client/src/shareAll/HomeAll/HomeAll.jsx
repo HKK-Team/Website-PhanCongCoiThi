@@ -3,11 +3,12 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import schedulesSlice from "../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
 import logo from "./../../../src/images/tdmu-elearning-banner.png";
 import "./HomeAll.css";
 export default function HomeAll() {
+  const navigate = useNavigate();
   const keyWord = useSelector(
     (state) => state.Schedules.filters.maVienChucVSTenLop
   );
@@ -74,7 +75,7 @@ export default function HomeAll() {
               size="small"
               style={{ marginTop: 10 }}
               onClick={() => {
-                window.location.href = `/FilterSearch/${keyWord}`;
+                navigate(`/FilterSearch/${keyWord}`);
               }}
             >
               Tìm

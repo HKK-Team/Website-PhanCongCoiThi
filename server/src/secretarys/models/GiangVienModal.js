@@ -6,5 +6,6 @@ const danhSachGiangVien = new Schema({
     email : String,
     maKhoa: String,
     maChuongTrinh: String,
+    created: Date
 })
 module.exports = mongoose.model('danhSachGiangVien',danhSachGiangVien);

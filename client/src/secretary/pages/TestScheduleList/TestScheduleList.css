@@ -1,6 +1,6 @@
 .userList {
   flex: 4;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .userListUser {

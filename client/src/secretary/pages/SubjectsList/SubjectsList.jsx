@@ -1,13 +1,11 @@
 import { makeStyles } from "@material-ui/styles";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { Button, Modal, Typography } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { Box } from "@mui/system";
 import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
@@ -15,19 +13,22 @@ import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import "./SubjectsList.css";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "White",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+export function ExcelDateToJSDate(serial) {
+  let utc_days = Math.floor(serial - 25569);
+  let utc_value = utc_days * 86400;
+  let date_info = new Date(utc_value * 1000);
+
+  // date formats yyyy/mm/dd
+  const date = new Date(
+    date_info.getFullYear(),
+    date_info.getMonth(),
+    date_info.getDate()+1
+  );
+  return date;
+}
 
 export default function SubjectsList() {
+  const navigate = useNavigate();
   const { loading } = useSelector((state) => state.Subjects.SubjectsApi);
   const [monthi, setMonthi] = useState([]);
 
@@ -41,6 +42,8 @@ export default function SubjectsList() {
         item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
     )
   );
+
+  
 
   const readExcelMonThi = (file) => {
     const promise = new Promise((resolve, reject) => {
@@ -56,10 +59,9 @@ export default function SubjectsList() {
 
         const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_json(ws, {
-          raw: false,
+          raw: true,
           defval: "",
         });
-
         resolve(data);
       };
 
@@ -68,6 +70,10 @@ export default function SubjectsList() {
       };
     });
     promise.then((d) => {
+      d.forEach((item) => {
+        item.ngayKiemTra = ExcelDateToJSDate(item.ngayKiemTra);
+      });
+      console.log(d);
       d.shift();
       d.maKhoa = maKhoa;
       d.maChuongTrinh = chuongTrinhDaoTao;
@@ -87,7 +93,7 @@ export default function SubjectsList() {
       }),
       (data) => {
         setTimeout(() => {
-          window.location.reload();
+          navigate("/HomeSecretary/subjects");
         }, 1000);
         return (
           JSON.stringify(data?.data?.response?.data?.msg) ||
@@ -102,17 +108,13 @@ export default function SubjectsList() {
         axios.delete(`http://localhost:5000/import/deleteMonThi/${id}`),
         () => {
           setTimeout(() => {
-            window.location.reload();
+            navigate("/HomeSecretary/subjects");
           }, 1000);
           return "Xóa thành công !";
         }
       );
     }
   };
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const columns = [
     { field: "maHp", headerName: "Mã học phần", width: 140 },
@@ -142,6 +144,10 @@ export default function SubjectsList() {
       field: "ngayKiemTra",
       headerName: "Ngày kiểm tra",
       width: 150,
+      type:'date',
+      renderCell: (rowData) => {
+        return rowData?.value.slice(0, 10);
+      }
     },
     {
       field: "gioBatDau",
@@ -180,52 +186,25 @@ export default function SubjectsList() {
     },
     {
       field: "canBoCoiKiem3",
-      headerName: "Cán bộ coi kiểm tra 03",
+      headerName: "Cán bộ giám sát",
       width: 200,
     },
     {
       field: "maCanBoCoiKiem3",
-      headerName: "Mã viên chức CB03",
+      headerName: "Mã VC giám sát",
       width: 180,
     },
     {
-      field: "ghiChu",
-      headerName: "ghi chú",
-      width: 140,
-      renderCell: (params) => {
-        if (params.value !== "" && params.id === params.row._id)
-          return (
-            <>
-              <Button
-                variant="contained"
-                style={{ color: "white" }}
-                onClick={handleOpen}
-              >
-                Mở
-              </Button>
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <Typography
-                    id="modal-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    Ghi chú
-                  </Typography>
-                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {params.value}
-                  </Typography>
-                </Box>
-              </Modal>
-            </>
-          );
-      },
+      field: "canBoDuBi",
+      headerName: "Cán bộ dự bị",
+      width: 200,
     },
+    {
+      field: "maCanBoDuBi",
+      headerName: "Mã VC dự bị",
+      width: 180,
+    },
+
     {
       field: "action",
       headerName: "Action",
@@ -281,7 +260,6 @@ export default function SubjectsList() {
       <DataGridPro
         className={classes.root}
         getRowId={(row) => row._id}
-        // autoHeight
         rows={data}
         disableSelectionOnClick
         columns={columns}
@@ -289,7 +267,6 @@ export default function SubjectsList() {
           pinnedColumns: { left: ["maHp", "tenHp"], right: ["action"] },
         }}
         density="compact"
-        scrollbarSize={10}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

@@ -1,13 +1,16 @@
-import React, { Fragment, useState } from "react";
-import logo from "./../../../src/images/tdmu-elearning-banner.png";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import EmailIcon from "@mui/icons-material/Email";
-import "./LoginAll.css";
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
-import { Link } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import axios from "axios";
+import React, { Fragment, useState } from "react";
+import { GoogleLogin } from "react-google-login";
+import { Link } from "react-router-dom";
+import {
+  toastError, toastSuccess
+} from "../toastMassage/toastMassage";
+import logo from "./../../../src/images/tdmu-elearning-banner.png";
+import "./LoginAll.css";
 // import { GoogleLogout } from 'react-google-login';
 export default function LoginAll() {
   // lecturer login
@@ -44,15 +47,18 @@ export default function LoginAll() {
   var reg = /^([0-9]{13})+@student.tdmu.edu.vn$/i;
   const CreateUser = async (e) => {
     e.preventDefault();
-    if(reg.test(lecturer.email)===true)
-    {
-      await axios.post("http://localhost:5000/lecturer/login",{...lecturer});
+    if (reg.test(lecturer.email) === true) {
+      await axios.post("http://localhost:5000/lecturer/login", {
+        ...lecturer,
+      });
       sessionStorage.setItem("LecturerLogin", true);
-      sessionStorage.setItem("LecturerEmail",lecturer.email);
-      alert("Bạn đã đăng nhập Google thành công!");
-      window.location.href = "/HomeLecturers";
+      sessionStorage.setItem("LecturerEmail", lecturer.email);
+      setTimeout(() => {
+        window.location.href = "/HomeLecturers";
+      }, 1000);
+      toastSuccess("Bạn đã đăng nhập Google thành công!");
     } else {
-      alert(
+      toastError(
         "Email của bạn không tồn tại trong cơ sở dữ liệu. Xin vui lòng đăng nhập lại!"
       );
     }
@@ -86,14 +92,20 @@ export default function LoginAll() {
   };
   const loginSubmit = async (e) => {
     e.preventDefault();
-    try{
-      await axios.post("http://localhost:5000/secretary/login", { ...secretary });
+    try {
+      await axios.post("http://localhost:5000/secretary/login", {
+        ...secretary,
+      });
       sessionStorage.setItem("SecretaryLogin", true);
       sessionStorage.setItem("SecretaryEmail", secretary.email);
-      alert("Bạn đã đăng nhập thành công!");
-      window.location.href = "/HomeSecretary";
+      setTimeout(() => {
+        window.location.href = "/HomeSecretary";
+      }, 1000);
+      toastSuccess("Bạn đã đăng nhập thành công!");
     } catch (err) {
-      alert("Sai tên tài khoản hoặc mật khẩu. Xin vui lòng đăng nhập lại!");
+      toastError(
+        "Sai tên tài khoản hoặc mật khẩu. Xin vui lòng đăng nhập lại!"
+      );
     }
   };
   return (
@@ -121,7 +133,7 @@ export default function LoginAll() {
         <Stack spacing={2} direction="row">
           <Button
             variant="contained"
-            style={{ width: "50%" }}
+            style={{ width: "50%", marginTop: 10 }}
             onClick={(e) => {
               e.preventDefault();
               let a = document.querySelector(".btn-login-email");
@@ -134,7 +146,7 @@ export default function LoginAll() {
           </Button>
           <Button
             variant="contained"
-            style={{ width: "50%" }}
+            style={{ width: "50%", marginTop: 10 }}
             onClick={(e) => {
               e.preventDefault();
               let a = document.querySelector(".btn-login-email");

@@ -1,14 +1,14 @@
-import { TextareaAutosize } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,useNavigate } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import "./Subjects.css";
 
 // chỉnh sửa sản phẩm
 export default function Subjects() {
+  const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (items) => {
@@ -19,7 +19,7 @@ export default function Subjects() {
       }),
       () => {
         setTimeout(() => {
-          window.location.reload();
+          navigate('/HomeSecretary/subjects')
         }, 1000);
         return "Cập Nhật Thành Công";
       }
@@ -48,8 +48,9 @@ export default function Subjects() {
     setValue("soPhutKiemTra", data?.soPhutKiemTra);
     setValue("canBoCoiKiem3", data?.canBoCoiKiem3);
     setValue("maCanBoCoiKiem3", data?.maCanBoCoiKiem3);
-    setValue("ghiChu", data?.ghiChu);
     setValue("maPhong", data?.maPhong);
+    setValue("canBoDuBi", data?.canBoDuBi);
+    setValue("maCanBoDuBi", data?.maCanBoDuBi);
   }, [data, setValue]);
   if (loading) return <div className="loading">Loading...</div>;
   return (
@@ -132,7 +133,7 @@ export default function Subjects() {
 
             <label>Ngày kiểm tra</label>
             <input
-              type="text"
+              type="date"
               {...register("ngayKiemTra", {
                 required: false,
                 maxLength: 80,
@@ -175,12 +176,12 @@ export default function Subjects() {
               type="text"
               {...register("heDT", { required: false, maxLength: 80 })}
             />
-            <label>Cán bộ coi kiểm 03</label>
+            <label>Cán bộ giám sát</label>
             <input
               type="text"
               {...register("canBoCoiKiem3", { required: false, maxLength: 80 })}
             />
-            <label>Mã viên chức 03</label>
+            <label>Mã Cán bộ giám sát</label>
             <input
               type="text"
               {...register("maCanBoCoiKiem3", {
@@ -188,13 +189,23 @@ export default function Subjects() {
                 maxLength: 80,
               })}
             />
-            <label>Ghi chú</label>
-            <TextareaAutosize
-              aria-label="minimum height"
-              minRows={5}
-              style={{ width: "100%", marginBottom: 20, padding: 10 }}
-              {...register("ghiChu", { required: false })}
+            <label>Cán bộ dự bị</label>
+            <input
+              type="text"
+              {...register("canBoDuBi", {
+                required: false,
+                maxLength: 80,
+              })}
             />
+            <label>Mã cán bộ dự bị</label>
+            <input
+              type="text"
+              {...register("maCanBoDuBi", {
+                required: false,
+                maxLength: 80,
+              })}
+            />
+
             <button className="productButton" style={{ background: "green" }}>
               Chỉnh sửa
             </button>

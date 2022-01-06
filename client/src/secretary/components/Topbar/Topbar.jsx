@@ -6,6 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 import { Link } from "react-router-dom";
+import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
 import logo from "./../../../images/tdmu-elearning-banner.png";
 
 export default function Topbar() {
@@ -77,7 +78,7 @@ export default function Topbar() {
               alt=""
               className="topAvatar"
               onClick={() => {
-                alert("hello");
+                toastInfor('Xin chào')
               }}
             />
           </div>

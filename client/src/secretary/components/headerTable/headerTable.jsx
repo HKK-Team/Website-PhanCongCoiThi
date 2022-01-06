@@ -1,13 +1,16 @@
-import React from "react";
+import { ErrorMessage } from "@hookform/error-message";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
-import "./headerTable.css";
-import { Link } from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import { useForm } from "react-hook-form";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import axios from "axios";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import arrangeExamScheduleSlide from "../../sliceApi/ArrangeExamSchedule/arrangeExamScheduleSlide";
+import "./headerTable.css";
 
 export default function headerTable(props) {
   const Input = styled("input")({
@@ -69,14 +72,18 @@ export default function headerTable(props) {
   );
 }
 export function HeaderTableArrangeExamSchedule(props) {
+  const navigate = useNavigate();
+  const { data, loading } = useSelector((state) => state.NamHoc.NamHocApi);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => {
     let datas = props.data;
-    console.log(datas);
+
     await toastPromise(
       axios.post("http://localhost:5000/import/createLichthi", {
         ...data,
@@ -84,12 +91,15 @@ export function HeaderTableArrangeExamSchedule(props) {
       }),
       () => {
         setTimeout(() => {
-          window.location.href = "/testSchedule";
+          navigate("/HomeSecretary/testSchedule");
         }, 1000);
+        dispatch(arrangeExamScheduleSlide.actions.CreateList("reset"));
         return "Lịch thi đã được lưu lại";
       }
     );
   };
+
+  if (loading) return <div className="loading">Loading...</div>;
   return (
     <div className="header-table">
       <h1 className="header-table-title">{props.title}</h1>
@@ -112,20 +122,63 @@ export function HeaderTableArrangeExamSchedule(props) {
             color="success"
             onClick={props.onClick}
           >
-            Sắp xếp tự động
+            Tạo lịch thi
           </Button>
         </Tooltip>
-        <TextField
-          id="outlined-basic"
-          label="Tên lịch thi"
-          variant="outlined"
-          size="small"
-          style={{ width: 300 }}
-          {...register("tenHocKy", { required: true, maxLength: 80 })}
-        />
-        <span style={{ fontSize: 16, color: "red", paddingLeft: 20 }}>
-          {errors.tenHocKy?.type === "required" && "Vui lòng điền tên lịch thi"}
-        </span>
+        <FormControl style={{ display: "inline-block", width: "150px" }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Chọn năm học
+          </InputLabel>
+          <Select
+            style={{ width: "100%", height: "50px" }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Chọn năm học"
+            {...register("namHoc", { required: "Vui lòng chọn năm học" })}
+          >
+            {data.map((item) =>
+              item.namHoc.map((item) => (
+                <MenuItem value={item} key={item}>
+                  {item}
+                </MenuItem>
+              ))
+            )}
+          </Select>
+          <ErrorMessage
+            errors={errors}
+            name="namHoc"
+            as="span"
+            style={{ color: "red" }}
+          />
+        </FormControl>
+        <FormControl
+          style={{ display: "inline-block", width: "150px", marginLeft: 10 }}
+        >
+          <InputLabel id="demo-simple-select-helper-label">
+            Chọn học kỳ
+          </InputLabel>
+          <Select
+            style={{ width: "100%", height: "50px" }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Chọn học kỳ"
+            {...register("hocKy", { required: "Vui lòng chọn học kỳ" })}
+          >
+            {data.map((item) =>
+              item.hocKy.map((item) => (
+                <MenuItem value={item} key={item}>
+                  {item}
+                </MenuItem>
+              ))
+            )}
+          </Select>
+          <ErrorMessage
+            errors={errors}
+            name="hocKy"
+            as="span"
+            style={{ color: "red" }}
+          />
+        </FormControl>
         <p className="header-table-ps">
           P/s: Dữ liệu sẽ mất khi bạn rời khỏi trang. Hãy kiểm tra thật kỹ tất
           cả thông tin và lưu lại
