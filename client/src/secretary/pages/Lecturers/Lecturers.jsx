@@ -6,8 +6,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Link, useParams ,useNavigate} from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import "./Lecturers.css";
 
 // chỉnh sửa thông tin khách hàng
@@ -19,9 +20,9 @@ export default function Lecturers() {
     setValue,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     data.maVienChuc = data.maVienChuc.toUpperCase();
-    await toastPromise(
+    toastPromise(
       axios.put("http://localhost:5000/import/editGiangVien", {
         ...data,
         params,
@@ -49,7 +50,13 @@ export default function Lecturers() {
     setValue("Email", data?.email);
   }, [data, setValue]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="user">
       <div className="userTitleContainer">

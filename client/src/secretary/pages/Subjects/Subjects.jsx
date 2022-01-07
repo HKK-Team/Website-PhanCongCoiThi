@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Link, useParams,useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import "./Subjects.css";
 
 // chỉnh sửa sản phẩm
@@ -11,15 +12,15 @@ export default function Subjects() {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm();
 
-  const onSubmit = async (items) => {
-    await toastPromise(
+  const onSubmit = (items) => {
+    toastPromise(
       axios.put("http://localhost:5000/import/editMonThi", {
         ...items,
         param,
       }),
       () => {
         setTimeout(() => {
-          navigate('/HomeSecretary/subjects')
+          navigate("/HomeSecretary/subjects");
         }, 1000);
         return "Cập Nhật Thành Công";
       }
@@ -52,7 +53,13 @@ export default function Subjects() {
     setValue("canBoDuBi", data?.canBoDuBi);
     setValue("maCanBoDuBi", data?.maCanBoDuBi);
   }, [data, setValue]);
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="product">
       <div className="productTitleContainer">

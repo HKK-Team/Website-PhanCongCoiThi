@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import scheduleSlice, {
   getSchedulesApiAsync,
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
@@ -38,11 +39,11 @@ export default function TestScheduleList() {
   const setTenHocKy = useSelector(
     (state) =>
       new Set(
-        state.Schedules.SchedulesApi.data.map((element) => 
+        state.Schedules.SchedulesApi.data.map((element) =>
           element.maKhoa === maKhoa &&
           element.maChuongTrinh === chuongTrinhDaoTao
             ? element.tenHocKi
-            : ' '
+            : " "
         )
       )
   );
@@ -142,10 +143,10 @@ export default function TestScheduleList() {
       field: "ngayKiemTra",
       headerName: "Ngày kiểm tra",
       width: 150,
-      type :'date',
+      type: "date",
       renderCell: (rowData) => {
         return rowData?.value.slice(0, 10);
-      }
+      },
     },
     {
       field: "gioBatDau",
@@ -301,7 +302,13 @@ export default function TestScheduleList() {
 
   const classes = useStyles();
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="userList">
       <div className="header-table">

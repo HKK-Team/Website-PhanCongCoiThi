@@ -1,35 +1,25 @@
-import React from 'react'
-import './loading.css'
+import React from "react";
+import "./loading.css";
 
 function Loading() {
-    return (
-        <div className="load-page">
-            <div className="loader">
-                <div>
-                    L
-                    <div>
-                        O
-                        <div>
-                            A
-                            <div>
-                                D
-                                <div>
-                                    I
-                                    <div>
-                                        N
-                                        <div>
-                                            G
-                                            <div>...</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+  return (
+    <div class="loadingio-spinner-spinner-bxyk0dyv4o">
+      <div class="ldio-af1juf4yhm">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  );
 }
 
-export default Loading
+export default Loading;

@@ -19,19 +19,19 @@ import {
   
   export const tieuLuaSlide = createSlice({
     name: "tieuLuan",
-    initialState: { tieuLuanApi: { data: [], login: false, error: "" } },
+    initialState: { tieuLuanApi: { data: [], loading: false, error: "" } },
     reducers: {},
     extraReducers: {
       // --- Xử lý trong reducer với case pending / fulfilled / rejected ---
       [getTieuLuanApiAsync.pending]: (state) => {
-        state.tieuLuanApi.login = false;
+        state.tieuLuanApi.loading = true;
       },
       [getTieuLuanApiAsync.rejected]: (state, action) => {
-        state.tieuLuanApi.login = true;
+        state.tieuLuanApi.loading = true;
         state.tieuLuanApi.error = [...action.payload];
       },
       [getTieuLuanApiAsync.fulfilled]: (state, action) => {
-        state.tieuLuanApi.login = false;
+        state.tieuLuanApi.loading = false;
         state.tieuLuanApi.data = [...action.payload];
       },
     },

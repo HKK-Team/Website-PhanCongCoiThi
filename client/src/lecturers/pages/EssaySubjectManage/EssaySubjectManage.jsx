@@ -6,6 +6,7 @@ import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import "./EssaySubjectManage.css";
 
 export default function EssaySubjectManage() {
@@ -19,8 +20,9 @@ export default function EssaySubjectManage() {
       items.maGV === LecturersAccLogin?.maVienChuc ? data.push(items) : null
     )
   );
+  const loading = useSelector((state) => state.TieuLuan.tieuLuanApi.loading);
 
-  console.log(data);
+
   const columns = [
     {
       field: "Actions",
@@ -93,7 +95,7 @@ export default function EssaySubjectManage() {
               />
             ) : (
               <Tooltip title="Thông báo mới">
-                <Link to={"/HomeLecturers/editEssaySubject/" + params.id}>
+                <Link to={"/HomeLecturers/suggestEssaySubjectLecrurers/" + params.id}>
                   <MarkEmailUnreadIcon
                     style={{
                       cursor: "pointer",
@@ -163,6 +165,12 @@ export default function EssaySubjectManage() {
   );
   const classes = useStyles();
 
+  if (loading)
+    return (
+      <div className="loading">
+        <Loading />
+      </div>
+    );
   return (
     <div className="userList">
       <h2>Theo Dõi Đăng Ký</h2>

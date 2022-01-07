@@ -17,17 +17,17 @@ export default function NewLecturers() {
   const secretaryAccount = useSelector(getSecretaryAccLogin);
   const maKhoa = secretaryAccount?.maKhoa;
   const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     data.maKhoa = maKhoa;
     data.maChuongTrinh = chuongTrinhDaoTao;
     data.maVienChuc = data.maVienChuc.toUpperCase();
-    await toastPromise(
+    toastPromise(
       axios.post("http://localhost:5000/import/createGiangVien", {
         ...data,
       }),
       () => {
         setTimeout(() => {
-          navigate('/HomeSecretary/lecturers')
+          navigate("/HomeSecretary/lecturers");
         }, 1000);
         return "Thêm Thành Công";
       }

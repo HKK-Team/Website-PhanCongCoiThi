@@ -23,10 +23,9 @@ const tieuLuanSchema = new Schema({
   phanHoi: Boolean,
   moTa: String,
   deXuat: {
-    mota: String,
+    moTa: String,
     ngayKiemTra: Date,
     gioBatDau: String,
-    toKiem: String,
     maPhong: String,
     soPhutKiemTra: Number,
   },

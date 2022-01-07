@@ -6,10 +6,11 @@ import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formGV from "./../../../ExcelForm/BIEUMAUGV_HC.xlsx";
 import "./LecturersList.css";
@@ -57,14 +58,14 @@ export default function LecturersList() {
     });
   };
 
-  const ImportGiangVien = async () => {
-    await toastPromise(
+  const ImportGiangVien = () => {
+    toastPromise(
       axios.post("http://localhost:5000/import/giangvien", {
         ...giangvien,
       }),
       (data) => {
         setTimeout(() => {
-          navigate('/HomeSecretary/lecturers')
+          navigate("/HomeSecretary/lecturers");
         }, 1000);
         return (
           JSON.stringify(data?.data?.response?.data?.msg) ||
@@ -80,7 +81,7 @@ export default function LecturersList() {
         axios.delete(`http://localhost:5000/import/deleteGiangVien/${id}`),
         () => {
           setTimeout(() => {
-            navigate('/HomeSecretary/lecturers')
+            navigate("/HomeSecretary/lecturers");
           }, 1000);
           return "Xóa thành công !";
         }
@@ -145,7 +146,13 @@ export default function LecturersList() {
   );
 
   const classes = useStyles();
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="userList">
       <HeaderTable

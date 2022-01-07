@@ -1,34 +1,42 @@
-import { TextareaAutosize } from "@material-ui/core";
+import { TextareaAutosize } from "@mui/material";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import { getTieuLuanApiAsync } from "../../../api/tieuLuanSlide";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
 
-export default function NewEssaySubject() {
+export default function SuggestEssaySubject() {
   const param = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { data: subjects, loading } = useSelector(
-    (state) => state.Subjects.SubjectsApi
+  const { data: tieuLuans, loading } = useSelector(
+    (state) => state.TieuLuan.tieuLuanApi
   );
-  const [data] = subjects.filter((subject) => subject._id === param.id);
+  const [data] = tieuLuans.filter((item) => item._id === param.id);
+
+  useEffect(() => {
+    dispatch(getTieuLuanApiAsync());
+  }, [dispatch]);
 
   const { register, handleSubmit } = useForm();
   const onSubmit = (items) => {
-    items.status = "Đang kiểm tra";
+    items.status = "Bị từ chối";
+    items.phanHoi = true;
+    const id = param.id;
     toastPromise(
-      axios.post("http://localhost:5000/lecturersTieuLuan/createTieuLuan", {
+      axios.put("http://localhost:5000/lecturersTieuLuan/suggestTieuLuan", {
         ...items,
-        data,
+        id,
       }),
       () => {
         setTimeout(() => {
-          navigate("/HomeLecturers/essaySubject");
+          navigate("/HomeSecretary/essaySubjectSecretaryManage");
         }, 1000);
-        return "Đăng ký Thành Công";
+        return "Đã đề xuất";
       }
     );
   };
@@ -43,21 +51,21 @@ export default function NewEssaySubject() {
   return (
     <div className="product">
       <div className="productTitleContainer">
-        <h1 className="productTitle">Đăng ký tiểu luận</h1>
+        <h1 className="productTitle">Gợi ý đăng ký</h1>
       </div>
       <div className="productTop">
         <div className="productTopRight">
           <div className="productInfoTop">
-            <span className="productName">{data?.tenHp}</span>
+            <span className="productName">{data?.tenHocPhan}</span>
           </div>
           <div className="productInfoBottom">
             <div className="productInfoItem">
               <span className="productInfoKey">Mã học phần:</span>
-              <span className="productInfoValue">{data?.maHp}</span>
+              <span className="productInfoValue">{data?.maHocPhan}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Nhóm kiểm tra:</span>
-              <span className="productInfoValue">{data?.nhomKT}</span>
+              <span className="productInfoValue">{data?.nhomKiemTra}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Tổ kiểm:</span>
@@ -65,11 +73,45 @@ export default function NewEssaySubject() {
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Số lượng SV:</span>
-              <span className="productInfoValue">{data?.soLuong}</span>
+              <span className="productInfoValue">{data?.soLuongSinhVien}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Hình thức kiểm tra:</span>
-              <span className="productInfoValue">{data?.hinhThucKT}</span>
+              <span className="productInfoValue">{data?.hinhThucKiemTra}</span>
+            </div>
+          </div>
+        </div>
+        <div className="productTopRight">
+          <div className="productInfoBottom">
+            <div className="productInfoItem">
+              <span className="productInfoKey">GVGD:</span>
+              <span className="productInfoValue">{data?.GVGD}</span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Mã Giảng Viên:</span>
+              <span className="productInfoValue">{data?.maGV}</span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Ngày Kiểm Tra:</span>
+              <span className="productInfoValue">
+                {data?.ngayKiemTra.slice(0, 10)}
+              </span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Giờ bắt đầu:</span>
+              <span className="productInfoValue">{data?.gioBatDau}</span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Số phút kiểm tra:</span>
+              <span className="productInfoValue">{data?.soPhutKiemTra}</span>
+            </div>
+            <div className="productInfoItem">
+              <span className="productInfoKey">Mã Phòng:</span>
+              <span className="productInfoValue">{data?.maPhong}</span>
+            </div>
+            <span className="productInfoKey">Ghi chú:</span>
+            <div className="productInfoItem">
+              <span className="productInfoValue">{data?.moTa}</span>
             </div>
           </div>
         </div>
@@ -116,7 +158,7 @@ export default function NewEssaySubject() {
               {...register("moTa")}
             />
             <button className="productButton" style={{ background: "green" }}>
-              Đăng ký
+              Đề Xuất
             </button>
           </div>
         </form>

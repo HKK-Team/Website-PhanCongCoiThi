@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../../utils/loading/Loading";
 import { getSchedulesApiAsync } from "./../../../secretary/sliceApi/SchedulesSlice/schedulesSlice";
 
 export default function TestScheduleLecturers() {
@@ -117,7 +118,13 @@ export default function TestScheduleLecturers() {
     { defaultTheme }
   );
   const classes = useStyles();
-  if (loding) return <div className="loading">Loading...</div>;
+  if (loding)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="userList">

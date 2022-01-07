@@ -11,6 +11,7 @@
   margin: 0px 0px 0px 8px;
   padding: 0px 7px;
   text-align: left;
+  font-weight: 900;
 }
 .success {
   border-color: #238636;
@@ -25,6 +26,7 @@
   margin: 0px 0px 0px 8px;
   padding: 0px 7px;
   text-align: left;
+  font-weight: 900;
 }
 .cancel {
   border-color: #9e2203;
@@ -39,4 +41,5 @@
   margin: 0px 0px 0px 8px;
   padding: 0px 7px;
   text-align: left;
+  font-weight: 900;
 }

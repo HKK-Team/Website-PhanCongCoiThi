@@ -8,6 +8,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Topbar from "./components/Topbar/Topbar";
 import AccountSecretary from "./pages/AccoutSecretary/AccoutSecretary";
 import ArrangeExamSchedule from "./pages/ArrangeExamSchedule/ArrangeExamSchedule";
+import EssaySubjectSecretaryManage from "./pages/EssaySubjectSecretaryManage/EssaySubjectSecretaryManage";
+import SuggestEssaySubject from "./pages/EssaySubjectSecretaryManage/SuggestEssaySubject";
 import Lecturers from "./pages/Lecturers/Lecturers";
 import LecturersList from "./pages/LecturersList/LecturersList";
 import NewLecturers from "./pages/NewLecturers/NewLecturers";
@@ -42,7 +44,7 @@ function PagesSecretarys() {
   return (
     <Fragment>
       <Topbar />
-      <div className="containerAdmin-Secretarys" >
+      <div className="containerAdmin-Secretarys">
         {/* Menu nav */}
         <Sidebar />
         {/* Link url */}
@@ -94,6 +96,11 @@ function PagesSecretarys() {
           />
           <Route
             exact
+            path="/HomeSecretary/suggestEssaySubject/:id"
+            element={isLogged ? <SuggestEssaySubject /> : NotFound()}
+          />
+          <Route
+            exact
             path="/HomeSecretary/profileSecretary"
             element={isLogged ? <ProfileSecretary /> : NotFound()}
           />
@@ -101,6 +108,11 @@ function PagesSecretarys() {
             exact
             path="/HomeSecretary/accountSercetary"
             element={isLogged ? <AccountSecretary /> : NotFound()}
+          />
+          <Route
+            exact
+            path="/HomeSecretary/essaySubjectSecretaryManage"
+            element={isLogged ? <EssaySubjectSecretaryManage /> : NotFound()}
           />
         </Routes>
 

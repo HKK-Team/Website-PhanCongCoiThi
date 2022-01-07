@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import { HeaderTableArrangeExamSchedule } from "../../components/headerTable/headerTable";
 import arrangeExamScheduleSlide from "../../sliceApi/ArrangeExamSchedule/arrangeExamScheduleSlide";
 import { getSchedulesApiAsync } from "../../sliceApi/SchedulesSlice/schedulesSlice";
@@ -220,6 +221,7 @@ export default function ArrangeExamSchedule() {
         setArr = setArr.concat(FilterLecturers);
 
         setArr.concat(FilterLecturers);
+        // eslint-disable-next-line array-callback-return
         const listArr = lecturers.filter((items) => {
           const arr = setArr.map((item) =>
             item === items.maVienChuc ? true : false
@@ -292,6 +294,7 @@ export default function ArrangeExamSchedule() {
         let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
 
         setArr.concat(FilterLecturers);
+        // eslint-disable-next-line array-callback-return
         const listArr = lecturers.filter((items) => {
           const arr = setArr.map((item) =>
             item === items.maVienChuc ? true : false
@@ -491,7 +494,12 @@ export default function ArrangeExamSchedule() {
   );
   const classes = useStyles();
 
-  if (loading && loading2) return <div className="loading">Loading...</div>;
+  if (loading && loading2)
+    return (
+      <div className="loading">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="userList">

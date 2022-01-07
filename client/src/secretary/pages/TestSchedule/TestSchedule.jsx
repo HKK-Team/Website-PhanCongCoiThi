@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 
 export default function TestSchedule() {
   const navigate = useNavigate();
@@ -15,8 +16,8 @@ export default function TestSchedule() {
     // formState: { errors },
   } = useForm();
 
-  const onSubmit = async (items) => {
-    await toastPromise(
+  const onSubmit = (items) => {
+    toastPromise(
       axios.put("http://localhost:5000/import/editLichThi", {
         ...items,
         param,
@@ -64,7 +65,13 @@ export default function TestSchedule() {
     setValue("maCanBoDuBi", data?.maCanBoDuBi);
   }, [data, setValue]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="product">
       <div className="productTitleContainer">
@@ -125,21 +132,21 @@ export default function TestSchedule() {
               })}
             />
             <label>Ngày kiểm tra</label>
-            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
-            <input
-              disabled
-              type="text"
-              {...register("ngayKiemTra", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                {...register("ngayKiemTra", { required: false, maxLength: 80 })}
+              />
             </Tooltip>
             <label>Giờ kiểm tra</label>
-            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
-            <input
-              disabled
-              type="text"
-              placeholder="13h"
-              {...register("gioBatDau", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                placeholder="13h"
+                {...register("gioBatDau", { required: false, maxLength: 80 })}
+              />
             </Tooltip>
             <label>Teamcode/Phòng</label>
             <input
@@ -165,28 +172,28 @@ export default function TestSchedule() {
           </div>
           <div className="productFormLeft">
             <label>Cán bộ coi kiểm tra 01(CB02)</label>
-            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
-            <input
-              disabled
-              type="text"
-              {...register("hoTen1", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                {...register("hoTen1", { required: false, maxLength: 80 })}
+              />
             </Tooltip>
             <label>Mã viên chức CB01</label>
-            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
-            <input
-              disabled
-              type="text"
-              {...register("maVienChuc1", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                {...register("maVienChuc1", { required: false, maxLength: 80 })}
+              />
             </Tooltip>
             <label>Cán bộ coi kiểm tra 02(CB02)</label>
-            <Tooltip title='ràng buộc về các chương trình, không được sữa'>
-            <input
-              disabled
-              type="text"
-              {...register("hoTen2", { required: false, maxLength: 80 })}
-            />
+            <Tooltip title="ràng buộc về các chương trình, không được sữa">
+              <input
+                disabled
+                type="text"
+                {...register("hoTen2", { required: false, maxLength: 80 })}
+              />
             </Tooltip>
             <label>Mã viên chức CB02</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">

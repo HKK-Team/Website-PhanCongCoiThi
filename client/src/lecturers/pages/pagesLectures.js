@@ -17,6 +17,7 @@ import EditEssaySubject from "./EditEssaySubject/EditEssaySubject";
 import EssaySubject from "./EssaySubject/EssaySubject";
 import EssaySubjectManage from "./EssaySubjectManage/EssaySubjectManage";
 import NewEssaySubject from "./NewEssaySubject/NewEssaySubject";
+import SuggestEssaySubjectLecrurers from "./SuggestEssaySubjectLecrurers/SuggestEssaySubjectLecrurers";
 import TestScheduleLecturers from "./TestScheduleLecturers/TestScheduleLecturers";
 function PagesLecturers() {
   const nagivate = useNavigate();
@@ -94,7 +95,13 @@ function PagesLecturers() {
             path="/HomeLecturers/editEssaySubject/:id"
             element={isLogged ? <EditEssaySubject /> : <NotFound />}
           />
+          <Route
+            exact
+            path="/HomeLecturers/suggestEssaySubjectLecrurers/:id"
+            element={isLogged ? <SuggestEssaySubjectLecrurers /> : <NotFound />}
+          />
         </Routes>
+        
       </div>
     </Fragment>
   );

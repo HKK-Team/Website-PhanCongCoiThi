@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import arrangeExamScheduleSlide from "../../sliceApi/ArrangeExamSchedule/arrangeExamScheduleSlide";
 import "./headerTable.css";
 
@@ -81,10 +82,10 @@ export function HeaderTableArrangeExamSchedule(props) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     let datas = props.data;
 
-    await toastPromise(
+    toastPromise(
       axios.post("http://localhost:5000/import/createLichthi", {
         ...data,
         datas,
@@ -99,7 +100,13 @@ export function HeaderTableArrangeExamSchedule(props) {
     );
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="header-table">
       <h1 className="header-table-title">{props.title}</h1>

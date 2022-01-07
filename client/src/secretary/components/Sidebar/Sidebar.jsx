@@ -6,6 +6,7 @@ import MailOutline from "@mui/icons-material/MailOutline";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import { NavLink } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 
@@ -23,7 +24,16 @@ export default function Sidebar() {
                     className="sidebarIcon"
                     style={{ color: "#000000" }}
                   />
-                  {/* Sắp xếp lịch thi */}
+                </li>
+              </Tooltip>
+            </NavLink>
+            <NavLink to="/HomeSecretary/essaySubjectSecretaryManage" className="link">
+              <Tooltip title="Lịch đăng ký thi tiểu luận,...">
+                <li className="sidebarListItem">
+                  <FactCheckIcon
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
                 </li>
               </Tooltip>
             </NavLink>

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getSubjectsApiAsync } from "../../../secretary/sliceApi/SubjectsSlice/subjectsSlice";
+import Loading from "../../../utils/loading/Loading";
 
 export default function EssaySubject() {
   const LecturersAccLogin = useSelector(
@@ -19,7 +20,7 @@ export default function EssaySubject() {
     )
   );
 
-  const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
+  const { loading } = useSelector((state) => state.Subjects.SubjectsApi);
   const data = [];
 
   // eslint-disable-next-line no-unused-vars
@@ -115,7 +116,13 @@ export default function EssaySubject() {
   );
   const classes = useStyles();
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="userList">

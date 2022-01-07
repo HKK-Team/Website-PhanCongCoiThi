@@ -108,7 +108,43 @@ const tieuluanCtrl = {
           soPhutKiemTra,
           moTa,
           status,
-          phanHoi : false,
+          phanHoi: false,
+        }
+      );
+      res.json({ msg: "Cập nhật thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  successTieuLuan: async (req, res) => {
+    try {
+      const { id, status } = req.body;
+      await tieuluan.findOneAndUpdate({ _id: id }, { status });
+      res.json({ msg: "Cập nhật thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  cancelTieuLuan: async (req, res) => {
+    try {
+      const { id, status } = req.body;
+      await tieuluan.findOneAndUpdate({ _id: id }, { status });
+      res.json({ msg: "Cập nhật thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  suggestTieuLuan: async (req, res) => {
+    try {
+      const { id, status, phanHoi } = req.body;
+      const { ngayKiemTra, gioBatDau, maPhong, soPhutKiemTra, moTa } = req.body;
+      await tieuluan.findOneAndUpdate(
+        { _id: id },
+        {
+          status,
+          phanHoi,
+          deXuat: { ngayKiemTra, gioBatDau, maPhong, soPhutKiemTra, moTa },
         }
       );
       res.json({ msg: "Cập nhật thành công" });

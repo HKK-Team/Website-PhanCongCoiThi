@@ -20,10 +20,10 @@ export default function NewSubjects() {
   const maKhoa = secretaryAccount?.maKhoa;
   const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     data.maKhoa = maKhoa;
     data.maChuongTrinh = chuongTrinhDaoTao;
-    await toastPromise(
+    toastPromise(
       axios.post("http://localhost:5000/import/createMonThi", {
         ...data,
       }),

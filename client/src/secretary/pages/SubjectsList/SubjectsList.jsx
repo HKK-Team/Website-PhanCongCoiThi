@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 import HeaderTable from "../../components/headerTable/headerTable";
 import formMH from "./../../../ExcelForm/BIEUMAUMONTHI_HC.xlsx";
 import "./SubjectsList.css";
@@ -22,7 +23,7 @@ export function ExcelDateToJSDate(serial) {
   const date = new Date(
     date_info.getFullYear(),
     date_info.getMonth(),
-    date_info.getDate()+1
+    date_info.getDate() + 1
   );
   return date;
 }
@@ -42,8 +43,6 @@ export default function SubjectsList() {
         item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
     )
   );
-
-  
 
   const readExcelMonThi = (file) => {
     const promise = new Promise((resolve, reject) => {
@@ -86,8 +85,8 @@ export default function SubjectsList() {
     });
   };
 
-  const ImportMonThi = async () => {
-    await toastPromise(
+  const ImportMonThi = () => {
+    toastPromise(
       axios.post("http://localhost:5000/import/monthi", {
         ...monthi,
       }),
@@ -144,10 +143,10 @@ export default function SubjectsList() {
       field: "ngayKiemTra",
       headerName: "Ngày kiểm tra",
       width: 150,
-      type:'date',
+      type: "date",
       renderCell: (rowData) => {
         return rowData?.value.slice(0, 10);
-      }
+      },
     },
     {
       field: "gioBatDau",
@@ -246,7 +245,13 @@ export default function SubjectsList() {
   );
 
   const classes = useStyles();
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="productList">

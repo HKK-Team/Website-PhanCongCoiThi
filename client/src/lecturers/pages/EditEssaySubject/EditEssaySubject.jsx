@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import Loading from "../../../utils/loading/Loading";
 
 export default function EditEssaySubject() {
   const param = useParams();
@@ -17,9 +18,9 @@ export default function EditEssaySubject() {
   const [data] = tieuLuans.filter((subject) => subject._id === param.id);
 
   const { register, handleSubmit, setValue } = useForm();
-  const onSubmit = async (items) => {
+  const onSubmit = (items) => {
     items.status = "Đang kiểm tra";
-    await toastPromise(
+    toastPromise(
       axios.put("http://localhost:5000/lecturersTieuLuan/editTieuLuan", {
         ...items,
         data,
@@ -42,8 +43,13 @@ export default function EditEssaySubject() {
     setValue("moTa", data?.moTa);
   }, [data, setValue]);
 
-  console.log(data);
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading">
+        {" "}
+        <Loading />
+      </div>
+    );
   return (
     <div className="product">
       <div className="productTitleContainer">
