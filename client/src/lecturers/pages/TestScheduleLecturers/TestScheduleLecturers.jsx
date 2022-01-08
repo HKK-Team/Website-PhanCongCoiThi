@@ -12,7 +12,15 @@ export default function TestScheduleLecturers() {
   );
   const { loding } = useSelector((state) => state.Schedules.SchedulesApi);
 
-  const data = [];
+  let data = [];
+  const tieuLuan = useSelector((state) =>
+    state.TieuLuan.tieuLuanApi.data.filter(
+      (item) => item.maGV === LecturersAccLogin?.maVienChuc && item.status === "Đã xác nhận"
+    )
+  );
+  const tieuLuans = [];
+  tieuLuan.forEach((item) => tieuLuans.push({ ...item, giangVien: [] }));
+  data = [...tieuLuans];
   // eslint-disable-next-line no-unused-vars
   const datas = useSelector((state) =>
     state.Schedules.SchedulesApi.data.forEach((items) => {
@@ -25,7 +33,6 @@ export default function TestScheduleLecturers() {
       }
     })
   );
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSchedulesApiAsync());
@@ -33,9 +40,9 @@ export default function TestScheduleLecturers() {
 
   // khởi tạo dữ liệu bảng
   const columns = [
-    { field: "maHocPhan", headerName: "Mã học phần", width: 180 },
-    { field: "tenHocPhan", headerName: "Tên học phần", width: 400 },
-    { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 200 },
+    { field: "maHocPhan", headerName: "Mã học phần", width: 103 },
+    { field: "tenHocPhan", headerName: "Tên học phần", width: 356 },
+    { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 181 },
 
     { field: "toKiem", headerName: "Tổ Kiểm", width: 140 },
     { field: "soLuongSinhVien", headerName: "Số lượng SV", width: 160 },
@@ -68,7 +75,7 @@ export default function TestScheduleLecturers() {
       headerName: "Cán bộ coi kiểm tra 01(CB01)",
       width: 230,
       renderCell: (params) => {
-        return params.row?.giangVien[0]?.hoTen;
+        return params?.row?.giangVien[0]?.hoTen;
       },
     },
     {
@@ -76,7 +83,7 @@ export default function TestScheduleLecturers() {
       headerName: "Mã viên chức CB01",
       width: 200,
       renderCell: (params) => {
-        return params.row?.giangVien[0]?.maVienChuc;
+        return params?.row?.giangVien[0]?.maVienChuc;
       },
     },
     {
@@ -84,7 +91,7 @@ export default function TestScheduleLecturers() {
       headerName: "Cán bộ coi kiểm tra 02(CB02)",
       width: 230,
       renderCell: (params) => {
-        return params.row?.giangVien[1]?.hoTen;
+        return params?.row?.giangVien[1]?.hoTen;
       },
     },
     {
@@ -92,7 +99,7 @@ export default function TestScheduleLecturers() {
       headerName: "Mã viên chức CB02",
       width: 200,
       renderCell: (params) => {
-        return params.row?.giangVien[1]?.maVienChuc;
+        return params?.row?.giangVien[1]?.maVienChuc;
       },
     },
     { field: "GVGD", headerName: "GVGD", width: 200 },
@@ -134,6 +141,9 @@ export default function TestScheduleLecturers() {
         rows={data}
         getRowId={(row) => row._id}
         disableSelectionOnClick
+        initialState={{
+          pinnedColumns: { left: ["maHocPhan", "tenHocPhan", "nhomKiemTra"] },
+        }}
         columns={columns}
         localeText={{
           toolbarDensity: "Size",

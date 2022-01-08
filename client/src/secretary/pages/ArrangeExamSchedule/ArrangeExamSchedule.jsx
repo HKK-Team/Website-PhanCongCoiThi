@@ -176,9 +176,9 @@ export default function ArrangeExamSchedule() {
         })
       );
     }
-    navigate("/HomeSecretary/arrangeExamSchedule");
+    setCheckOut(true);
+    // navigate("/HomeSecretary/arrangeExamSchedule");
   }
-
   const navigate = useNavigate();
   // khởi tạo dữ liệu bảng
   const columns = [
@@ -188,6 +188,9 @@ export default function ArrangeExamSchedule() {
       headerName: "Ngày kiểm tra",
       type: "date",
       width: 102,
+      renderCell: (params) => {
+        return params.value.slice(0, 10);
+      },
     },
     {
       editable: false,
@@ -217,21 +220,31 @@ export default function ArrangeExamSchedule() {
         const arr = boundLecturers.filter(
           (item) => item?.ngayKiemTra === ngay && item?.gioBatDau === gio
         );
+
         let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
         setArr = setArr.concat(FilterLecturers);
 
         setArr.concat(FilterLecturers);
+
+        const listArr1 = [];
         // eslint-disable-next-line array-callback-return
-        const listArr = lecturers.filter((items) => {
+        lecturers.filter((items) => {
           const arr = setArr.map((item) =>
             item === items.maVienChuc ? true : false
           );
+          let count = 0;
+          boundLecturers.forEach((item) =>
+            items.maVienChuc === item.maVienChuc ? count++ : count
+          );
+
           if (arr.find((item) => item === true)) {
           } else {
-            return items;
+            items = { ...items, count: count };
+            listArr1.push(items);
           }
         });
-        listArr.sort((a, b) => {
+
+        listArr1.sort((a, b) => {
           let nameA = chuongTrinhDaoTao.toUpperCase();
           let nameB = b.maChuongTrinh.toUpperCase();
           if (nameA < nameB) return -1;
@@ -242,7 +255,6 @@ export default function ArrangeExamSchedule() {
           <Select
             filterSelectedOptions={true}
             style={{ width: "100%" }}
-            value={params.value}
             onChange={(e) =>
               handleChanges(
                 params.id,
@@ -253,9 +265,16 @@ export default function ArrangeExamSchedule() {
               )
             }
           >
-            {listArr.map((item) => (
+            {listArr1.map((item) => (
               <MenuItem value={item.hoTen} key={item.hoTen}>
-                {`${item.hoTen} - ${item.maChuongTrinh}`}
+                {item.count >= 3 ? (
+                  <>
+                    <span style={{ color: "red" }}>{item.count}</span> -
+                    {item.hoTen} - {item.maChuongTrinh}`
+                  </>
+                ) : (
+                  `${item.count} - ${item.hoTen} - ${item.maChuongTrinh}`
+                )}
               </MenuItem>
             ))}
           </Select>
@@ -294,17 +313,24 @@ export default function ArrangeExamSchedule() {
         let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
 
         setArr.concat(FilterLecturers);
+
+        const listArr1 = [];
         // eslint-disable-next-line array-callback-return
-        const listArr = lecturers.filter((items) => {
+        lecturers.filter((items) => {
           const arr = setArr.map((item) =>
             item === items.maVienChuc ? true : false
           );
+          let count = 0;
+          boundLecturers.forEach((item) =>
+            items.maVienChuc === item.maVienChuc ? count++ : count
+          );
           if (arr.find((item) => item === true)) {
           } else {
-            return items;
+            items = { ...items, count: count };
+            listArr1.push(items);
           }
         });
-        listArr.sort((a, b) => {
+        listArr1.sort((a, b) => {
           let nameA = chuongTrinhDaoTao.toUpperCase();
           let nameB = b.maChuongTrinh.toUpperCase();
           if (nameA < nameB) return -1;
@@ -325,9 +351,16 @@ export default function ArrangeExamSchedule() {
               )
             }
           >
-            {listArr.map((item) => (
+            {listArr1.map((item) => (
               <MenuItem value={item.hoTen} key={item.hoTen}>
-                {`${item.hoTen} - ${item.maChuongTrinh}`}
+                {item.count >= 3 ? (
+                  <>
+                    <span style={{ color: "red" }}>{item.count}</span> -
+                    {item.hoTen} - {item.maChuongTrinh}`
+                  </>
+                ) : (
+                  `${item.count} - ${item.hoTen} - ${item.maChuongTrinh}`
+                )}
               </MenuItem>
             ))}
           </Select>

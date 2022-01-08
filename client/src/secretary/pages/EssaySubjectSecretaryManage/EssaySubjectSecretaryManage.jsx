@@ -9,6 +9,7 @@ import { getTieuLuanApiAsync } from "../../../api/tieuLuanSlide";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
+import { getSchedulesApiAsync } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 
 export default function EssaySubjectSecretaryManage() {
   const secretaryAccount = useSelector(getSecretaryAccLogin);
@@ -24,11 +25,12 @@ export default function EssaySubjectSecretaryManage() {
         item.status === "Đang kiểm tra"
     )
   );
-
+  const schudules = useSelector((state) => state.Schedules.SchedulesApi.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTieuLuanApiAsync());
+    dispatch(getSchedulesApiAsync());
   }, [dispatch]);
 
   const navigate = useNavigate();
@@ -111,9 +113,9 @@ export default function EssaySubjectSecretaryManage() {
         const id = params.id;
         return (
           <Link to={`/HomeSecretary/suggestEssaySubject/${id}`}>
-          <span className="pending" style={{ cursor: "pointer" }}>
-            Gợi ý ?
-          </span>
+            <span className="pending" style={{ cursor: "pointer" }}>
+              Gợi ý ?
+            </span>
           </Link>
         );
       },
@@ -128,11 +130,83 @@ export default function EssaySubjectSecretaryManage() {
       headerName: "Ngày kiểm tra",
       width: 140,
       renderCell: (params) => {
-        return params?.value.slice(0, 10);
+        const ngayKiemTra = params.value;
+        const gioBatDau = params.row.gioBatDau;
+        const maGV = params.row.maGV;
+        const FilterLecturers = [];
+        schudules.filter((item) =>
+          item?.ngayKiemTra.slice(0, 10) === ngayKiemTra.slice(0, 10) &&
+          item?.gioBatDau === gioBatDau &&
+          item?.maChuongTrinh === chuongTrinhDaoTao &&
+          item?.public === true
+            ? item.giangVien.filter((item) =>
+                FilterLecturers.push(item.maVienChuc)
+              )
+            : ""
+        );
+        if (FilterLecturers.includes(maGV)) {
+          return (
+            <span style={{ color: "red" }}>{params?.value.slice(0, 10)}</span>
+          );
+        } else {
+          return params?.value.slice(0, 10);
+        }
       },
     },
-    { field: "gioBatDau", headerName: "Giờ Bắt Đầu", width: 140 },
-    { field: "maPhong", headerName: "Mã phòng / teamCode", width: 140 },
+    {
+      field: "gioBatDau",
+      headerName: "Giờ Bắt Đầu",
+      width: 140,
+      renderCell: (params) => {
+        const ngayKiemTra = params.row.ngayKiemTra;
+        const gioBatDau = params.value;
+        const maGV = params.row.maGV;
+        const FilterLecturers = [];
+        schudules.filter((item) =>
+          item?.ngayKiemTra.slice(0, 10) === ngayKiemTra.slice(0, 10) &&
+          item?.gioBatDau === gioBatDau &&
+          item?.maChuongTrinh === chuongTrinhDaoTao &&
+          item?.public === true
+            ? item.giangVien.filter((item) =>
+                FilterLecturers.push(item.maVienChuc)
+              )
+            : ""
+        );
+        if (FilterLecturers.includes(maGV)) {
+          return <span style={{ color: "red" }}>{params?.value}</span>;
+        } else {
+          return params?.value;
+        }
+      },
+    },
+    {
+      field: "maPhong",
+      headerName: "Mã phòng / teamCode",
+      width: 140,
+      renderCell: (params) => {
+        const ngayKiemTra = params.row.ngayKiemTra;
+        const gioBatDau = params.gioBatDau;
+        const maPhong = params.row.value;
+        const maGV = params.row.maGV;
+        const FilterLecturers = [];
+        schudules.filter((item) =>
+          item?.ngayKiemTra.slice(0, 10) === ngayKiemTra.slice(0, 10) &&
+          item?.gioBatDau === gioBatDau &&
+          item?.maPhong === maPhong &&
+          item?.maChuongTrinh === chuongTrinhDaoTao &&
+          item?.public === true
+            ? item.giangVien.filter((item) =>
+                FilterLecturers.push(item.maVienChuc)
+              )
+            : ""
+        );
+        if (FilterLecturers.includes(maGV)) {
+          return <span style={{ color: "red" }}>{params?.value}</span>;
+        } else {
+          return params?.value;
+        }
+      },
+    },
     { field: "soPhutKiemTra", headerName: "Số phút kiểm tra", width: 140 },
     { field: "soLuongSinhVien", headerName: "Số lượng SV", width: 160 },
     {

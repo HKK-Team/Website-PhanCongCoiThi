@@ -6,9 +6,10 @@ import MailOutline from "@mui/icons-material/MailOutline";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import FactCheckIcon from '@mui/icons-material/FactCheck';
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import { NavLink } from "react-router-dom";
 import { Tooltip } from "@mui/material";
+import BallotIcon from '@mui/icons-material/Ballot';
 
 export default function Sidebar() {
   return (
@@ -27,7 +28,10 @@ export default function Sidebar() {
                 </li>
               </Tooltip>
             </NavLink>
-            <NavLink to="/HomeSecretary/essaySubjectSecretaryManage" className="link">
+            <NavLink
+              to="/HomeSecretary/essaySubjectSecretaryManage"
+              className="link"
+            >
               <Tooltip title="Lịch đăng ký thi tiểu luận,...">
                 <li className="sidebarListItem">
                   <FactCheckIcon
@@ -64,10 +68,27 @@ export default function Sidebar() {
                 </li>
               </Tooltip>
             </NavLink>
+          </ul>
+        </div>
+        <div className="sidebarMenu">
+          <h3 className="sidebarTitle">Lịch thi</h3>
+          <ul className="sidebarList">
+            {" "}
             <NavLink to="/HomeSecretary/testSchedule" className="link">
               <Tooltip title="Lịch thi">
                 <li className="sidebarListItem">
                   <EventNoteIcon
+                    className="sidebarIcon"
+                    style={{ color: "#000000" }}
+                  />
+                  {/* Lịch thi */}
+                </li>
+              </Tooltip>
+            </NavLink>
+            <NavLink to="/HomeSecretary/EssaySubjectListTestSchedule" className="link">
+              <Tooltip title="Lịch thi tiểu luận">
+                <li className="sidebarListItem">
+                  <BallotIcon
                     className="sidebarIcon"
                     style={{ color: "#000000" }}
                   />

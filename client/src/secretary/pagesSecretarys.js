@@ -18,6 +18,7 @@ import ProfileSecretary from "./pages/ProfileSecretary/ProfileSecretary";
 import Subjects from "./pages/Subjects/Subjects";
 import SubjectsList from "./pages/SubjectsList/SubjectsList";
 import TestSchedule from "./pages/TestSchedule/TestSchedule";
+import TestScheduleEssaySubjectList from "./pages/TestScheduleEssaySubjectList/TestScheduleEssaySubjectList";
 import TestScheduleList from "./pages/TestScheduleList/TestScheduleList";
 import { getLecturersApiAsync } from "./sliceApi/LecturersSlice/lecturersSlice";
 import { getNamHocApiAsync } from "./sliceApi/namHocSlice/namHocSlide";
@@ -114,8 +115,12 @@ function PagesSecretarys() {
             path="/HomeSecretary/essaySubjectSecretaryManage"
             element={isLogged ? <EssaySubjectSecretaryManage /> : NotFound()}
           />
+          <Route
+            exact
+            path="/HomeSecretary/EssaySubjectListTestSchedule"
+            element={isLogged ? <TestScheduleEssaySubjectList /> : NotFound()}
+          />
         </Routes>
-
         {/* end of  Link url */}
       </div>
     </Fragment>

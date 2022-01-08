@@ -43,7 +43,7 @@ export default function TestScheduleList() {
           element.maKhoa === maKhoa &&
           element.maChuongTrinh === chuongTrinhDaoTao
             ? element.tenHocKi
-            : " "
+            : ""
         )
       )
   );

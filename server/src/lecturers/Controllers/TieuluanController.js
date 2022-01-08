@@ -152,6 +152,15 @@ const tieuluanCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  deleteTieuLuan: async (req, res) => {
+    try {
+      await tieuluan.findByIdAndDelete(req.params.id);
+      res.json({ msg: "Xóa thành công" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 module.exports = tieuluanCtrl;

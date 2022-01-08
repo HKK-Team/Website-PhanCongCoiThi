@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import axios from "axios";
-import React from "react";
+import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import Loading from "../../../utils/loading/Loading";
 import arrangeExamScheduleSlide from "../../sliceApi/ArrangeExamSchedule/arrangeExamScheduleSlide";
 import "./headerTable.css";
 
-export default function headerTable(props) {
+function headerTable(props) {
   const Input = styled("input")({
     display: "none",
   });
@@ -72,6 +72,8 @@ export default function headerTable(props) {
     </div>
   );
 }
+export default memo(headerTable);
+
 export function HeaderTableArrangeExamSchedule(props) {
   const navigate = useNavigate();
   const { data, loading } = useSelector((state) => state.NamHoc.NamHocApi);

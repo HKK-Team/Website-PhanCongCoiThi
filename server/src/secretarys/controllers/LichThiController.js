@@ -156,7 +156,6 @@ const lichThiCtrl = {
   },
   deleteLichThi: async (req, res) => {
     try {
-      console.log(req.params.id);
       await Schedules.findByIdAndDelete(req.params.id);
       res.json({ msg: "Xóa thành công" });
     } catch (err) {

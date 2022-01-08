@@ -72,7 +72,6 @@ export default function SubjectsList() {
       d.forEach((item) => {
         item.ngayKiemTra = ExcelDateToJSDate(item.ngayKiemTra);
       });
-      console.log(d);
       d.shift();
       d.maKhoa = maKhoa;
       d.maChuongTrinh = chuongTrinhDaoTao;
