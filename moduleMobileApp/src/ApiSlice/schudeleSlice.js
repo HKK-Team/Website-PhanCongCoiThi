@@ -29,7 +29,7 @@ export const schedulesSlice = createSlice({
     },
     [getSchedulesApiAsync.rejected]: (state, action) => {
       state.SchedulesApi.loading = false;
-      state.SchedulesApi.error = [...action.payload];
+      state.SchedulesApi.error = 'Error';
     },
     [getSchedulesApiAsync.fulfilled]: (state, action) => {
       state.SchedulesApi.loading = false;
