@@ -1,13 +1,17 @@
 import React, { Fragment, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getSchedulesApiAsync } from "../ApiSlice/schudeleSlice";
 
 export default function SearchSchudele({ route }) {
   const { keyWord } = route.params;
-  const { loading} = useSelector(
-    (state) => state.Schedules.SchedulesApi
-  );
+  const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
 
   const data = useSelector((state) =>
     state.Schedules.SchedulesApi.data.filter((items) =>
@@ -17,8 +21,7 @@ export default function SearchSchudele({ route }) {
         : null
     )
   );
-  console.log(data);
-  console.log(loading);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSchedulesApiAsync());
@@ -30,7 +33,7 @@ export default function SearchSchudele({ route }) {
     );
   } else
     return (
-      <Fragment>
+      <ScrollView>
         <View style={style.titleBox}>
           <Text style={style.title}>Key Word: {keyWord}</Text>
         </View>
@@ -60,7 +63,7 @@ export default function SearchSchudele({ route }) {
             );
           })}
         </View>
-      </Fragment>
+      </ScrollView>
     );
 }
 const style = StyleSheet.create({
@@ -78,13 +81,14 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
+    overflow: "scroll",
   },
   DataBox: {
     borderColor: "gray",
     borderWidth: 1,
     shadowColor: "black",
     width: 350,
-    height: 210,
+    height: 220,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 5,

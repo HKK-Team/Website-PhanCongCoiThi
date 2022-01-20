@@ -9,7 +9,7 @@ export const getSchedulesApiAsync = createAsyncThunk(
   "schedules/getSchedulesApi",
   async () => {
     try {
-      const res = await axios.get("http://localhost:5000/import/getLichthi");
+      const res = await axios.get("http://10.0.2.2:5000/import/getLichthi");
       return res.data;
     } catch (err) {
       return isRejectedWithValue(err.response.data);

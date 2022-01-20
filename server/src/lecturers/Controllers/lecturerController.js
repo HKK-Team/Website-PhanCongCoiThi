@@ -22,7 +22,6 @@ class APIfeatures {
 const lecturerCtrl = {
     login : async(req,res) =>{
         try{
-            console.log(req.body);
             const lecturer = await Lecturer.findOne({ID : {$eq:req.body.ID}})
             if(!lecturer){
                 const newLecturer = new Lecturer({

@@ -89,6 +89,8 @@ export default function ProfileLecturers() {
                   value={profile.fullName}
                   className="userUpdateInput"
                   onChange={onChangeInput}
+                  readOnly
+                  style={{backgroundColor: "#f5f5f5"}}
                 />
               </div>
               <div className="userUpdateItem">
@@ -100,6 +102,8 @@ export default function ProfileLecturers() {
                   value={profile.email}
                   className="userUpdateInput"
                   onChange={onChangeInput}
+                  readOnly
+                  style={{backgroundColor: "#f5f5f5"}}
                 />
               </div>
               <div className="userUpdateItem">
@@ -111,6 +115,8 @@ export default function ProfileLecturers() {
                   value={profile.Phone}
                   className="userUpdateInput"
                   onChange={onChangeInput}
+                  readOnly
+                  style={{backgroundColor: "#f5f5f5"}}
                 />
               </div>
               <div className="userUpdateItem">

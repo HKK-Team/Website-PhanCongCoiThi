@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
-import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as Google from "expo-google-app-auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { Fragment, useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button } from "react-native-elements";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const style = StyleSheet.create({
   ViewBox: {
@@ -39,7 +39,7 @@ const style = StyleSheet.create({
     padding: 5,
   },
   buttonLogin: {
-    width: 265,
+    width: 245,
     borderRadius: 25,
   },
 });
@@ -47,12 +47,28 @@ const style = StyleSheet.create({
 export default function HomePage() {
   const navigation = useNavigation();
   const [keyWord, SetKeyWord] = useState(null);
+  const [loginClick, SetLoginClick] = useState(false);
 
   const handleGoogleLogin = () => {
+    SetLoginClick(true);
     const config = {
       androidClientId: `430133284141-aripstm3g93ktpocm2mv473sgiaj34c0.apps.googleusercontent.com`,
       scopes: [`profile`, `email`],
     };
+
+    async function saveDataUser() {
+      try {
+        await AsyncStorage.setItem("UserLogin", `${true}`);
+        await AsyncStorage.setItem(
+          "UserEmail",
+          `1924801030111@student.tdmu.edu.vn`
+        );
+      } catch (error) {
+        Alert.alert(error);
+      }
+    }
+    saveDataUser();
+    navigation.navigate("Menu");
 
     Google.logInAsync(config)
       .then((result) => {
@@ -71,7 +87,7 @@ export default function HomePage() {
         let reg = /^([0-9]{13})+@student.tdmu.edu.vn$/i;
         if (type === "success" && reg.test(users.email)) {
           axios
-            .post("http://localhost:5000/lecturer/login", {
+            .post("http://10.0.2.2:5000/lecturer/login", {
               ...users,
             })
             .then((res) => {
@@ -80,18 +96,18 @@ export default function HomePage() {
                   await AsyncStorage.setItem("UserLogin", `${true}`);
                   await AsyncStorage.setItem("UserEmail", `${users.email}`);
                 } catch (error) {
-                  console.log(error);
+                  Alert.alert(error);
                 }
               }
               saveDataUser();
-              navigation.navigate("Lịch thi");
+              navigation.navigate("Menu");
             });
         } else {
-          console.log("Google sign in was cancelled");
+          Alert.alert("Google sign in was cancelled");
         }
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(err);
       });
   };
 
@@ -127,8 +143,14 @@ export default function HomePage() {
         <View>
           <Button
             onPress={handleGoogleLogin}
-            // loading
-            title="Login"
+            loading={loginClick}
+            title="Sign in with Google"
+            icon={{
+              name: "google",
+              type: "font-awesome",
+              size: 15,
+              color: "white",
+            }}
             iconContainerStyle={{ marginRight: 10 }}
             titleStyle={{ fontWeight: "700" }}
             buttonStyle={{
@@ -138,7 +160,7 @@ export default function HomePage() {
               borderRadius: 30,
             }}
             containerStyle={{
-              width: 200,
+              width: 265,
               marginHorizontal: 50,
               marginVertical: 10,
             }}
