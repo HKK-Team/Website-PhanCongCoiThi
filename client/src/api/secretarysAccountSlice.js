@@ -8,8 +8,8 @@ export const getSecretaryAccApiAsync = createAsyncThunk(
   "secretaryAccount/getSecretaryAccApi",
   async () => {
     try {
-      const users = window.sessionStorage.getItem("SecretaryEmail");
-      const res = await axios.get(`/secretary/getuser?email[regex]=${users}`);
+      const users = window.sessionStorage.getItem("SecretaryUserName");
+      const res = await axios.get(`/secretary/getuser?username[regex]=${users}`);
       return res.data;
     } catch (err) {
       return isRejectedWithValue(err.response.data);

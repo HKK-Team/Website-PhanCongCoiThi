@@ -102,44 +102,52 @@ export default function Subjects() {
           <div className="productFormLeft">
             <label>Mã học phần</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("maHp", { required: false, maxLength: 80 })}
             />
 
             <label>Tên học phần</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("tenHp", { required: false, maxLength: 80 })}
             />
             <label>Nhóm kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("nhomKT", { required: false, maxLength: 80 })}
             />
             <label>Tổ kiểm </label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("toKiem", { required: false, maxLength: 80 })}
             />
             <label>Số lượng SV</label>
             <input
+              style={{ outline: "none" }}
               type="number"
               {...register("soLuong", { required: false, maxLength: 80 })}
             />
             <label>Đơn vị tổ chức kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("doViToChuc", { required: false, maxLength: 80 })}
             />
 
             <label>Chương trình/Bộ môn</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("chuongTrinh", { required: false, maxLength: 80 })}
             />
 
             <label>Ngày kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="date"
               {...register("ngayKiemTra", {
                 required: false,
@@ -148,6 +156,7 @@ export default function Subjects() {
             />
             <label>Giờ bắt đầu</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("gioBatDau", { required: false, maxLength: 80 })}
             />
@@ -155,41 +164,49 @@ export default function Subjects() {
           <div className="productFormLeft">
             <label>Mã Phòng/teamCode</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("maPhong", { required: false, maxLength: 80 })}
             />
             <label>Hình thức kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("hinhThucKT", { required: false, maxLength: 80 })}
             />
             <label>Số phút kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="number"
               {...register("soPhutKiemTra", { required: false, maxLength: 80 })}
             />
             <label>GVGD</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("GVGD", { required: false, maxLength: 80 })}
             />
             <label>MGV</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("maGV", { required: false, maxLength: 80 })}
             />
             <label>Hệ đào tạo</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("heDT", { required: false, maxLength: 80 })}
             />
             <label>Cán bộ giám sát</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("canBoCoiKiem3", { required: false, maxLength: 80 })}
             />
             <label>Mã Cán bộ giám sát</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               {...register("maCanBoCoiKiem3", {
                 required: false,

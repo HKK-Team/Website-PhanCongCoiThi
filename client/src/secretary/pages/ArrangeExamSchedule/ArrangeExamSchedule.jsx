@@ -177,7 +177,7 @@ export default function ArrangeExamSchedule() {
       );
     }
     setCheckOut(true);
-    // navigate("/HomeSecretary/arrangeExamSchedule");
+    navigate("/HomeSecretary/arrangeExamSchedule");
   }
   const navigate = useNavigate();
   // khởi tạo dữ liệu bảng
@@ -355,7 +355,7 @@ export default function ArrangeExamSchedule() {
               <MenuItem value={item.hoTen} key={item.hoTen}>
                 {item.count >= 3 ? (
                   <>
-                    <span style={{ color: "red" }}>{item.count}</span> -
+                    <span style={{ color: "red" }}>{item.count} </span> -
                     {item.hoTen} - {item.maChuongTrinh}`
                   </>
                 ) : (

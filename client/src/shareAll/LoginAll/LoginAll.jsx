@@ -6,9 +6,7 @@ import axios from "axios";
 import React, { Fragment, useState } from "react";
 import { GoogleLogin } from "react-google-login";
 import { Link } from "react-router-dom";
-import {
-  toastError, toastSuccess
-} from "../toastMassage/toastMassage";
+import { toastError, toastSuccess } from "../toastMassage/toastMassage";
 import logo from "./../../../src/images/tdmu-elearning-banner.png";
 import "./LoginAll.css";
 // import { GoogleLogout } from 'react-google-login';
@@ -27,7 +25,7 @@ export default function LoginAll() {
   });
   // secretary login
   const [secretary, setsecretary] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const responseGoogle = (response) => {
@@ -97,7 +95,7 @@ export default function LoginAll() {
         ...secretary,
       });
       sessionStorage.setItem("SecretaryLogin", true);
-      sessionStorage.setItem("SecretaryEmail", secretary.email);
+      sessionStorage.setItem("SecretaryUserName", secretary.username);
       setTimeout(() => {
         window.location.href = "/HomeSecretary";
       }, 1000);
@@ -178,13 +176,12 @@ export default function LoginAll() {
                       onClick={renderProps.onClick}
                       disabled={renderProps.disabled}
                     >
-                      <EmailIcon style={{ paddingRight: 10 }} />
+                      <EmailIcon style={{ paddingRight: 10, color: "white" }} />
                       <span> Đăng nhập bằng Email</span>
                     </Button>
                   )}
-                  isSignedIn={true}
                 />
-              </div>
+              </div> 
             </div>
           ) : (
             check()
@@ -193,18 +190,18 @@ export default function LoginAll() {
             <div className="information-lookup-box-secretary">
               <h2>Thư ký</h2>
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="my-input">Email</InputLabel>
+                <InputLabel htmlFor="my-input">username</InputLabel>
                 <Input
                   id="my-input"
                   aria-describedby="my-helper-text"
                   type="text"
-                  name="email"
-                  value={secretary.email}
+                  name="username"
+                  value={secretary.username}
                   onChange={onChangeInput}
                   required
                 />
                 <FormHelperText id="my-helper-text">
-                  Hãy nhập email
+                  Hãy nhập username
                 </FormHelperText>
               </FormControl>
               <FormControl style={{ marginTop: 20, width: "100%" }}>
@@ -226,10 +223,16 @@ export default function LoginAll() {
                 className="Login-Secretary"
                 variant="contained"
                 size="small"
-                style={{ marginTop: 20, display: "block", width: "100%" }}
+                style={{
+                  marginTop: 20,
+                  display: "block",
+                  width: "100%",
+                  height: "30px",
+                }}
               >
                 Login
               </button>
+              <Link to="forget-password" style={{marginTop:5,display:'inline-block'}}>Quên mật khẩu?</Link>
             </div>
           </form>
         </div>

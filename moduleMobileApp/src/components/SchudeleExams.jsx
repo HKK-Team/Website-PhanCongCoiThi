@@ -14,13 +14,13 @@ import { getUserApiAsync } from "../ApiSlice/userAccSlide";
 
 export default function SchudeleExams() {
   const navigation = useNavigation();
-  
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserApiAsync());
     dispatch(getSchedulesApiAsync());
   }, [dispatch]);
-
+  const user = useSelector((state) => state?.Users?.UserApi?.data[0]);
   useEffect(() => {
     if (user?.maVienChuc === "" || user?.maKhoa === "") {
       Alert.alert("Vui lòng cập nhật mã khoa hoặc mã viện chức");
@@ -28,7 +28,6 @@ export default function SchudeleExams() {
     }
   }, [user]);
 
-  const user = useSelector((state) => state?.Users?.UserApi?.data[0]);
   const loading = useSelector((state) => state.Schedules.SchedulesApi.loading);
   const loading2 = useSelector((state) => state?.Users?.UserApi?.loading);
   const data = [];

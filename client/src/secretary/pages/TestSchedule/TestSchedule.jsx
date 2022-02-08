@@ -82,30 +82,35 @@ export default function TestSchedule() {
           <div className="productFormLeft">
             <label>Mã học phần</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="CSLT001"
               {...register("maHocPhan", { required: false, maxLength: 80 })}
             />
             <label>Tên học phần</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="CSLT"
               {...register("tenHocPhan", { required: false, maxLength: 80 })}
             />
             <label>Nhóm kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="D21CNTT01_HK1.CQ.01"
               {...register("nhomKiemTra", { required: false, maxLength: 80 })}
             />
             <label>Tổ kiểm </label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="001"
               {...register("toKiem", { required: false, maxLength: 80 })}
             />
             <label>Số lượng SV</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="60"
               {...register("soLuongSinhVien", {
@@ -115,6 +120,7 @@ export default function TestSchedule() {
             />
             <label>Đơn vị tổ chức kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Viện KT-CN"
               {...register("donViToChucKiemTra", {
@@ -124,6 +130,7 @@ export default function TestSchedule() {
             />
             <label>Chương trình/Bộ môn</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Công nghệ thông tin và trí tuệ nhân tạo"
               {...register("chuongTrinhBoMon", {
@@ -134,6 +141,7 @@ export default function TestSchedule() {
             <label>Ngày kiểm tra</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 {...register("ngayKiemTra", { required: false, maxLength: 80 })}
@@ -142,6 +150,7 @@ export default function TestSchedule() {
             <label>Giờ kiểm tra</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 placeholder="13h"
@@ -150,12 +159,14 @@ export default function TestSchedule() {
             </Tooltip>
             <label>Teamcode/Phòng</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="1234"
               {...register("maPhong", { required: false, maxLength: 80 })}
             />
             <label>Hình thức kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Trắc nghiệm trực tuyến"
               {...register("hinhThucKiemTra", {
@@ -165,6 +176,7 @@ export default function TestSchedule() {
             />
             <label>Số phút kiểm tra</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="60"
               {...register("soPhutKiemTra", { required: false, maxLength: 80 })}
@@ -174,6 +186,7 @@ export default function TestSchedule() {
             <label>Cán bộ coi kiểm tra 01(CB02)</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 {...register("hoTen1", { required: false, maxLength: 80 })}
@@ -182,6 +195,7 @@ export default function TestSchedule() {
             <label>Mã viên chức CB01</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 {...register("maVienChuc1", { required: false, maxLength: 80 })}
@@ -190,6 +204,7 @@ export default function TestSchedule() {
             <label>Cán bộ coi kiểm tra 02(CB02)</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 {...register("hoTen2", { required: false, maxLength: 80 })}
@@ -198,6 +213,7 @@ export default function TestSchedule() {
             <label>Mã viên chức CB02</label>
             <Tooltip title="ràng buộc về các chương trình, không được sữa">
               <input
+                style={{ outline: "none" }}
                 disabled
                 type="text"
                 {...register("maVienChuc2", { required: false, maxLength: 80 })}
@@ -205,30 +221,35 @@ export default function TestSchedule() {
             </Tooltip>
             <label>GVGD</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Trần Văn Tài"
               {...register("GVGD", { required: false, maxLength: 80 })}
             />
             <label>MGV</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="TDMU269"
               {...register("maGV", { required: false, maxLength: 80 })}
             />
             <label>Hệ đào tạo</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Chinh quy"
               {...register("heDaoTao", { required: false, maxLength: 80 })}
             />
             <label>Cán Bộ giám sát</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Chinh quy"
               {...register("canBoCoiKiem3", { required: false, maxLength: 80 })}
             />
             <label>Mã cán bộ giám sát</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Chinh quy"
               {...register("maCanBoCoiKiem3", {
@@ -238,12 +259,14 @@ export default function TestSchedule() {
             />
             <label>Cán bộ dự bị</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Chinh quy"
               {...register("canBoDuBi", { required: false, maxLength: 80 })}
             />
             <label>Mã cán bộ dự bị</label>
             <input
+              style={{ outline: "none" }}
               type="text"
               placeholder="Chinh quy"
               {...register("maCanBoDuBi", { required: false, maxLength: 80 })}

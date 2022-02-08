@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
   /* overflow: hidden; */
 }
 a {
@@ -14,4 +15,23 @@ a {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* custom scroolBar */
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+body::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #0ae;
+  background-image: linear-gradient(to bottom, #00b4db, #0083b0);
+}
+input {
+  outline: none;
 }

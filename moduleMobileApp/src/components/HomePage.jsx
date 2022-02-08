@@ -4,7 +4,7 @@ import * as Google from "expo-google-app-auth";
 import React, { Fragment, useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { Button } from "react-native-elements";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const style = StyleSheet.create({
   ViewBox: {
@@ -56,20 +56,6 @@ export default function HomePage() {
       scopes: [`profile`, `email`],
     };
 
-    async function saveDataUser() {
-      try {
-        await AsyncStorage.setItem("UserLogin", `${true}`);
-        await AsyncStorage.setItem(
-          "UserEmail",
-          `1924801030111@student.tdmu.edu.vn`
-        );
-      } catch (error) {
-        Alert.alert(error);
-      }
-    }
-    saveDataUser();
-    navigation.navigate("Menu");
-
     Google.logInAsync(config)
       .then((result) => {
         const { type, user, accessToken, idToken } = result;
@@ -97,17 +83,20 @@ export default function HomePage() {
                   await AsyncStorage.setItem("UserEmail", `${users.email}`);
                 } catch (error) {
                   Alert.alert(error);
+                  SetLoginClick(false);
                 }
               }
               saveDataUser();
               navigation.navigate("Menu");
             });
         } else {
-          Alert.alert("Google sign in was cancelled");
+          Alert.alert("Vui lòng sử dụng Email của bạn trong trường TDMU");
+          SetLoginClick(false);
         }
       })
       .catch((err) => {
         Alert.alert(err);
+        SetLoginClick(false);
       });
   };
 

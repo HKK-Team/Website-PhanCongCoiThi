@@ -6,6 +6,7 @@ const userSchema = new Schema({
     hoTen : String,
     maKhoa : String,
     soDienThoai : String,
-    passWord : String
+    passWord : String,
+    username: String,
 })
 module.exports = mongoose.model('thukiAccounts',userSchema);

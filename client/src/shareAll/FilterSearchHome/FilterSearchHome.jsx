@@ -44,7 +44,14 @@ export default function FilterSearchHome() {
     { field: "nhomKiemTra", headerName: "Nhóm kiểm tra", width: 180 },
     { field: "soLuongSinhVien", headerName: "Số lượng SV", width: 130 },
     { field: "soPhutKiemTra", headerName: "Số phút", width: 130 },
-    { field: "ngayKiemTra", headerName: "Ngày Thi", width: 130 },
+    {
+      field: "ngayKiemTra",
+      headerName: "Ngày Thi",
+      width: 130,
+      renderCell: (rowData) => {
+        return rowData.value.slice(0, 10);
+      },
+    },
     { field: "gioBatDau", headerName: "Giờ BĐ", width: 130 },
     { field: "maPhong", headerName: "Teamcode/Phòng", width: 130 },
     { field: "hinhThucKiemTra", headerName: "Ghi chú", width: 200 },
