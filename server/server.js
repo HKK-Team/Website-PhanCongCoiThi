@@ -28,6 +28,9 @@ app.use("/api", require("./src/lecturers/Routers/registSubjectsRouter"));
 //Mail Service
 app.use("/sendMail", require("./src/MailService/mailServiceRouter"));
 
+//Excel Service
+app.use("/excel", require("./src/Excel/excelRoutes"));
+
 //Login
 app.use("/login", require("./src/lecturers/Routers/lecturerRouter"));
 app.use("/login", require("./src/secretarys/Routers/secretaryRouter"));

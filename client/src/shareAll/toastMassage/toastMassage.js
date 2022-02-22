@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export function toastSuccess(massage, theme) {
-  toast.success(`🦄 ${massage}`, {
+  toast.success(`${massage}`, {
     position: "top-right",
     theme: theme || `colored`,
     autoClose: 2000,
@@ -13,7 +13,7 @@ export function toastSuccess(massage, theme) {
   });
 }
 export function toastError(massage, theme) {
-  toast.error(`🦄 ${massage}`, {
+  toast.error(`${massage}`, {
     position: "top-right",
     theme: theme || `colored`,
     autoClose: 2000,
@@ -25,7 +25,7 @@ export function toastError(massage, theme) {
   });
 }
 export function toastInfor(massage, theme) {
-  toast.info(`🦄 ${massage}`, {
+  toast.info(`${massage}`, {
     position: "top-right",
     theme: theme || `colored`,
     autoClose: 2000,

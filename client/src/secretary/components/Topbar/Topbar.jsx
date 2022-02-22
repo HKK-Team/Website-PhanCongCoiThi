@@ -15,12 +15,14 @@ export default function Topbar() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
   const Logout = async () => {
     window.sessionStorage.removeItem("SecretaryLogin");
-    window.sessionStorage.removeItem("SecretaryEmail");
+    window.sessionStorage.removeItem("SecretaryUserEmail");
+    window.sessionStorage.removeItem("SecretaryUserName");
   };
   return (
     <div className="topbarSecretary">
@@ -78,7 +80,7 @@ export default function Topbar() {
               alt=""
               className="topAvatar"
               onClick={() => {
-                toastInfor('Xin chào')
+                toastInfor("Xin chào");
               }}
             />
           </div>

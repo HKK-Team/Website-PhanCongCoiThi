@@ -24,6 +24,16 @@ class APIfeatures {
   }
 }
 const secretaryCtrl = {
+  loginEmail: async (req, res) => {
+    const secretaryEmail = await Secretary.findOne({
+      email: { $eq: req.body.email },
+    });
+    if (!secretaryEmail) {
+      return res.status(400).json({ msg: "email doesn't Exist!" });
+    }
+    return res.status(200).json({ msg: "Login SuccessFully!" });
+  },
+
   login: async (req, res) => {
     const secretary = await Secretary.findOne({
       username: { $eq: req.body.username },
@@ -37,6 +47,7 @@ const secretaryCtrl = {
     }
     return res.status(200).json({ msg: "Login SuccessFully!" });
   },
+
   getUser: async (req, res) => {
     try {
       const features = new APIfeatures(Secretary.find(), req.query).filtering();
@@ -46,6 +57,7 @@ const secretaryCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
   EditUser: async (req, res) => {
     // check your id
     user = req.body;
@@ -61,7 +73,6 @@ const secretaryCtrl = {
   // edit password
   EditPassword: async (req, res) => {
     // check password
-    console.log(req.body);
     let user = await Secretary.findById(req.body._id);
     console.log(user);
     const check = await bcrypt.compare(req.body.old_password, user.passWord);

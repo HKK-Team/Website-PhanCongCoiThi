@@ -297,6 +297,7 @@ export default function ArrangeExamSchedule() {
         const gio = params.row.gioBatDau;
 
         const FilterLecturers = [];
+
         schudules.filter((item) =>
           item?.ngayKiemTra === ngay &&
           item?.gioBatDau === gio &&
@@ -311,6 +312,8 @@ export default function ArrangeExamSchedule() {
           (item) => item?.ngayKiemTra === ngay && item?.gioBatDau === gio
         );
         let setArr = [...new Set(arr.map((item) => item.maVienChuc))];
+
+        console.log(FilterLecturers);
 
         setArr.concat(FilterLecturers);
 
@@ -337,6 +340,7 @@ export default function ArrangeExamSchedule() {
           if (nameA > nameB) return 1;
           return 0;
         });
+        // console.log(listArr1);
         return (
           <Select
             style={{ width: "100%" }}

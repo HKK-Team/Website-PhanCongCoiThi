@@ -2,10 +2,17 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import PermIdentity from "@mui/icons-material/MailOutline";
 import MailOutline from "@mui/icons-material/PermIdentity";
 import Publish from "@mui/icons-material/Publish";
+import { Box, Button, Input, Modal, Typography } from "@mui/material";
 import axios from "axios";
+import { useRef } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import {
+  sendMailOtpcode,
+  conFirmOtpCode,
+  sendMailContextConfirmEmail,
+} from "../../../api/mailService";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 // chỉnh sửa thông tin Thư ký
 export default function ProfileSecretary() {
@@ -20,26 +27,130 @@ export default function ProfileSecretary() {
     hoTen: data?.hoTen,
     soDienThoai: data?.soDienThoai,
   });
+  const [isChangeEmail, setIsChangeEmail] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const errMessage = useRef();
+  const handleClose = () => {
+    if (window.confirm("Bạn có chắc chắn muốn thoát không?")) {
+      setOpen(false);
+    }
+  };
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
+
+    if (data.email === value && name === "email") {
+      setIsChangeEmail(false);
+    } else if (data.email !== value && name === "email") {
+      setIsChangeEmail(true);
+    }
+
     setProfile({ ...profile, [name]: value });
   };
 
   const EditUserSubmit = async (e) => {
     e.preventDefault();
-    toastPromise(
-      axios.post("http://localhost:5000/secretary/edituser", { ...profile }),
-      () => {
-        setTimeout(() => {
-          navigate("/HomeSecretary");
-        }, 1000);
-        return "Thông tin người dùng đã được cập nhật !";
+    if (isChangeEmail) {
+      sendMailOtpcode(profile.email);
+      setOpen(true);
+    } else {
+      toastPromise(
+        axios.post("http://localhost:5000/secretary/edituser", { ...profile }),
+        () => {
+          setTimeout(() => {
+            navigate("/HomeSecretary");
+          }, 1000);
+          return "Thông tin người dùng đã được cập nhật !";
+        }
+      );
+    }
+  };
+
+  const conFirmOtp = (e) => {
+    e.preventDefault();
+    conFirmOtpCode(otpCode).then((value) => {
+      if (value.data) {
+        toastPromise(
+          axios.post("http://localhost:5000/secretary/edituser", {
+            ...profile,
+          }),
+          () => {
+            setTimeout(() => {
+              navigate("/HomeSecretary");
+            }, 1000);
+            sendMailContextConfirmEmail(profile.email);
+            return "Thông tin người dùng đã được cập nhật !";
+          }
+        );
+      } else {
+        console.log(errMessage.current);
+        errMessage.current.innerHTML = "Mã OTP không đúng !. Vui lòng xem lại";
       }
-    );
+    });
+  };
+
+  const ariaLabel = { "aria-label": "description" };
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
   };
   return (
     <div className="user">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ textAlign: "center" }}
+          >
+            Xác nhận email
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ textAlign: "center" }}
+          >
+            <Input
+              placeholder="OTP code"
+              inputProps={ariaLabel}
+              onChange={(e) => {
+                setOtpCode(e.target.value);
+              }}
+            />
+            <Box style={{ marginTop: 10 }}>
+              <Button variant="contained" size="small" onClick={conFirmOtp}>
+                Xác nhận
+              </Button>
+            </Box>
+            <Box style={{ marginTop: 5 }}>
+              <Typography
+                id="modal-modal-title"
+                variant="p"
+                fontSize={12}
+                style={{ textAlign: "center" }}
+                ref={errMessage}
+              >
+                Một mã xác thực đã được gửi tới email của bạn.
+              </Typography>
+            </Box>
+          </Typography>
+        </Box>
+      </Modal>
+
       <div className="userTitleContainer">
         <h1 className="userTitle">Thông tin thứ ký</h1>
       </div>

@@ -11,21 +11,21 @@ import Tooltip from "@mui/material/Tooltip";
 import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ReactExport from "react-export-excel";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { sendMailSchedule } from "../../../api/mailService";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import {
+  toastError,
+  toastPromise,
+  toastSuccess,
+} from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
 import scheduleSlice, {
   getSchedulesApiAsync,
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 import "./../../components/headerTable/headerTable.css";
 import "./TestScheduleList.css";
-
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 // bảng lịch thi
 export default function TestScheduleList() {
@@ -49,7 +49,7 @@ export default function TestScheduleList() {
   );
 
   const keyTenHocKy = [...setTenHocKy];
-  const [key, setkey] = useState(keyTenHocKy[0]);
+  const [key, setkey] = useState("Chọn lịch thi");
   const data = useSelector((state) =>
     state.Schedules.SchedulesApi.data.filter(
       (e) =>
@@ -58,7 +58,6 @@ export default function TestScheduleList() {
         e.maChuongTrinh === chuongTrinhDaoTao
     )
   );
-
   const handleChange = (event) => {
     setkey(event.target.value);
     dispatch(scheduleSlice.actions.FilterTenHocKi(event.target.value));
@@ -83,7 +82,7 @@ export default function TestScheduleList() {
     }
   };
 
-  // xóa hóa đơn khỏi bảng
+  // xóa khỏi bảng
   const handleDelete = (id) => {
     if (window.confirm("Bạn thực sự muốn xóa không?")) {
       toastPromise(
@@ -102,17 +101,94 @@ export default function TestScheduleList() {
     state.Schedules.SchedulesApi.data.find((item) => item.tenHocKi === key)
   );
   const handleCheckBoxChange = (event) => {
-    toastPromise(
-      axios.put(
-        `http://localhost:5000/import/publicLichThi/${key},${event.target.checked}`
-      ),
-      () => {
-        setTimeout(() => {
-          navigate(0);
-        }, 1000);
-        return "Trạng thái lịch thi đã được cập nhật !";
-      }
-    );
+    if (key === "Chọn lịch thi") {
+      toastError("Bạn chưa chọn lịch thi !");
+    } else {
+      toastPromise(
+        axios.put(
+          `http://localhost:5000/import/publicLichThi/${key},${event.target.checked}`
+        ),
+        () => {
+          setTimeout(() => {
+            navigate(0);
+          }, 1000);
+          return "Trạng thái lịch thi đã được cập nhật !";
+        }
+      );
+    }
+  };
+
+  const [triggerErr, setTriggerErr] = useState({ check: false, email: "" });
+  const handleSendMailSchedule = (e) => {
+    if (window.confirm("Bạn thực sự muốn gửi email không?")) {
+      e.preventDefault();
+      const filterLecture = data.map((items) =>
+        items.giangVien.map((item) => item.email)
+      );
+      const filterLectureEmail = [].concat.apply([], filterLecture);
+      const filterLectureEmailUnique = [...new Set(filterLectureEmail)];
+      filterLectureEmailUnique.forEach((item, index) => {
+        if (
+          triggerErr.check === false &&
+          filterLectureEmailUnique.length - 1 === index
+        ) {
+          toastSuccess("Đã gửi email thành công");
+        } else if (triggerErr.check === false) {
+          const object = {
+            email: item,
+            schudele: data,
+            hocky: key,
+          };
+          sendMailSchedule(object)
+            .then(() => {
+              setTriggerErr({ check: false });
+            })
+            .catch(() => {
+              setTriggerErr({ check: true, email: item });
+            });
+        } else {
+          toastError(`email ${triggerErr.email} không được gửi đi`);
+        }
+      });
+    } else {
+      toastSuccess("Đã hủy gửi email");
+    }
+  };
+
+  // export excel
+  const handleExportExcel = async (e) => {
+    e.preventDefault();
+    if (key === "Chọn lịch thi") {
+      toastError("Bạn chưa chọn lịch thi !");
+    } else {
+      const context = { hocky: key, schudele: data };
+      await axios
+        .put(`http://localhost:5000/excel/getDataExcelFIle/`, {
+          ...context,
+        })
+        .then(async (res) => {
+          await axios
+            .get(`http://localhost:5000/excel/dowloadingExcelFile/`, {
+              responseType: "blob",
+            })
+            .then((res) => {
+              const url = window.URL.createObjectURL(new Blob([res.data]));
+              const link = document.createElement("a");
+              link.href = url;
+              link.setAttribute("download", `PhanCongLichThi_${key}.xlsx`); //or any other extension
+              document.body.appendChild(link);
+              link.click();
+              toastSuccess("Đã xuất file excel thành công !");
+            })
+            .catch((err) => {
+              toastError("Đã xuất file excel thất bại !");
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          toastError(err.data);
+        });
+    }
   };
 
   const columns = [
@@ -301,7 +377,6 @@ export default function TestScheduleList() {
   );
 
   const classes = useStyles();
-
   if (loading)
     return (
       <div className="loading">
@@ -322,8 +397,10 @@ export default function TestScheduleList() {
               name="demo-simple-select"
               value={key}
               label="Chọn lịch thi"
+              defaultValue="Chọn lịch thi"
               onChange={handleChange}
             >
+              <MenuItem value="Chọn lịch thi">Chọn lịch thi</MenuItem>
               {keyTenHocKy.map((item) => (
                 <MenuItem value={item}>{item}</MenuItem>
               ))}
@@ -334,69 +411,23 @@ export default function TestScheduleList() {
               variant="contained"
               size="small"
               style={{ marginRight: 10 }}
+              onClick={handleSendMailSchedule}
             >
               Gửi mail thông báo tất cả
             </Button>
           </Tooltip>
 
-          <ExcelFile
-            filename={`PhânCôngLichThi_${key}`}
-            element={
-              <Tooltip title="xuất dữ liệu Excel" arrow>
-                <Button
-                  variant="contained"
-                  color="success"
-                  size="small"
-                  style={{ marginRight: 10 }}
-                >
-                  Export Excel
-                </Button>
-              </Tooltip>
-            }
-          >
-            <ExcelSheet data={data} name="Bảng phân công">
-              <ExcelColumn label="Mã học phần" value="maHocPhan" />
-              <ExcelColumn label="Tên học phần" value="tenHocPhan" />
-              <ExcelColumn label="Nhóm kiểm tra" value="nhomKiemTra" />
-              <ExcelColumn label="Tổ kiểm" value="toKiem" />
-              <ExcelColumn label="Số lượng sinh viên" value="soLuongSinhVien" />
-              <ExcelColumn
-                label="Đơn vị tổ chức kiểm tra"
-                value="donViToChucKiemTra"
-              />
-              <ExcelColumn
-                label="Chương trình/Bộ môn"
-                value="chuongTrinhBoMon"
-              />
-              <ExcelColumn label="Ngày kiểm tra" value="ngayKiemTra" />
-              <ExcelColumn label="Giờ bắt đầu" value="gioBatDau" />
-              <ExcelColumn label="Teamcode/Phòng" value="maPhong" />
-              <ExcelColumn label="Số phút kiểm tra" value="soPhutKiemTra" />
-              <ExcelColumn
-                label="Cán bộ coi kiểm tra 01(CB01)"
-                value={(item) => item.giangVien[0]?.hoTen}
-              />
-              <ExcelColumn
-                label="Mã viên chức CB01"
-                value={(item) => item.giangVien[0]?.maVienChuc}
-              />
-              <ExcelColumn
-                label="Cán bộ coi kiểm tra 02(CB02)"
-                value={(item) => item.giangVien[1]?.hoTen}
-              />
-              <ExcelColumn
-                label="Mã viên chức CB02"
-                value={(item) => item.giangVien[1]?.maVienChuc}
-              />
-              <ExcelColumn label="GVGD" value="GVGD" />
-              <ExcelColumn label="MGV" value="maGV" />
-              <ExcelColumn label="Hệ đào tạo" value="heDaoTao" />
-              <ExcelColumn label="Cán bộ giám sát" value="canBoCoiKiem3" />
-              <ExcelColumn label="Mã cán bộ giám sát" value="maCanBoCoiKiem3" />
-              <ExcelColumn label="Cán bộ dự bị" value="canBoDuBi" />
-              <ExcelColumn label="Mã cán bộ dự bị" value="maCanBoDuBi" />
-            </ExcelSheet>
-          </ExcelFile>
+          <Tooltip title="xuất dữ liệu Excel" arrow>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              style={{ marginRight: 10 }}
+              onClick={handleExportExcel}
+            >
+              Export Excel
+            </Button>
+          </Tooltip>
           {/* export Excel */}
 
           <Tooltip title="xóa lịch thi này" arrow>
@@ -434,6 +465,7 @@ export default function TestScheduleList() {
         </div>
       </div>
       <DataGridPro
+        id="dataGrid"
         className={classes.root}
         getRowId={(row) => row._id}
         rows={data}

@@ -15,8 +15,8 @@
   background-color: #1976d2;
   border-radius: 5px 5px 5px 5px;
 }
-.btn-login-email span{
-    color: white;
+.btn-login-email span {
+  color: white;
 }
 
 .btn {
@@ -30,7 +30,7 @@
   margin-top: 10px;
   width: 200px;
 }
-.well span{
+.well span {
   padding: 10px;
   font-size: 20px;
   text-align: center;
@@ -40,9 +40,9 @@
   width: 300px;
   height: 70x;
 }
-.email span{
+.email span {
   padding: 10px;
-  color:#1976d2;
+  color: #1976d2;
   text-align: center;
   color: black;
   margin-left: 2px;
@@ -54,4 +54,11 @@
   font-size: 16px;
   color: white;
   cursor: pointer;
+}
+.button-loginGG-text {
+  font-size: 12px;
+  transition: all 0.5s ease-in;
+}
+.button-loginGG-text:hover {
+  transform: translate3d(20px, 0px, 10px);
 }

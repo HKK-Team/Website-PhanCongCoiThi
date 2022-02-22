@@ -1,6 +1,7 @@
-
 import {
-  createAsyncThunk, createSlice, isRejectedWithValue
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -9,7 +10,13 @@ export const getSecretaryAccApiAsync = createAsyncThunk(
   async () => {
     try {
       const users = window.sessionStorage.getItem("SecretaryUserName");
-      const res = await axios.get(`/secretary/getuser?username[regex]=${users}`);
+      const email = window.sessionStorage.getItem("SecretaryUserEmail");
+      let res = "";
+      if (users) {
+        res = await axios.get(`/secretary/getuser?username[regex]=${users}`);
+      } else {
+        res = await axios.get(`/secretary/getuser?email[regex]=${email}`);
+      }
       return res.data;
     } catch (err) {
       return isRejectedWithValue(err.response.data);

@@ -41,6 +41,25 @@ export default function LoginAll() {
       Api: "Google",
     });
   };
+  const responseGoogleSecretary = (response) => {
+    const email = response.profileObj.email;
+    const loginSubmitEmail = async () => {
+      try {
+        await axios.post("http://localhost:5000/secretary/loginEmail", {
+          email,
+        });
+        sessionStorage.setItem("SecretaryLogin", true);
+        sessionStorage.setItem("SecretaryUserEmail", email);
+        setTimeout(() => {
+          window.location.href = "/HomeSecretary";
+        }, 1000);
+        toastSuccess("Bạn đã đăng nhập thành công!");
+      } catch (err) {
+        toastError("Email của bạn không tồn tại.");
+      }
+    };
+    loginSubmitEmail();
+  };
   // định dạng email
   var reg = /^([0-9]{13})+@student.tdmu.edu.vn$/i;
   const CreateUser = async (e) => {
@@ -181,7 +200,7 @@ export default function LoginAll() {
                     </Button>
                   )}
                 />
-              </div> 
+              </div>
             </div>
           ) : (
             check()
@@ -232,7 +251,34 @@ export default function LoginAll() {
               >
                 Login
               </button>
-              <Link to="forget-password" style={{marginTop:5,display:'inline-block'}}>Quên mật khẩu?</Link>
+              <Link
+                to="forget-password"
+                style={{
+                  marginTop: 10,
+                  textAlign: "center",
+                  display: "block",
+                }}
+              >
+                Quên mật khẩu?
+              </Link>
+              <div className="Log-In" style={{ marginTop: 10 }}>
+                <GoogleLogin
+                  clientId="843229411433-dce21ks6062giislln1ndmer3voocdfp.apps.googleusercontent.com"
+                  buttonText="Login"
+                  onSuccess={responseGoogleSecretary}
+                  onFailure={responseGoogleSecretary}
+                  cookiePolicy={"single_host_origin"}
+                  render={(renderProps) => (
+                    <Button onClick={renderProps.onClick}>
+                      <EmailIcon style={{ paddingRight: 10, color: "white" }} />
+                      <span style={{ color: "white" }} className="button-loginGG-text">
+                        {" "}
+                        Đăng nhập bằng Email
+                      </span>
+                    </Button>
+                  )}
+                />
+              </div>
             </div>
           </form>
         </div>

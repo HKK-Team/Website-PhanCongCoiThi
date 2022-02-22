@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const Sercetarys = require("../secretarys/Models/secretaryModel");
+const Excel = require("exceljs");
 
 class MailSevice {
   #codeOTP; // lưu trữ mã otp
@@ -90,7 +91,8 @@ class MailSevice {
         html: `<h1>Xin chào.</h1><h2>Chúng tôi nhận được yêu cầu xác nhận, Mã OTP của bạn là: ${
           this.#codeOTP
         }</h2>
-      <strong>Mã của bạn sẽ hết hạn sau 5 phút</strong>`,
+      <h3>Vui lòng không chia sẽ mã cho bất kỳ ai</h3>
+      <h3>Mã của bạn sẽ hết hạn sau 5 phút</h3>`,
       };
       transporter.sendMail(mailOptions);
       res.status(200).json({ msg: "Send email otp code successfully" });
@@ -102,15 +104,13 @@ class MailSevice {
 
   // gửi mail context
   // [put] /sendMail/:email
-  sendMailContext = async (req, res) => {
+  sendMailConfirmEmail = async (req, res) => {
     try {
       if (req.params.email === null || req.params.email === undefined) {
         res.status(400).json("Email null");
       }
       let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false,
+        service: "Gmail",
         auth: {
           user: this.#mailManage,
           pass: this.#passWordManage,
@@ -119,9 +119,9 @@ class MailSevice {
       let mailOptions = {
         from: this.#mailManage,
         to: req.params.email,
-        subject: `Xác nhận đăng ký tài khoản `,
+        subject: `Email đã được xác nhận hệ thống phân công lịch thi Đại Học Thủ Dầu Một`,
         html: `<h1>Xin chào.</h1> 
-        <h3>Tài khoản với email <strong>${req.params.email}</strong> của bạn đã được đăng ký bên chúng tôi.<h3>
+        <h3>Email <strong>${req.params.email}</strong> thư ký của bạn đã được xác nhận.<h3>
         <h3>Cảm ơn bạn đã sử dụng dịch vụ. Chúc bạn một ngày tốt lành</h3>
         <h2>Trân trọng.</h2>`,
       };
@@ -132,18 +132,185 @@ class MailSevice {
     }
   };
 
-  // gửi mail tình trạng đơn hàng
+  // gửi mail lịch thi
   // [put] /sendMail/:email
-  sendMailOrderStatust = async (req, res) => {
+  sendMailSchedule = async (req, res) => {
     try {
       if (req.body.email === null || req.body.email === undefined) {
         res.status(400).json("Email null");
       }
-      let context = req.body.context;
+
+      const data = req.body.schudele;
+      const key = req.body.hocky;
+
+      data.forEach((element) => {
+        let FullNameOne = element?.giangVien[0]?.hoTen;
+        let CodeOne = element?.giangVien[0]?.maVienChuc;
+        let FullNameTwo = element?.giangVien[1]?.hoTen;
+        let CodeTwo = element?.giangVien[1]?.maVienChuc;
+        element.FullNameOne = FullNameOne;
+        element.CodeOne = CodeOne;
+        element.FullNameTwo = FullNameTwo;
+        element.CodeTwo = CodeTwo;
+        element.ngayKiemTra = element.ngayKiemTra.slice(0, 10);
+      });
+
+      const filename = `PhanCongLichThi_${key}.xlsx`;
+      let workbook = new Excel.Workbook();
+      let worksheet = workbook.addWorksheet("Lich Thi", {
+        views: [{ state: "frozen", xSplit: 3 }],
+      });
+
+      worksheet.columns = [
+        {
+          header: "Mã học phần",
+          key: "maHocPhan",
+          width: 5.7,
+        },
+        {
+          header: "Tên học phần",
+          key: "tenHocPhan",
+          width: 37.4,
+        },
+        { header: "Nhóm kiểm tra", key: "nhomKiemTra", width: 17 },
+        { header: "Tổ kiểm", key: "toKiem", width: 6.3 },
+        { header: "Số lượng SV", key: "soLuongSinhVien", width: 5.5 },
+        {
+          header: "Đơn vị tổ chức kiểm tra",
+          key: "donViToChucKiemTra",
+          width: 18,
+        },
+        {
+          header: "Chương trình/Bộ môn",
+          key: "chuongTrinhBoMon",
+          width: 26,
+        },
+        { header: "Ngày kiểm tra", key: "ngayKiemTra", width: 13.11 },
+        { header: "Giờ bắt đầu", key: "gioBatDau", width: 6.5 },
+        { header: "Teamcode/Phòng", key: "maPhong", width: 9 },
+        { header: "Hình thức kiểm tra", key: "hinhThucKiemTra", width: 16 },
+        { header: "Số phút kiểm tra", key: "soPhutKiemTra", width: 6.3 },
+        {
+          header: "Cán bộ coi kiểm tra 01(CB01)",
+          key: "FullNameOne",
+          width: 16,
+        },
+        { header: "Mã viên chức CB01", key: "CodeOne", width: 10 },
+        {
+          header: "Cán bộ coi kiểm tra 02(CB02)",
+          key: "FullNameTwo",
+          width: 16,
+        },
+        { header: "Mã viên chức CB02", key: "CodeTwo", width: 10 },
+        { header: "GVGD", key: "GVGD", width: 16 },
+        { header: "MGV", key: "maGV", width: 10 },
+        { header: "Hệ đào tạo", key: "heDaoTao", width: 10 },
+        { header: "Cán bộ giám sát", key: "canBoCoiKiem3", width: 16 },
+        { header: "Mã cán bộ giám sát", key: "maCanBoCoiKiem3", width: 10 },
+        { header: "Cán bộ dự bị", key: "canBoDuBi", width: 16 },
+        { header: "Mã cán bộ dự bị", key: "maCanBoDuBi", width: 10 },
+      ];
+      [
+        "A1",
+        "B1",
+        "C1",
+        "D1",
+        "E1",
+        "F1",
+        "G1",
+        "H1",
+        "I1",
+        "J1",
+        "K1",
+        "L1",
+        "M1",
+        "N1",
+        "O1",
+        "P1",
+        "Q1",
+        "R1",
+        "S1",
+        "T1",
+        "U1",
+        "V1",
+        "W1",
+      ].map((key) => {
+        worksheet.getCell(key).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "ffff00" },
+        };
+      });
+
+      // set header filter for column
+      worksheet.autoFilter = "A2:W2";
+
+      // loop column set alignment center and font size excel js
+      for (let i = 1; i <= worksheet.columns.length; i++) {
+        worksheet.getColumn(i).alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
+        worksheet.getColumn(i).font = {
+          name: "Times New Roman",
+          family: 2,
+          size: 8,
+        };
+      }
+
+      //get row A2 set alignment center and fonts bold
+      worksheet.getRow(1).alignment = {
+        vertical: "middle",
+        horizontal: "center",
+        wrapText: true,
+      };
+      worksheet.getRow(1).font = {
+        name: "Times New Roman",
+        family: 2,
+        size: 8,
+        bold: true,
+      };
+
+      // set background color and border for row A2
+      worksheet.getRow(1).fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "ffff00" },
+      };
+      worksheet.getRow(1).border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+
+      // Splicing row excel js
+      worksheet.spliceRows(1, 0, {});
+      //merger cell
+      worksheet.mergeCells("A1:W1");
+      worksheet.getCell("A1").value = `PHÂN CÔNG COI THI TRA KẾT THÚC HỌC PHẦN
+          ${key}`;
+      worksheet.getCell("A1").alignment = {
+        horizontal: "center",
+        wrapText: true,
+        vertical: "bottom",
+      };
+      worksheet.getCell("A1").font = {
+        name: "Times New Roman",
+        family: 2,
+        size: 16,
+        bold: true,
+      };
+      worksheet.getRow(1).height = 56;
+
+      data.forEach((e) => {
+        worksheet.addRow(e);
+      });
+      const buffer = await workbook.xlsx.writeBuffer();
+
       let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false,
+        service: "Gmail",
         auth: {
           user: this.#mailManage,
           pass: this.#passWordManage,
@@ -152,55 +319,19 @@ class MailSevice {
       let mailOptions = {
         from: this.#mailManage,
         to: req.body.email,
-        subject: req.body.title,
-        html: `<div style="">
-        <h1>Xin chào</h1>
-        <h3>${req.body.contextTitle}, hãy kiểm tra đơn hàng</h3>
-        <h2>Chi tiết đơn hàng</h2>
-          ${context.map(
-            (item) =>
-              `
-              <div style="background-color: white;padding: 50px;margin: 0 auto;">
-                <div  style="display: flex;border-bottom: 1px solid gray; padding-bottom: 10px;">
-                  <div className="product-thumbnail">
-                    <div className="product-thumbnail-wrapper">
-                      <img src=${
-                        item.image
-                      } alt="" style="width: 150px;height: 150px;object-fit: cover;" />
-                    </div>
-                  </div>
-                  <div style="display: grid;  grid-gap: 20px;grid-template-columns: repeat(1);padding-left: 20px;">
-                    <span style="color: black;font-size: 16px;">
-                      số lượng : ${item.quantity}
-                    </span>
-                    <span style="color: black;font-size: 16px;">${
-                      item.nameProduct
-                    }</span>
-                    <span style="color: black;font-size: 16px;">
-                      ${item.color} / ${item.size}
-                    </span>
-                    <div  style="color: red;font-size: 16px;">
-                      <span>${item.price.toLocaleString()} đ</span>
-                    </div>
-                  </div>
-                </div>
-              </div>`
-          )}
-          <div>
-          <h4>Dear</h4>
-          <p style="font-size: 16px">Họ và tên : ${req.body.fullName}</p>
-          <p style="font-size: 16px">Địa chỉ : ${req.body.address}</p>
-          <p style="font-size: 16px">Số điện thoại : ${
-            req.body.phone_number
-          }</p>
-            <h3 style="color:red;font-size: 18px">Tổng tiền : ${
-              req.body.total_price
-            } VND</h3>
-          </div>
-        <h3>${req.body.contextStatus}</h3>
-        <h2>Trân trọng.</h2>
-        <h3>Ngày giờ : ${req.body.orderDate}</h3>
+        subject: "Thông báo lịch gác thi Đại Học Thủ Dầu Một",
+        html: `<div>
+        <h1>Dear thầy cô,</h1>
+        <h3>Xin gửi thầy cô lịch gác thi ${key}</h3>
         </div>`,
+        attachments: [
+          {
+            filename,
+            content: buffer,
+            contentType:
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          },
+        ],
       };
       transporter.sendMail(mailOptions);
       res.status(201).json("Send email successfully");
