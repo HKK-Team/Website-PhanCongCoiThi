@@ -23,7 +23,12 @@ export default function AppNavigate() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={`${isLogin ? "Menu" : "Trang chủ"}`}>
+      <Stack.Navigator
+        initialRouteName={`${isLogin ? "Menu" : "Trang chủ"}`}
+        screenOptions={{
+          headerBackVisible: false,
+        }}
+      >
         <Stack.Screen name="Trang chủ" component={HomePage} />
         <Stack.Screen name="Tìm lịch thi" component={SearchSchudele} />
         <Stack.Screen name="Menu" component={TabPage} />
@@ -43,6 +48,7 @@ export function TabPage() {
         name="Lịch Thi"
         component={SchudeleExams}
         options={{
+          title: "Lịch Thi",
           tabBarLabel: "Lịch Thi",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -57,6 +63,7 @@ export function TabPage() {
         name="Profiles"
         component={Profiles}
         options={{
+          title: "Thông Tin",
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />

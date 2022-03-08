@@ -6,16 +6,16 @@ import Tooltip from "@mui/material/Tooltip";
 import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
 import React, { useEffect } from "react";
-import ReactExport from "react-export-excel";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getTieuLuanApiAsync } from "../../../api/tieuLuanSlide";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
-import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
+import {
+  toastError,
+  toastPromise,
+  toastSuccess,
+} from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 export default function TestScheduleEssaySubjectList() {
   const secretaryAccount = useSelector(getSecretaryAccLogin);
@@ -132,9 +132,6 @@ export default function TestScheduleEssaySubjectList() {
       renderCell: (params) => {
         return (
           <>
-            {/* <Link to={"/HomeSecretary/testSchedule/" + params.id}>
-              <button className="productListEdit">Chỉnh sửa</button>
-            </Link> */}
             <DeleteOutline
               className="productListDelete"
               onClick={() => handleDelete(params.id)}
@@ -144,6 +141,38 @@ export default function TestScheduleEssaySubjectList() {
       },
     },
   ];
+
+  const handleClickExportExcel = async (e) => {
+    e.preventDefault();
+    const context = { hocky: "Tiểu Luận", schudele: data };
+    await axios
+      .put(`http://localhost:5000/excel/getDataExcelFIle/`, {
+        ...context,
+      })
+      .then(async (res) => {
+        await axios
+          .get(`http://localhost:5000/excel/dowloadingExcelFIleTieuLuan/`, {
+            responseType: "blob",
+          })
+          .then((res) => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `PhanCongLichThi_TieuLuan.xlsx`); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+            toastSuccess("Đã xuất file excel thành công !");
+          })
+          .catch((err) => {
+            toastError("Đã xuất file excel thất bại !");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        toastError(err.data);
+      });
+  };
+  console.log(data);
   const defaultTheme = createTheme();
 
   const useStyles = makeStyles(
@@ -176,41 +205,17 @@ export default function TestScheduleEssaySubjectList() {
     <div className="userList">
       <div className="header-table" style={{ marginBottom: 10 }}>
         <h1 className="header-table-title">Bảng Phân Công Coi Thi Tiểu luận</h1>
-        <ExcelFile
-          filename={`PhânCôngLichThiTieuLuan`}
-          element={
-            <Tooltip title="xuất dữ liệu Excel" arrow>
-              <Button
-                variant="contained"
-                color="success"
-                size="small"
-                style={{ marginRight: 10 }}
-              >
-                Export Excel
-              </Button>
-            </Tooltip>
-          }
-        >
-          <ExcelSheet data={data} name="Bảng phân công Tiểu Luận">
-            <ExcelColumn label="Mã học phần" value="maHocPhan" />
-            <ExcelColumn label="Tên học phần" value="tenHocPhan" />
-            <ExcelColumn label="Nhóm kiểm tra" value="nhomKiemTra" />
-            <ExcelColumn label="Tổ kiểm" value="toKiem" />
-            <ExcelColumn label="Số lượng sinh viên" value="soLuongSinhVien" />
-            <ExcelColumn
-              label="Đơn vị tổ chức kiểm tra"
-              value="donViToChucKiemTra"
-            />
-            <ExcelColumn label="Chương trình/Bộ môn" value="chuongTrinhBoMon" />
-            <ExcelColumn label="Ngày kiểm tra" value="ngayKiemTra" />
-            <ExcelColumn label="Giờ bắt đầu" value="gioBatDau" />
-            <ExcelColumn label="Teamcode/Phòng" value="maPhong" />
-            <ExcelColumn label="Số phút kiểm tra" value="soPhutKiemTra" />
-            <ExcelColumn label="GVGD" value="GVGD" />
-            <ExcelColumn label="MGV" value="maGV" />
-            <ExcelColumn label="Hệ đào tạo" value="heDaoTao" />
-          </ExcelSheet>
-        </ExcelFile>
+        <Tooltip title="xuất dữ liệu Excel" arrow>
+          <Button
+            variant="contained"
+            color="success"
+            size="small"
+            style={{ marginRight: 10 }}
+            onClick={handleClickExportExcel}
+          >
+            Export Excel
+          </Button>
+        </Tooltip>
       </div>
       <DataGridPro
         className={classes.root}

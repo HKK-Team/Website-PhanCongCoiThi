@@ -70,6 +70,7 @@ export default function HomePage() {
           token_ID: idToken,
           Api: "Google",
         };
+
         let reg = /^([0-9]{13})+@student.tdmu.edu.vn$/i;
         if (type === "success" && reg.test(users.email)) {
           axios
@@ -81,6 +82,7 @@ export default function HomePage() {
                 try {
                   await AsyncStorage.setItem("UserLogin", `${true}`);
                   await AsyncStorage.setItem("UserEmail", `${users.email}`);
+                  SetLoginClick(false);
                 } catch (error) {
                   Alert.alert(error);
                   SetLoginClick(false);

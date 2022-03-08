@@ -3,6 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
+
+// Profiles persennational component
 export default function Profiles() {
   const user = useSelector((state) => state?.Users?.UserApi?.data);
   const navigation = useNavigation();

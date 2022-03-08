@@ -10,7 +10,7 @@ export default function TestScheduleLecturers() {
   const LecturersAccLogin = useSelector(
     (state) => state.LecturersAccount.lecturersAccountApi.data[0]
   );
-  const { loding } = useSelector((state) => state.Schedules.SchedulesApi);
+  const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
 
   let data = [];
   const tieuLuan = useSelector((state) =>
@@ -125,7 +125,7 @@ export default function TestScheduleLecturers() {
     { defaultTheme }
   );
   const classes = useStyles();
-  if (loding)
+  if (loading)
     return (
       <div className="loading">
         {" "}

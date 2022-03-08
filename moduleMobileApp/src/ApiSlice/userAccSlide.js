@@ -1,19 +1,21 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createAsyncThunk,
   createSlice,
   isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 export const getUserApiAsync = createAsyncThunk(
   "users/getUserApiAsync",
   async () => {
     try {
-      const users = await AsyncStorage.getItem("UserEmail");
-      const res = await axios.get(
-        `http://10.0.2.2:5000/lecturer/getuser?email[regex]=${users}`
-      );
-      return res.data;
+      const userEmail = await AsyncStorage.getItem("UserEmail");
+      if (userEmail !== null) {
+        const dataUser = await axios.get(
+          `http://10.0.2.2:5000/lecturer/getuser?email[regex]=${userEmail}`
+        );
+        return dataUser.data;
+      }
     } catch (err) {
       return isRejectedWithValue(err.response.data);
     }
@@ -40,4 +42,5 @@ export const userSlice = createSlice({
     },
   },
 });
+
 export default userSlice;

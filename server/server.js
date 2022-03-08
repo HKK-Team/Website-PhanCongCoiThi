@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 const path = require("path");
 const cors = require("cors");
 const app = express();
@@ -8,6 +9,8 @@ const cookieParser = require("cookie-parser");
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(morgan("combined"));
 // connect to mongodb
 const URI = process.env.MONGODB_URL;
 mongoose.connect(

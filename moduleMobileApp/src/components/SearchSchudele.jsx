@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getSchedulesApiAsync } from "../ApiSlice/schudeleSlice";
 
+// SearchSchudele container component
 export default function SearchSchudele({ route }) {
   const { keyWord } = route.params;
   const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
@@ -38,29 +39,9 @@ export default function SearchSchudele({ route }) {
           <Text style={style.title}>Key Word: {keyWord}</Text>
         </View>
         <View style={style.ListDataBox}>
-          {data.map((item, index) => {
-            return (
-              <View style={style.DataBox} key={index}>
-                <Text style={style.fieldText}>Mã MH: {item?.maHocPhan}</Text>
-                <Text style={style.fieldText}>Tên MH: {item?.tenHocPhan}</Text>
-                <Text style={style.fieldText}>
-                  Nhóm Kiểm tra: {item?.nhomKiemTra}
-                </Text>
-                <Text style={style.fieldText}>
-                  Ngày Thi: {item?.ngayKiemTra.slice(0, 10)}
-                </Text>
-                <Text style={style.fieldText}>
-                  Giờ Bắt Đầu: {item?.gioBatDau}
-                </Text>
-                <Text style={style.fieldText}>Phút: {item?.soPhutKiemTra}</Text>
-                <Text style={style.fieldText}>
-                  Phòng Thi / trực tuyến: {item?.maPhong}
-                </Text>
-                <Text style={style.fieldText}>
-                  Hình thức thi: {item?.hinhThucKiemTra}
-                </Text>
-              </View>
-            );
+          {data.map((items, index) => {
+            const item = {index : index, ...items};
+            return <DataBox {...item} />;
           })}
         </View>
       </ScrollView>
@@ -109,3 +90,29 @@ const style = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+// DataBox presentational componet
+function DataBox({
+  index,
+  maHocPhan,
+  tenHocPhan,
+  nhomKiemTra,
+  ngayKiemTra,
+  gioBatDau,
+  soPhutKiemTra,
+  maPhong,
+  hinhThucKiemTra,
+}) {
+  return (
+    <View style={style.DataBox} key={index}>
+      <Text style={style.fieldText}>Mã MH: {maHocPhan}</Text>
+      <Text style={style.fieldText}>Tên MH: {tenHocPhan}</Text>
+      <Text style={style.fieldText}>Nhóm Kiểm tra: {nhomKiemTra}</Text>
+      <Text style={style.fieldText}>Ngày Thi: {ngayKiemTra.slice(0, 10)}</Text>
+      <Text style={style.fieldText}>Giờ Bắt Đầu: {gioBatDau}</Text>
+      <Text style={style.fieldText}>Phút: {soPhutKiemTra}</Text>
+      <Text style={style.fieldText}>Phòng Thi / trực tuyến: {maPhong}</Text>
+      <Text style={style.fieldText}>Hình thức thi: {hinhThucKiemTra}</Text>
+    </View>
+  );
+}

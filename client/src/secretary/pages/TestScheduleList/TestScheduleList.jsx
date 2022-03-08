@@ -15,14 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { sendMailSchedule } from "../../../api/mailService";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
-import {
-  toastError,
-  toastPromise,
-  toastSuccess,
-} from "../../../shareAll/toastMassage/toastMassage";
+import
+  {
+    toastError,
+    toastPromise,
+    toastSuccess
+  } from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
 import scheduleSlice, {
-  getSchedulesApiAsync,
+  getSchedulesApiAsync
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 import "./../../components/headerTable/headerTable.css";
 import "./TestScheduleList.css";
