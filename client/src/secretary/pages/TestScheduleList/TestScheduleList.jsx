@@ -15,15 +15,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { sendMailSchedule } from "../../../api/mailService";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
-import
-  {
-    toastError,
-    toastPromise,
-    toastSuccess
-  } from "../../../shareAll/toastMassage/toastMassage";
+import {
+  toastError,
+  toastPromise,
+  toastSuccess,
+} from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
 import scheduleSlice, {
-  getSchedulesApiAsync
+  getSchedulesApiAsync,
 } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 import "./../../components/headerTable/headerTable.css";
 import "./TestScheduleList.css";
@@ -135,9 +134,14 @@ export default function TestScheduleList() {
         ) {
           toastSuccess("Đã gửi email thành công");
         } else if (triggerErr.check === false) {
+
+          // filter email lecturer get data
+          const filterDataLecturer = data.filter((items) =>
+            items.giangVien.find((email) => email.email === item)
+          );
           const object = {
             email: item,
-            schudele: data,
+            schudele: filterDataLecturer,
             hocky: key,
           };
           sendMailSchedule(object)

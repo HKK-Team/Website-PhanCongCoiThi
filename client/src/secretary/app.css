@@ -1,13 +1,11 @@
-.containerAdmin-Secretarys{
-    display: flex;
-    margin-top: 10px;
+.containerAdmin-Secretarys {
+  display: flex;
 }
 
-.containerAdmin-Lecturers{
-    display: flex;
-    margin-top: 10px;
+.containerAdmin-Lecturers {
+  display: flex;
 }
-.link{
-    text-decoration: none;
-    color: inherit;
+.link {
+  text-decoration: none;
+  color: inherit;
 }

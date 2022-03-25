@@ -4,14 +4,26 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
-import logo from "./../../../images/tdmu-elearning-banner.png";
+import TDMU from "./../../../images/TDMU.ico";
 
 export default function Topbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [scroll, setScroll] = React.useState(false);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(window.pageYOffset > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,11 +37,14 @@ export default function Topbar() {
     window.sessionStorage.removeItem("SecretaryUserName");
   };
   return (
-    <div className="topbarSecretary">
+    <div className={scroll ? "topbarSecretary scroll" : "topbarSecretary"}>
       <div className="topbarWrapper">
         <div className="topLeft">
-          <img src={logo} alt="" className="logo" />
-          {/* <span className="logo">HKK team</span> */}
+          <img alt="logo" src={TDMU} className="LogoTDMU" />
+          <Link to="/HomeSecretary">
+            <span className="Topleft-text">TDMU</span>{" "}
+            <span className="Topleft-span">exam schedule.</span>
+          </Link>
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
@@ -76,7 +91,7 @@ export default function Topbar() {
           </div>
           <div className="topbarIconContainer">
             <img
-              src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
               alt=""
               className="topAvatar"
               onClick={() => {

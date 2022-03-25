@@ -74,7 +74,7 @@ const secretaryCtrl = {
   EditPassword: async (req, res) => {
     // check password
     let user = await Secretary.findById(req.body._id);
-    console.log(user);
+
     const check = await bcrypt.compare(req.body.old_password, user.passWord);
     if (!check)
       return res

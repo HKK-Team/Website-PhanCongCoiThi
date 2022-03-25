@@ -1,12 +1,14 @@
 .topbarSecretary {
   width: 100%;
   height: 50px;
-  background-color: white;
+  background-color: transparent;
   position: sticky;
   top: 0;
   z-index: 999;
+  transition: all 0.5s ease;
+  opacity: 1;
 }
-.topbar{
+.topbar {
   width: 100%;
   height: 50px;
   background-color: white;
@@ -39,7 +41,38 @@
   object-fit: cover;
   cursor: pointer;
 }
+.topLeft {
+  margin-left: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+.LogoTDMU {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
+.Topleft-text {
+  font-size: 30px;
+  font-weight: 700;
+  transition: all 1s ease;
 
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.Topleft-span {
+  font-size: 30px;
+  font-weight: 600;
+  color: gray;
+}
 .topRight {
   display: flex;
   align-items: center;
@@ -70,6 +103,13 @@
 .topAvatar {
   width: 40px;
   height: 40px;
+  object-fit: cover;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.scroll {
+  background-color: #f5f5f5;
+  z-index: 100;
+  pointer-events: auto;
 }

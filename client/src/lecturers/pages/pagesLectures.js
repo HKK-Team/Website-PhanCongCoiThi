@@ -5,10 +5,11 @@ import {
   // BrowserRouter as Router,
   Routes,
   useLocation,
-  useNavigate
+  useNavigate,
 } from "react-router-dom";
 import { getLecturersAccApiAsync } from "../../api/lecturersAccountSlice";
 import { getTieuLuanApiAsync } from "../../api/tieuLuanSlide";
+import Landingpage from "../../utils/LandingPage/LandingPage";
 import NotFound from "../../utils/not_found/NotFound";
 import SideBarLecturers from "./../components/SideBarLecturers/SideBarLecturers";
 import TopBarLecturers from "./../components/TopBarLecturers/TopBarLecturers";
@@ -23,6 +24,7 @@ function PagesLecturers() {
   const nagivate = useNavigate();
   const [isLogged] = sessionStorage.getItem("LecturerLogin") || "";
   const param = useLocation();
+  const dispatch = useDispatch();
 
   const data = useSelector(
     (state) => state.LecturersAccount.lecturersAccountApi.data[0]
@@ -33,7 +35,7 @@ function PagesLecturers() {
       document.querySelector(".topbarSecretary")?.remove();
     }
   }, [param]);
-  const dispatch = useDispatch();
+
   useEffect(() => {
     if (param.pathname.search("/HomeLecturers") === 0) {
       dispatch(getLecturersAccApiAsync());
@@ -65,6 +67,11 @@ function PagesLecturers() {
       <div className="containerAdmin-Lecturers">
         <SideBarLecturers />
         <Routes>
+          <Route
+            exact
+            path="/HomeLecturers"
+            element={isLogged ? <Landingpage /> : <NotFound />}
+          />
           <Route
             exact
             path="/HomeLecturers/profileLecturers"
@@ -101,7 +108,6 @@ function PagesLecturers() {
             element={isLogged ? <SuggestEssaySubjectLecrurers /> : <NotFound />}
           />
         </Routes>
-        
       </div>
     </Fragment>
   );

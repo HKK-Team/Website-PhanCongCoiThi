@@ -15,7 +15,9 @@ export default function TestScheduleLecturers() {
   let data = [];
   const tieuLuan = useSelector((state) =>
     state.TieuLuan.tieuLuanApi.data.filter(
-      (item) => item.maGV === LecturersAccLogin?.maVienChuc && item.status === "Đã xác nhận"
+      (item) =>
+        item.maGV === LecturersAccLogin?.maVienChuc &&
+        item.status === "Đã xác nhận"
     )
   );
   const tieuLuans = [];
@@ -91,7 +93,7 @@ export default function TestScheduleLecturers() {
       headerName: "Cán bộ coi kiểm tra 02(CB02)",
       width: 230,
       renderCell: (params) => {
-        return params?.row?.giangVien[1]?.hoTen;
+        return params?.row?.giangVien[1]?.hoTen || params?.row?.canBoCoiKiem2;
       },
     },
     {
@@ -99,7 +101,7 @@ export default function TestScheduleLecturers() {
       headerName: "Mã viên chức CB02",
       width: 200,
       renderCell: (params) => {
-        return params?.row?.giangVien[1]?.maVienChuc;
+        return params?.row?.giangVien[1]?.maVienChuc || params?.row?.maCanBoCoiKiem2;
       },
     },
     { field: "GVGD", headerName: "GVGD", width: 200 },

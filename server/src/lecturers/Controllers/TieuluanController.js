@@ -120,7 +120,11 @@ const tieuluanCtrl = {
   successTieuLuan: async (req, res) => {
     try {
       const { id, status } = req.body;
-      await tieuluan.findOneAndUpdate({ _id: id }, { status });
+      const { maVienChuc, hoTen } = req.body.data;
+      await tieuluan.findOneAndUpdate(
+        { _id: id },
+        { status, canBoCoiKiem2: hoTen, maCanBoCoiKiem2: maVienChuc }
+      );
       res.json({ msg: "Cập nhật thành công" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

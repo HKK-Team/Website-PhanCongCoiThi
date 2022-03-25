@@ -16,6 +16,8 @@ const tieuLuanSchema = new Schema({
   hinhThucKiemTra: String,
   GVGD: String,
   maGV: String,
+  canBoCoiKiem2: String,
+  maCanBoCoiKiem2: String,
   heDaoTao: String,
   maKhoa: String,
   maChuongTrinh: String,

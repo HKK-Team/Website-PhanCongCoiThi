@@ -1,17 +1,30 @@
-import React from "react";
-import "./../../../secretary/components/Topbar/Topbar.css";
-import Settings from "@mui/icons-material/Settings";
 import Language from "@mui/icons-material/Language";
-import NotificationsNone from "@mui/icons-material/NotificationsNone";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "./../../../images/tdmu-elearning-banner.png";
+import NotificationsNone from "@mui/icons-material/NotificationsNone";
+import Settings from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toastInfor } from "../../../shareAll/toastMassage/toastMassage";
+import TDMU from "./../../../images/TDMU.ico";
+import "./../../../secretary/components/Topbar/Topbar.css";
 
 export default function TopBarLecturers() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [ticky, setTicky] = React.useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setTicky(window.pageYOffset > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,11 +37,14 @@ export default function TopBarLecturers() {
     window.sessionStorage.removeItem("LecturerEmail");
   };
   return (
-    <div className="topBarLecturers">
+    <div className={ticky ? "topBarLecturers scroll" : "topBarLecturers"}>
       <div className="topbarWrapper">
         <div className="topLeft">
-          <img src={logo} alt="" className="logo" />
-          {/* <span className="logo">HKK team</span> */}
+          <img alt="logo" src={TDMU} className="LogoTDMU" />
+          <Link to="/HomeLecturers">
+            <span className="Topleft-text">TDMU</span>{" "}
+            <span className="Topleft-span">exam schedule.</span>
+          </Link>
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
@@ -75,7 +91,7 @@ export default function TopBarLecturers() {
           </div>
           <div className="topbarIconContainer">
             <img
-              src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
+              src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
               alt=""
               className="topAvatar"
               onClick={() => {

@@ -121,6 +121,16 @@ export default function TestScheduleEssaySubjectList() {
       width: 120,
     },
     {
+      field: "canBoCoiKiem2",
+      headerName: "Cán bộ coi kiểm 2",
+      width: 200,
+    },
+    {
+      field: "maCanBoCoiKiem2",
+      headerName: "Mã cán bộ coi kiểm 2",
+      width: 120,
+    },
+    {
       field: "heDaoTao",
       headerName: "Hệ đào tạo",
       width: 150,
@@ -172,7 +182,6 @@ export default function TestScheduleEssaySubjectList() {
         toastError(err.data);
       });
   };
-  console.log(data);
   const defaultTheme = createTheme();
 
   const useStyles = makeStyles(

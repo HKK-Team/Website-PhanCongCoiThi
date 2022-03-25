@@ -1,20 +1,34 @@
 import { makeStyles } from "@material-ui/styles";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { DataGridPro, GridToolbar } from "@mui/x-data-grid-pro";
 import axios from "axios";
-import { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getTieuLuanApiAsync } from "../../../api/tieuLuanSlide";
+import tieuLuaSlide, { getTieuLuanApiAsync } from "../../../api/tieuLuanSlide";
 import { getSecretaryAccLogin } from "../../../redux/selectors";
 import { toastPromise } from "../../../shareAll/toastMassage/toastMassage";
 import Loading from "../../../utils/loading/Loading";
+import { getLecturersApiAsync } from "../../sliceApi/LecturersSlice/lecturersSlice";
 import { getSchedulesApiAsync } from "../../sliceApi/SchedulesSlice/schedulesSlice";
 
 export default function EssaySubjectSecretaryManage() {
   const secretaryAccount = useSelector(getSecretaryAccLogin);
   const maKhoa = secretaryAccount?.maKhoa;
   const chuongTrinhDaoTao = secretaryAccount?.chuongTrinhDaoTao;
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const loading = useSelector((state) => state.TieuLuan.tieuLuanApi.loading);
   const data = useSelector((state) =>
@@ -26,29 +40,23 @@ export default function EssaySubjectSecretaryManage() {
     )
   );
   const schudules = useSelector((state) => state.Schedules.SchedulesApi.data);
+
+  const lecturers = useSelector((state) =>
+    state.Lecturers.LecturersApi.data.filter(
+      (item) =>
+        item.maKhoa === maKhoa && item.maChuongTrinh === chuongTrinhDaoTao
+    )
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTieuLuanApiAsync());
     dispatch(getSchedulesApiAsync());
+    dispatch(getLecturersApiAsync());
   }, [dispatch]);
 
   const navigate = useNavigate();
 
-  const handleOnClickSuccess = (id) => {
-    toastPromise(
-      axios.put("http://localhost:5000/lecturersTieuLuan/successTieuLuan", {
-        id,
-        status: "Đã xác nhận",
-      }),
-      () => {
-        setTimeout(() => {
-          navigate(0);
-        }, 1000);
-        return "Phê duyệt thanh công";
-      }
-    );
-  };
   const handleOnClickCancel = (id) => {
     toastPromise(
       axios.put("http://localhost:5000/lecturersTieuLuan/cancelTieuLuan", {
@@ -68,16 +76,50 @@ export default function EssaySubjectSecretaryManage() {
     {
       field: "Actions",
       headerName: "Phê Duyệt",
-      width: 150,
+      width: 100,
       renderCell: (params) => {
         const id = params.id;
+        const time = params.row.deXuat.gioBatDau || params.row.gioBatDau;
+        const date = params.row.deXuat.ngayKiemTra || params.row.ngayKiemTra;
+
+        const getSchedulesDoesNotMatch = schudules.filter((item) => {
+          return (
+            item.maKhoa === maKhoa &&
+            item.maChuongTrinh === chuongTrinhDaoTao &&
+            item.ngayKiemTra.slice(0, 10) !== date.slice(0, 10) &&
+            item.gioBatDau !== time &&
+            item.public === true
+          );
+        });
+
+        const getSchedulesMatch = getSchedulesDoesNotMatch.map((item) => {
+          return item.giangVien;
+        });
+
+        // flatten the array getSchedulesMatch
+        const getSchedulesMatchFlatten = [].concat(...getSchedulesMatch);
+
+        //set the array getSchedulesMatchFlatten to code
+
+        const setCodeSchules = new Set(
+          getSchedulesMatchFlatten.map((item) => item.maVienChuc)
+        );
+        const codeSchules = [];
+        setCodeSchules.forEach((item) =>
+          item !== params.row.maGV ? codeSchules.push(item) : ""
+        );
+
         return (
           <span
             className="success"
             style={{ cursor: "pointer" }}
             onClick={(e) => {
               e.preventDefault();
-              handleOnClickSuccess(id);
+              handleOpen();
+              dispatch(
+                tieuLuaSlide.actions.getLecturesDoesNotMach(codeSchules)
+              );
+              dispatch(tieuLuaSlide.actions.getIdTieuLuan(id));
             }}
           >
             Phê duyệt
@@ -88,7 +130,7 @@ export default function EssaySubjectSecretaryManage() {
     {
       field: "Cancel",
       headerName: "Từ chối",
-      width: 150,
+      width: 100,
       renderCell: (params) => {
         const id = params.id;
         return (
@@ -108,7 +150,7 @@ export default function EssaySubjectSecretaryManage() {
     {
       field: "goiY",
       headerName: "Gợi ý",
-      width: 150,
+      width: 100,
       renderCell: (params) => {
         const id = params.id;
         return (
@@ -225,6 +267,102 @@ export default function EssaySubjectSecretaryManage() {
     { field: "heDaoTao", headerName: "Hệ đào tạo", width: 150 },
   ];
 
+  const handleOnClickSuccess = (id, data) => {
+    toastPromise(
+      axios.put("http://localhost:5000/lecturersTieuLuan/successTieuLuan", {
+        id,
+        status: "Đã xác nhận",
+        data,
+      }),
+      () => {
+        setTimeout(() => {
+          navigate(0);
+        }, 1000);
+        return "Phê duyệt thanh công";
+      }
+    );
+  };
+
+  const SuccessTieuLuan = () => {
+    let dataLectures = {};
+    const { data, id } = useSelector(
+      (state) => state.TieuLuan.LecturesDoesNotMach
+    );
+    const filterData = [];
+    data.forEach((items) => {
+      lecturers.forEach((item) =>
+        item.maVienChuc === items ? filterData.push(item) : ""
+      );
+    });
+    return (
+      <Fragment>
+        <Autocomplete
+          onChange={(event, value) => {
+            dataLectures = value;
+          }}
+          id="country-select-demo"
+          sx={{ width: 400 }}
+          options={filterData}
+          autoHighlight
+          getOptionLabel={(option) => option.hoTen}
+          renderOption={(props, option) => (
+            <Box
+              component="li"
+              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              {...props}
+            >
+              {option.hoTen} ({option.maVienChuc})
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Chọn giảng viên"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-password", // disable autocomplete and autofill
+              }}
+            />
+          )}
+        />
+        <Box marginTop={3}>
+          <Stack direction="row" spacing={3}>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={(e) => {
+                e.preventDefault();
+                handleOnClickSuccess(id, {});
+              }}
+            >
+              Bỏ qua
+            </Button>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={(e) => {
+                e.preventDefault();
+                handleOnClickSuccess(id, dataLectures);
+              }}
+            >
+              Tiếp tục
+            </Button>
+          </Stack>
+        </Box>
+        <Box marginTop={2}>
+          <Typography variant="caption" color="gray" component="h6">
+            * chọn giảng viên 2 cho buổi xem thi
+          </Typography>
+          <Typography variant="caption" color="gray" component="h6">
+            * chọn tiếp tục để xác nhận
+          </Typography>
+          <Typography variant="caption" color="gray" component="h6">
+            * chọn bỏ qua để không chọn
+          </Typography>
+        </Box>
+      </Fragment>
+    );
+  };
   const defaultTheme = createTheme();
   const useStyles = makeStyles(
     (theme) => {
@@ -238,6 +376,16 @@ export default function EssaySubjectSecretaryManage() {
             color: "#1976d2",
             fontWeight: "700",
           },
+        },
+        style: {
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 500,
+          border: "2px solid gray",
+          padding: "16px",
+          background: "#fff",
         },
       };
     },
@@ -253,6 +401,21 @@ export default function EssaySubjectSecretaryManage() {
     );
   return (
     <div className="userList">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={classes.style}>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+            Bạn có muốn chọn giảng viên 2 không ?
+          </Typography>
+          <Box marginTop={3}>
+            <SuccessTieuLuan />
+          </Box>
+        </Box>
+      </Modal>
       <h2>Lịch đăng ký các môn tiểu luận</h2>
       <DataGridPro
         className={classes.root}

@@ -2,6 +2,7 @@ import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { getSecretaryAccApiAsync } from "../api/secretarysAccountSlice";
+import Landingpage from "../utils/LandingPage/LandingPage";
 import NotFound from "../utils/not_found/NotFound";
 import "./app.css";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -51,6 +52,11 @@ function PagesSecretarys() {
 
         {/* Link url */}
         <Routes>
+          <Route
+            exact
+            path="/HomeSecretary"
+            element={isLogged ? <Landingpage /> : NotFound()}
+          />
           <Route
             exact
             path="/HomeSecretary/arrangeExamSchedule"
