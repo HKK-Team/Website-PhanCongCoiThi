@@ -13,13 +13,23 @@ export default function TestScheduleLecturers() {
   const { loading } = useSelector((state) => state.Schedules.SchedulesApi);
 
   let data = [];
-  const tieuLuan = useSelector((state) =>
+  let tieuLuan = useSelector((state) =>
     state.TieuLuan.tieuLuanApi.data.filter(
       (item) =>
         item.maGV === LecturersAccLogin?.maVienChuc &&
         item.status === "Đã xác nhận"
     )
   );
+  const getLecturesTwo = useSelector((state) =>
+    state.TieuLuan.tieuLuanApi.data.filter(
+      (item) =>
+        item.maCanBoCoiKiem2 === LecturersAccLogin?.maVienChuc &&
+        item.status === "Đã xác nhận"
+    )
+  );
+
+  tieuLuan = [...tieuLuan, ...getLecturesTwo];
+
   const tieuLuans = [];
   tieuLuan.forEach((item) => tieuLuans.push({ ...item, giangVien: [] }));
   data = [...tieuLuans];
@@ -101,7 +111,9 @@ export default function TestScheduleLecturers() {
       headerName: "Mã viên chức CB02",
       width: 200,
       renderCell: (params) => {
-        return params?.row?.giangVien[1]?.maVienChuc || params?.row?.maCanBoCoiKiem2;
+        return (
+          params?.row?.giangVien[1]?.maVienChuc || params?.row?.maCanBoCoiKiem2
+        );
       },
     },
     { field: "GVGD", headerName: "GVGD", width: 200 },

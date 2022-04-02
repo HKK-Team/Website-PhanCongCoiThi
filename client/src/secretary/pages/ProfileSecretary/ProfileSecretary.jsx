@@ -158,7 +158,7 @@ export default function ProfileSecretary() {
         <div className="userShow">
           <div className="userShowTop">
             <img
-              src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
               alt=""
               className="userShowImg"
             />
@@ -237,7 +237,7 @@ export default function ProfileSecretary() {
               <div className="userUpdateUpload">
                 <img
                   className="userUpdateImg"
-                  src="https://as2.ftcdn.net/v2/jpg/02/50/31/95/500_F_250319577_BuOE8gd49LUD41DFH6eY3mahs0Q6n8Jp.jpg"
+                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
                   alt=""
                 />
                 <label htmlFor="file">
@@ -253,3 +253,5 @@ export default function ProfileSecretary() {
     </div>
   );
 }
+
+

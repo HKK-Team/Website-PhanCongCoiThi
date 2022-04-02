@@ -383,7 +383,7 @@ export default function EssaySubjectSecretaryManage() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 500,
-          border: "2px solid gray",
+          border: "2px solid black",
           padding: "16px",
           background: "#fff",
         },

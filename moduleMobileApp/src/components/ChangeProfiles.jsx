@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 
 export default function ChangeProfiles() {
   const navigation = useNavigation();
-  const user = useSelector((state) => state?.Users?.UserApi?.data[0]);
+  const user = useSelector((state) => state?.Users?.UserApi?.data);
   const loading = useSelector((state) => state.Users.UserApi.loading);
   const [maVienChuc, setMaVienChuc] = useState(user?.maVienChuc);
   const [maKhoa, setMaKhoa] = useState(user?.maKhoa);
 
   const handleChangeProfiles = (e) => {
-    const profile = { ...user, maVienChuc, maKhoa };
+    const profile = { ...user[0], maVienChuc, maKhoa };
     axios.post("http://10.0.2.2:5000/lecturer/edituser", { ...profile });
     Alert.alert("Thông báo", "Cập nhật thành công");
     navigation.navigate("Lịch Thi");
@@ -31,12 +31,12 @@ export default function ChangeProfiles() {
         ChangeProfiles
       </Text>
       <Input
-        placeholder={user.maKhoa}
+        placeholder={user[0].maKhoa}
         value={maKhoa}
         onChange={(e) => setMaKhoa(e.nativeEvent.text)}
       />
       <Input
-        placeholder={user.maVienChuc}
+        placeholder={user[0].maVienChuc}
         value={maVienChuc}
         onChange={(e) => setMaVienChuc(e.nativeEvent.text)}
       />
